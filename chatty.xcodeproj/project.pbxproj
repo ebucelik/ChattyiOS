@@ -15,6 +15,9 @@
 		71C977DE2878AA8D004A457D /* chattyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977DD2878AA8D004A457D /* chattyUITests.swift */; };
 		71C977E02878AA8D004A457D /* chattyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977DF2878AA8D004A457D /* chattyUITestsLaunchTests.swift */; };
 		71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977EC2878AC5D004A457D /* TabViewController.swift */; };
+		71C977F62878C1FF004A457D /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977F52878C1FF004A457D /* FeedView.swift */; };
+		71C978002878C3DE004A457D /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977FF2878C3DE004A457D /* AccountView.swift */; };
+		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		71C977DD2878AA8D004A457D /* chattyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chattyUITests.swift; sourceTree = "<group>"; };
 		71C977DF2878AA8D004A457D /* chattyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chattyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		71C977EC2878AC5D004A457D /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		71C977F52878C1FF004A457D /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		71C977FF2878C3DE004A457D /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		71C978022878C444004A457D /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +103,11 @@
 		71C977BB2878AA8C004A457D /* chatty */ = {
 			isa = PBXGroup;
 			children = (
-				71C977BC2878AA8C004A457D /* AppDelegate.swift */,
-				71C977BE2878AA8C004A457D /* SceneDelegate.swift */,
-				71C977C52878AA8D004A457D /* Assets.xcassets */,
-				71C977C72878AA8D004A457D /* LaunchScreen.storyboard */,
+				71C978012878C401004A457D /* Shared */,
+				71C977F22878C0F2004A457D /* Features */,
 				71C977CA2878AA8D004A457D /* Info.plist */,
-				71C977EC2878AC5D004A457D /* TabViewController.swift */,
+				71C977F12878C06A004A457D /* Networking */,
+				71C977F32878C108004A457D /* Resources */,
 			);
 			path = chatty;
 			sourceTree = "<group>";
@@ -122,6 +127,114 @@
 				71C977DF2878AA8D004A457D /* chattyUITestsLaunchTests.swift */,
 			);
 			path = chattyUITests;
+			sourceTree = "<group>";
+		};
+		71C977F12878C06A004A457D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		71C977F22878C0F2004A457D /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				71C977FB2878C367004A457D /* Account */,
+				71C977F72878C25A004A457D /* Feed */,
+				71C977F42878C13B004A457D /* Homepage */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		71C977F32878C108004A457D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				71C977BC2878AA8C004A457D /* AppDelegate.swift */,
+				71C977BE2878AA8C004A457D /* SceneDelegate.swift */,
+				71C977C52878AA8D004A457D /* Assets.xcassets */,
+				71C977C72878AA8D004A457D /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		71C977F42878C13B004A457D /* Homepage */ = {
+			isa = PBXGroup;
+			children = (
+				71C977EC2878AC5D004A457D /* TabViewController.swift */,
+			);
+			path = Homepage;
+			sourceTree = "<group>";
+		};
+		71C977F72878C25A004A457D /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				71C977FA2878C2C5004A457D /* Logic */,
+				71C977F92878C2B7004A457D /* Models */,
+				71C977F82878C2A7004A457D /* Views */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		71C977F82878C2A7004A457D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				71C977F52878C1FF004A457D /* FeedView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		71C977F92878C2B7004A457D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		71C977FA2878C2C5004A457D /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		71C977FB2878C367004A457D /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				71C977FD2878C37D004A457D /* Logic */,
+				71C977FE2878C383004A457D /* Models */,
+				71C977FC2878C371004A457D /* Views */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		71C977FC2878C371004A457D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				71C977FF2878C3DE004A457D /* AccountView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		71C977FD2878C37D004A457D /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		71C977FE2878C383004A457D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		71C978012878C401004A457D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				71C978022878C444004A457D /* ViewControllerRepresentable.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,8 +368,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
+				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
+				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
 				71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */,
+				71C978002878C3DE004A457D /* AccountView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
