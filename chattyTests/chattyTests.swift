@@ -33,7 +33,7 @@ class chattyTests: XCTestCase {
 
         let result = a + b
 
-        XCTAssertTrue(result == 1)
+        XCTAssertTrue(result != 1)
     }
 
 }
