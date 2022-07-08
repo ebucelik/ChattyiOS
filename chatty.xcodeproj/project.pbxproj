@@ -9,13 +9,12 @@
 /* Begin PBXBuildFile section */
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
 		71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BE2878AA8C004A457D /* SceneDelegate.swift */; };
-		71C977C12878AA8C004A457D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977C02878AA8C004A457D /* ViewController.swift */; };
-		71C977C42878AA8C004A457D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71C977C22878AA8C004A457D /* Main.storyboard */; };
 		71C977C62878AA8D004A457D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C977C52878AA8D004A457D /* Assets.xcassets */; };
 		71C977C92878AA8D004A457D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71C977C72878AA8D004A457D /* LaunchScreen.storyboard */; };
 		71C977D42878AA8D004A457D /* chattyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977D32878AA8D004A457D /* chattyTests.swift */; };
 		71C977DE2878AA8D004A457D /* chattyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977DD2878AA8D004A457D /* chattyUITests.swift */; };
 		71C977E02878AA8D004A457D /* chattyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977DF2878AA8D004A457D /* chattyUITestsLaunchTests.swift */; };
+		71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977EC2878AC5D004A457D /* TabViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +38,6 @@
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C977BC2878AA8C004A457D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71C977BE2878AA8C004A457D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		71C977C02878AA8C004A457D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		71C977C32878AA8C004A457D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		71C977C52878AA8D004A457D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71C977C82878AA8D004A457D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71C977CA2878AA8D004A457D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +46,7 @@
 		71C977D92878AA8D004A457D /* chattyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chattyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C977DD2878AA8D004A457D /* chattyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chattyUITests.swift; sourceTree = "<group>"; };
 		71C977DF2878AA8D004A457D /* chattyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chattyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		71C977EC2878AC5D004A457D /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +99,10 @@
 			children = (
 				71C977BC2878AA8C004A457D /* AppDelegate.swift */,
 				71C977BE2878AA8C004A457D /* SceneDelegate.swift */,
-				71C977C02878AA8C004A457D /* ViewController.swift */,
-				71C977C22878AA8C004A457D /* Main.storyboard */,
 				71C977C52878AA8D004A457D /* Assets.xcassets */,
 				71C977C72878AA8D004A457D /* LaunchScreen.storyboard */,
 				71C977CA2878AA8D004A457D /* Info.plist */,
+				71C977EC2878AC5D004A457D /* TabViewController.swift */,
 			);
 			path = chatty;
 			sourceTree = "<group>";
@@ -233,7 +230,6 @@
 			files = (
 				71C977C92878AA8D004A457D /* LaunchScreen.storyboard in Resources */,
 				71C977C62878AA8D004A457D /* Assets.xcassets in Resources */,
-				71C977C42878AA8C004A457D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71C977C12878AA8C004A457D /* ViewController.swift in Sources */,
+				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
 				71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */,
 			);
@@ -297,14 +293,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		71C977C22878AA8C004A457D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				71C977C32878AA8C004A457D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		71C977C72878AA8D004A457D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -442,9 +430,10 @@
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -454,7 +443,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -470,9 +459,10 @@
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -482,7 +472,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
