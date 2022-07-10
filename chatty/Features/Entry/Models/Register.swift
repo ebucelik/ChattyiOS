@@ -1,0 +1,20 @@
+//
+//  Register.swift
+//  chatty
+//
+//  Created by Ing. Ebu Celik, BSc on 10.07.22.
+//
+
+import Foundation
+
+struct Register: Equatable, Codable {
+    let username: String
+    let email: String
+    let password: String
+
+    init(username: String, email: String, password: String) {
+        self.username = username
+        self.email = email
+        self.password = password
+    }
+}
