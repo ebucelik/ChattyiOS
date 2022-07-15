@@ -12,10 +12,11 @@ class BackendClient {
 
     private let domain = "http://localhost:8080/api/v1/"
 
-    private func start<C: Call>(call: C, completion: @escaping (Result<C.Response, Error>) -> Void) throws {
+    private func start<C: Call>(call: C, completion: @escaping (Result<C.Response, Error>) -> Void) {
 
         guard let url = URL(string: domain + call.path) else {
-            throw APIError.unexpectedError("URL is not valid or empty.")
+            completion(.failure(APIError.unexpectedError("URL is not valid or empty.")))
+            return
         }
 
         // MARK: - Create request
@@ -29,7 +30,7 @@ class BackendClient {
                 let httpBody = try JSONEncoder().encode(body)
                 request.httpBody = httpBody
             } catch {
-                throw APIError.error(error)
+                completion(.failure(APIError.error(error)))
             }
         }
 
@@ -46,13 +47,17 @@ class BackendClient {
                     HTTPCookieStorage.shared.setCookies(cookies, for: url, mainDocumentURL: nil)
                 }
 
-                if let data = data {
+                if let data = data,
+                   let response = response as? HTTPURLResponse,
+                   self.isStatusCodeValid(response.statusCode) {
                     do {
                         let model = try JSONDecoder().decode(C.Response.self, from: data)
                         completion(.success(model))
                     } catch {
                         completion(.failure(error))
                     }
+                } else {
+                    completion(.failure(APIError.notFound))
                 }
             }
         }
@@ -61,19 +66,21 @@ class BackendClient {
 
     func start<C: Call>(call: C) async throws -> C.Response {
         return try await withCheckedThrowingContinuation { continuation in
-            do {
-                try start(call: call) { result in
-                    switch result {
-                    case let .failure(error):
-                        continuation.resume(throwing: error)
+            start(call: call) { result in
+                switch result {
+                case let .failure(error):
+                    continuation.resume(throwing: error)
 
-                    case let .success(model):
-                        continuation.resume(returning: model)
-                    }
+                case let .success(model):
+                    continuation.resume(returning: model)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
         }
+    }
+}
+
+extension BackendClient {
+    func isStatusCodeValid(_ code: Int) -> Bool {
+        (200..<399).contains(code)
     }
 }
