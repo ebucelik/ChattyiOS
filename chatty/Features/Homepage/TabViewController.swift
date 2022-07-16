@@ -16,14 +16,19 @@ class TabViewController: UITabBarController {
         setViewController()
     }
 
-    func removeUserDefaults() {
-        let domain = Bundle.main.bundleIdentifier!
-        UserDefaults.standard.removePersistentDomain(forName: domain)
-        UserDefaults.standard.synchronize()
-    }
-
     func setViewController() {
-        let feedViewController = UIHostingController(rootView: FeedView())
+        let feedViewController = UIHostingController(
+            rootView: FeedView(
+                store: .init(
+                    initialState: FeedCore.State(),
+                    reducer: FeedCore.reducer,
+                    environment: FeedCore.Environment(
+                        service: LogoutService(),
+                        mainScheduler: .main
+                    )
+                )
+            )
+        )
         let accountViewController = UIHostingController(rootView: AccountView())
 
         setViewControllers([feedViewController, accountViewController], animated: true)

@@ -42,7 +42,7 @@ class LoginCore {
 
     struct Environment {
         let service: LoginServiceProtocol
-        let mainDispatcher: AnySchedulerOf<DispatchQueue>
+        let mainScheduler: AnySchedulerOf<DispatchQueue>
         let completion: (Bool) -> Void
     }
 
@@ -50,17 +50,24 @@ class LoginCore {
         switch action {
 
         case .login:
+            struct Debounce: Hashable { }
+
             if state.login.email.isEmpty || state.login.password.isEmpty {
                 return Effect(value: .loginStateChanged(.error(APIError.notFound)))
             }
 
-            return environment.service
-                .login(login: state.login)
-                .receive(on: environment.mainDispatcher)
-                .compactMap({ .loginStateChanged(.loaded($0)) })
-                .catch({ Just(.loginStateChanged(.error($0))) })
-                .prepend(.loginStateChanged(.loading))
-                .eraseToEffect()
+            let login = state.login
+
+            return Effect.task {
+                try await environment.service
+                    .login(login: login)
+            }
+            .debounce(id: Debounce(), for: .seconds(2), scheduler: environment.mainScheduler)
+            .receive(on: environment.mainScheduler)
+            .compactMap({ .loginStateChanged(.loaded($0)) })
+            .catch({ Just(.loginStateChanged(.error($0))) })
+            .prepend(.loginStateChanged(.loading))
+            .eraseToEffect()
 
         case let .loginStateChanged(changedState):
             state.loginState = changedState

@@ -7,20 +7,31 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct FeedView: View {
 
+    let store: Store<FeedCore.State, FeedCore.Action>
+
     @State
-    var showEntryView = true
+    var showEntryView = false
 
     var body: some View {
-        VStack {
-            Text("Hi")
-            Text("Ebu")
-            Text("BSc")
+        WithViewStore(store) { viewStore in
+            VStack {
+                Text("Hi")
+                Text("Ebu")
+                Text("BSc")
+                Button(action: {
+                    viewStore.send(.logout)
+                }, label: {
+                    Text("Logout")
+                })
+            }
         }
         .onAppear {
-            if UserDefaults.standard.data(forKey: "account") != nil {
-                showEntryView = false
+            if UserDefaults.standard.data(forKey: "account") == nil {
+                showEntryView = true
             }
         }
         .fullScreenCover(isPresented: $showEntryView) {
@@ -30,7 +41,7 @@ struct FeedView: View {
                     reducer: LoginCore.reducer,
                     environment: LoginCore.Environment(
                         service: LoginService(),
-                        mainDispatcher: .main,
+                        mainScheduler: .main,
                         completion: { showHomepage in
                             if showHomepage {
                                 self.showEntryView = false
@@ -46,7 +57,16 @@ struct FeedView: View {
 #if DEBUG
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {
-        FeedView()
+        FeedView(
+            store: .init(
+                initialState: FeedCore.State(),
+                reducer: FeedCore.reducer,
+                environment: FeedCore.Environment(
+                    service: LogoutService(),
+                    mainScheduler: .main
+                )
+            )
+        )
     }
 }
 #endif

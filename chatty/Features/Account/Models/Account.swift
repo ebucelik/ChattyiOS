@@ -15,4 +15,10 @@ struct Account: Equatable, Codable {
         self.username = username
         self.email = email
     }
+
+    static func removeUserDefaults() {
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+    }
 }

@@ -9,22 +9,11 @@ import Foundation
 import Combine
 
 protocol LoginServiceProtocol {
-    func login(login: Login) -> AnyPublisher<Account, Error>
+    func login(login: Login) async throws -> Account
 }
 
 class LoginService: BackendClient, LoginServiceProtocol {
-    func login(login: Login) -> AnyPublisher<Account, Error> {
-        Deferred {
-            Future { promise in
-                Task.init {
-                    do {
-                        promise(.success(try await self.start(call: LoginCall(body: login))))
-                    } catch {
-                        promise(.failure(error))
-                    }
-                }
-            }
-        }
-        .eraseToAnyPublisher()
+    func login(login: Login) async throws -> Account {
+        try await self.start(call: LoginCall(body: login))
     }
 }

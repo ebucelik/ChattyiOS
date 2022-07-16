@@ -12,9 +12,15 @@ class LoginCall: Call {
 
     let path: String = "login"
     let httpMethod: HTTPMethod = .POST
-    let body: Login?
+    let body: Data?
 
     init(body: Login? = nil) {
-        self.body = body
+        do {
+            self.body = try JSONEncoder().encode(body)
+        } catch {
+            self.body = nil
+
+            print(error)
+        }
     }
 }

@@ -8,17 +8,16 @@
 import Foundation
 
 protocol Call {
-    associatedtype Body: Encodable
     associatedtype Response: Decodable
 
     var path: String { get }
     var httpMethod: HTTPMethod { get }
-    var body: Body? { get }
+    var body: Data? { get }
     var parameters: [String : Any]? { get }
 }
 
 extension Call {
-    var body: Body? {
+    var body: Data? {
         get { nil }
     }
     var parameters: [String : Any]? {

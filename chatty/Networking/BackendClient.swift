@@ -26,12 +26,7 @@ class BackendClient {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
         if let body = call.body {
-            do {
-                let httpBody = try JSONEncoder().encode(body)
-                request.httpBody = httpBody
-            } catch {
-                completion(.failure(APIError.error(error)))
-            }
+            request.httpBody = body
         }
 
         // MARK: - Start call
@@ -57,6 +52,7 @@ class BackendClient {
                         completion(.failure(error))
                     }
                 } else {
+                    Account.removeUserDefaults()
                     completion(.failure(APIError.notFound))
                 }
             }
