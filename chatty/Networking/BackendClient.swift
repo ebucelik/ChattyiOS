@@ -43,17 +43,27 @@ class BackendClient {
                 }
 
                 if let data = data,
-                   let response = response as? HTTPURLResponse,
-                   self.isStatusCodeValid(response.statusCode) {
-                    do {
-                        let model = try JSONDecoder().decode(C.Response.self, from: data)
-                        completion(.success(model))
-                    } catch {
-                        completion(.failure(error))
+                   let response = response as? HTTPURLResponse {
+                    if self.isStatusCodeValid(response.statusCode) {
+                        do {
+                            let model = try JSONDecoder().decode(C.Response.self, from: data)
+                            completion(.success(model))
+                        } catch {
+                            completion(.failure(error))
+                        }
+                    } else if response.statusCode == 401 {
+                        Account.removeUserDefaults()
+                        completion(.failure(APIError.unauthorized))
+                    } else {
+                        do {
+                            let errorModel = try JSONDecoder().decode(ErrorMessage.self, from: data)
+                            completion(.failure(APIError.unexpectedError(errorModel.message)))
+                        } catch {
+                            completion(.failure(APIError.error(error)))
+                        }
                     }
                 } else {
-                    Account.removeUserDefaults()
-                    completion(.failure(APIError.notFound))
+                    completion(.failure(APIError.unexpectedError("Data is corrupt.")))
                 }
             }
         }
@@ -65,7 +75,11 @@ class BackendClient {
             start(call: call) { result in
                 switch result {
                 case let .failure(error):
-                    continuation.resume(throwing: error)
+                    if let apiError = error as? APIError {
+                        continuation.resume(throwing: apiError)
+                    } else {
+                        continuation.resume(throwing: error)
+                    }
 
                 case let .success(model):
                     continuation.resume(returning: model)

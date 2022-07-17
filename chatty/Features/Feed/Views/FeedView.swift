@@ -16,6 +16,9 @@ struct FeedView: View {
     @State
     var showEntryView = false
 
+    @State
+    var showRegisterView = false
+
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
@@ -28,28 +31,28 @@ struct FeedView: View {
                     Text("Logout")
                 })
             }
+            .fullScreenCover(isPresented: $showEntryView) {
+                if !viewStore.showRegisterView {
+                    LoginView(
+                        store: store.scope(
+                            state: \.login,
+                            action: FeedCore.Action.login
+                        )
+                    )
+                } else {
+                    RegisterView(
+                        store: store.scope(
+                            state: \.register,
+                            action: FeedCore.Action.register
+                        )
+                    )
+                }
+            }
         }
         .onAppear {
             if UserDefaults.standard.data(forKey: "account") == nil {
                 showEntryView = true
             }
-        }
-        .fullScreenCover(isPresented: $showEntryView) {
-            LoginView(
-                store: .init(
-                    initialState: LoginCore.State(),
-                    reducer: LoginCore.reducer,
-                    environment: LoginCore.Environment(
-                        service: LoginService(),
-                        mainScheduler: .main,
-                        completion: { showHomepage in
-                            if showHomepage {
-                                self.showEntryView = false
-                            }
-                        }
-                    )
-                )
-            )
         }
     }
 }
@@ -59,7 +62,10 @@ struct FeedView_Previews: PreviewProvider {
     static var previews: some View {
         FeedView(
             store: .init(
-                initialState: FeedCore.State(),
+                initialState: FeedCore.State(
+                    login: LoginCore.State(),
+                    register: RegisterCore.State()
+                ),
                 reducer: FeedCore.reducer,
                 environment: FeedCore.Environment(
                     service: LogoutService(),

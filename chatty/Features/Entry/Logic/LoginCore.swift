@@ -19,14 +19,24 @@ class LoginCore {
         @BindableState
         var login: Login
 
-        var showHomepage: Bool
+        var showRegister: Bool
+        var isLoading: Bool
+        var isError: Bool
+
+        var error: String
 
         init(loginState: Loadable<Account> = .none,
              login: Login = .empty,
-             showHomepage: Bool = true) {
+             showRegister: Bool = false,
+             isLoading: Bool = false,
+             isError: Bool = false,
+             error: String = "") {
             self.loginState = loginState
             self.login = login
-            self.showHomepage = showHomepage
+            self.showRegister = showRegister
+            self.isLoading = isLoading
+            self.isError = isError
+            self.error = error
         }
     }
 
@@ -34,8 +44,8 @@ class LoginCore {
         case login
         case loginStateChanged(Loadable<Account>)
 
-        case checkEmail
-        case checkPassword
+        case showRegisterView
+        case showHomepage
 
         case binding(BindingAction<State>)
     }
@@ -43,7 +53,6 @@ class LoginCore {
     struct Environment {
         let service: LoginServiceProtocol
         let mainScheduler: AnySchedulerOf<DispatchQueue>
-        let completion: (Bool) -> Void
     }
 
     static let reducer = Reducer<State, Action, Environment> { state, action, environment in
@@ -81,17 +90,35 @@ class LoginCore {
                     print("ERROR: \(error)")
                 }
 
-                state.showHomepage = true
-                
-                environment.completion(true)
+                state.isLoading = false
+                state.isError = false
+
+                return Effect(value: .showHomepage)
+            }
+
+            if case .none = changedState {
+                state.isLoading = false
+                state.isError = false
+            }
+
+            if .loading == changedState || .refreshing == changedState {
+                state.isLoading = true
+                state.isError = false
+            }
+            
+            if case let .error(error) = changedState {
+                state.isLoading = false
+                state.isError = true
+
+                if let apiError = error as? APIError,
+                   case let .unexpectedError(stringError) = apiError {
+                    state.error = stringError
+                }
             }
 
             return .none
 
-        case .checkEmail:
-            return .none
-
-        case .checkPassword:
+        case .showHomepage, .showRegisterView:
             return .none
 
         case .binding:
@@ -99,4 +126,13 @@ class LoginCore {
 
         }
     }.binding()
+}
+
+extension LoginCore.Environment {
+    static var app: LoginCore.Environment {
+        return LoginCore.Environment(
+            service: LoginService(),
+            mainScheduler: .main
+        )
+    }
 }

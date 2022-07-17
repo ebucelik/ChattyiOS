@@ -18,3 +18,13 @@ struct Register: Equatable, Codable {
         self.password = password
     }
 }
+
+extension Register {
+    static var empty: Register {
+        Register(
+            username: "",
+            email: "",
+            password: ""
+        )
+    }
+}

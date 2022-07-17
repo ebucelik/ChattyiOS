@@ -1,20 +1,20 @@
 //
-//  LoginCall.swift
+//  RegisterCall.swift
 //  chatty
 //
-//  Created by Ing. Ebu Celik, BSc on 10.07.22.
+//  Created by Ing. Ebu Celik, BSc on 17.07.22.
 //
 
 import Foundation
 
-class LoginCall: Call {
+class RegisterCall: Call {
     typealias Response = Account
 
-    let path: String = "login"
+    let path: String = "register"
     let httpMethod: HTTPMethod = .POST
     let body: Data?
 
-    init(body: Login) {
+    init(body: Register) {
         do {
             self.body = try JSONEncoder().encode(body)
         } catch {

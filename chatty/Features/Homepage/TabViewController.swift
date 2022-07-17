@@ -20,7 +20,10 @@ class TabViewController: UITabBarController {
         let feedViewController = UIHostingController(
             rootView: FeedView(
                 store: .init(
-                    initialState: FeedCore.State(),
+                    initialState: FeedCore.State(
+                        login: LoginCore.State(),
+                        register: RegisterCore.State()
+                    ),
                     reducer: FeedCore.reducer,
                     environment: FeedCore.Environment(
                         service: LogoutService(),
