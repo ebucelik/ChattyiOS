@@ -13,12 +13,6 @@ struct FeedView: View {
 
     let store: Store<FeedCore.State, FeedCore.Action>
 
-    @State
-    var showEntryView = false
-
-    @State
-    var showRegisterView = false
-
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
@@ -31,7 +25,7 @@ struct FeedView: View {
                     Text("Logout")
                 })
             }
-            .fullScreenCover(isPresented: $showEntryView) {
+            .fullScreenCover(isPresented: viewStore.binding(get: \.showEntryView, send: .showEntryView(nil))) {
                 if !viewStore.showRegisterView {
                     LoginView(
                         store: store.scope(
@@ -48,10 +42,10 @@ struct FeedView: View {
                     )
                 }
             }
-        }
-        .onAppear {
-            if UserDefaults.standard.data(forKey: "account") == nil {
-                showEntryView = true
+            .onAppear {
+                if UserDefaults.standard.data(forKey: "account") == nil {
+                    viewStore.send(.showEntryView(true))
+                }
             }
         }
     }

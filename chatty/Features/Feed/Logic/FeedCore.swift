@@ -18,19 +18,19 @@ class FeedCore {
 
         var showLoginView: Bool
         var showRegisterView: Bool
-        var showHomepage: Bool
+        var showEntryView: Bool
 
         var login: LoginCore.State
         var register: RegisterCore.State
 
         init(showLoginView: Bool = false,
              showRegisterView: Bool = false,
-             showHomepage: Bool = false,
+             showEntryView: Bool = false,
              login: LoginCore.State,
              register: RegisterCore.State) {
             self.showLoginView = showLoginView
             self.showRegisterView = showRegisterView
-            self.showHomepage = showHomepage
+            self.showEntryView = showEntryView
             self.login = login
             self.register = register
         }
@@ -39,6 +39,7 @@ class FeedCore {
     enum Action {
         case logout
         case logoutStateChanged(Loadable<String>)
+        case showEntryView(Bool?)
 
         case login(LoginCore.Action)
         case register(RegisterCore.Action)
@@ -81,26 +82,40 @@ class FeedCore {
             case let .logoutStateChanged(logoutStateDidChanged):
                 state.logoutState = logoutStateDidChanged
 
+                if case let .error(error) = logoutStateDidChanged {
+                    if let apiError = error as? APIError,
+                       case .unauthorized = apiError {
+                        return Effect(value: .showEntryView(true))
+                    }
+                }
+
                 return .none
 
+            case let .showEntryView(value):
+                if let showOrHide = value {
+                    state.showEntryView = showOrHide
+                }
+
+                return .none
+
+                // MARK: - LoginCore Actions
             case .login(.showRegisterView):
                 state.showRegisterView = true
                 return .none
 
             case .login(.showHomepage):
-                state.showHomepage = true
-                return .none
+                return Effect(value: .showEntryView(false))
 
             case .login:
                 return .none
 
+                // MARK: - RegisterCore Actions
             case .register(.showLoginView):
                 state.showRegisterView = false
                 return .none
 
             case .register(.showHomepage):
-                state.showHomepage = true
-                return .none
+                return Effect(value: .showEntryView(false))
 
             case .register:
                 return .none

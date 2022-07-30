@@ -20,22 +20,23 @@ class LoginCore {
         var login: Login
 
         var showRegister: Bool
-        var isLoading: Bool
-        var isError: Bool
+        var isError: Bool {
+            if case .error = loginState {
+                return true
+            }
+
+            return false
+        }
 
         var error: String
 
         init(loginState: Loadable<Account> = .none,
              login: Login = .empty,
              showRegister: Bool = false,
-             isLoading: Bool = false,
-             isError: Bool = false,
              error: String = "") {
             self.loginState = loginState
             self.login = login
             self.showRegister = showRegister
-            self.isLoading = isLoading
-            self.isError = isError
             self.error = error
         }
     }
@@ -46,6 +47,8 @@ class LoginCore {
 
         case showRegisterView
         case showHomepage
+
+        case reset
 
         case binding(BindingAction<State>)
     }
@@ -90,35 +93,28 @@ class LoginCore {
                     print("ERROR: \(error)")
                 }
 
-                state.isLoading = false
-                state.isError = false
-
                 return Effect(value: .showHomepage)
             }
 
-            if case .none = changedState {
-                state.isLoading = false
-                state.isError = false
-            }
-
-            if .loading == changedState || .refreshing == changedState {
-                state.isLoading = true
-                state.isError = false
-            }
-            
             if case let .error(error) = changedState {
-                state.isLoading = false
-                state.isError = true
-
                 if let apiError = error as? APIError,
                    case let .unexpectedError(stringError) = apiError {
                     state.error = stringError
+                } else {
+                    state.error = "Unexpected error has occured"
                 }
             }
 
             return .none
 
         case .showHomepage, .showRegisterView:
+            return .none
+
+        case .reset:
+            state.loginState = .none
+            state.login = .empty
+            state.error = ""
+
             return .none
 
         case .binding:

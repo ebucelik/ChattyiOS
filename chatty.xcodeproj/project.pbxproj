@@ -29,6 +29,8 @@
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
 		7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA92882DC550061E03B /* LogoutCall.swift */; };
 		7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEAB2882DE490061E03B /* LogoutService.swift */; };
+		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
+		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
 		71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BE2878AA8C004A457D /* SceneDelegate.swift */; };
 		71C977C62878AA8D004A457D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C977C52878AA8D004A457D /* Assets.xcassets */; };
@@ -80,6 +82,8 @@
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
 		7166BEA92882DC550061E03B /* LogoutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutCall.swift; sourceTree = "<group>"; };
 		7166BEAB2882DE490061E03B /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
+		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
+		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C977BC2878AA8C004A457D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71C977BE2878AA8C004A457D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 				71005659287B474E00EBD93A /* LoginService.swift */,
 				714D1779288423FB0091BD10 /* RegisterCall.swift */,
 				714D177B288424980091BD10 /* RegisterService.swift */,
+				71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */,
+				71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
+				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				714D1776288413680091BD10 /* ErrorMessage.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
@@ -500,6 +507,7 @@
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				714D1774288406A50091BD10 /* Colors.swift in Sources */,
+				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
 				71005658287AF99100EBD93A /* APIError.swift in Sources */,
 				71005661287B6E1600EBD93A /* LoginView.swift in Sources */,
 				714D177E288434180091BD10 /* RegisterView.swift in Sources */,

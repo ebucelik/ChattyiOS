@@ -24,6 +24,9 @@ struct LoginView: View {
         switch viewStore.loginState {
         case .none, .error, .loaded, .loading, .refreshing:
             loginBody(viewStore)
+                .onAppear {
+                    viewStore.send(.reset)
+                }
         }
     }
 
@@ -37,6 +40,7 @@ struct LoginView: View {
                     .foregroundColor(Colors.gray)
                 TextField("E-Mail", text: viewStore.binding(\.$login.email))
                     .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
             }
             .padding()
             .overlay(
@@ -88,7 +92,7 @@ struct LoginView: View {
                 viewStore.send(.login)
             }, label: {
                 VStack {
-                    if viewStore.isLoading {
+                    if case .loading = viewStore.loginState {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
                             .tint(.white)

@@ -15,23 +15,30 @@ class RegisterCore {
 
     struct State: Equatable {
         var registerState: Loadable<Account>
+        var accountAvailabilityState: Loadable<Bool>
 
         @BindableState
         var register: Register
 
         var isLoading: Bool
-        var isError: Bool
+        var isError: Bool {
+            if case .error = registerState {
+                return true
+            }
+
+            return false
+        }
         var error: String
 
         init(registerState: Loadable<Account> = .none,
+             accountAvailabilityState: Loadable<Bool> = .none,
              register: Register = .empty,
              isLoading: Bool = false,
-             isError: Bool = false,
              error: String = "") {
             self.registerState = registerState
+            self.accountAvailabilityState = accountAvailabilityState
             self.register = register
             self.isLoading = isLoading
-            self.isError = isError
             self.error = error
         }
     }
@@ -39,13 +46,20 @@ class RegisterCore {
     enum Action: BindableAction {
         case register
         case registerStateChanged(Loadable<Account>)
+
+        case checkUsername
+
+        case accountAvailabilityStateChanged(Loadable<Bool>)
+
         case showLoginView
         case showHomepage
+
         case binding(BindingAction<State>)
     }
 
     struct Environment {
         let service: RegisterServiceProtocol
+        let accountAvailabilityService: AccountAvailabilityProtocol
         let mainScheduler: AnySchedulerOf<DispatchQueue>
     }
 
@@ -79,29 +93,49 @@ class RegisterCore {
             if case let .loaded(account) = registerStateDidChanged {
 
                 state.isLoading = false
-                state.isError = false
 
                 return Effect(value: .showHomepage)
             }
 
             if case .none = registerStateDidChanged {
                 state.isLoading = false
-                state.isError = false
             }
 
             if .loading == registerStateDidChanged, .refreshing == registerStateDidChanged {
                 state.isLoading = true
-                state.isError = false
             }
 
             if case let .error(error) = registerStateDidChanged {
                 state.isLoading = false
-                state.isError = true
 
                 if let apiError = error as? APIError,
                    case let .unexpectedError(stringError) = apiError {
                     state.error = stringError
                 }
+            }
+
+            return .none
+
+        case .checkUsername:
+            struct Debounce: Hashable { }
+
+            let username = state.register.username
+
+            return Effect.task {
+                try await environment.accountAvailabilityService
+                    .checkUsername(username: username)
+            }
+            .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
+            .receive(on: environment.mainScheduler)
+            .compactMap({ .accountAvailabilityStateChanged(.loaded($0)) })
+            .catch({ Just(.accountAvailabilityStateChanged(.error($0))) })
+            .prepend(.accountAvailabilityStateChanged(.loading))
+            .eraseToEffect()
+
+        case let .accountAvailabilityStateChanged(accountAvailabilityStateDidChanged):
+
+            if case let .loaded(availability) = accountAvailabilityStateDidChanged {
+                print(availability)
             }
 
             return .none
@@ -112,13 +146,14 @@ class RegisterCore {
         case .binding:
             return .none
         }
-    }
+    }.binding()
 }
 
 extension RegisterCore.Environment {
     static var app: RegisterCore.Environment {
         return RegisterCore.Environment(
             service: RegisterService(),
+            accountAvailabilityService: AccountAvailabilityService(),
             mainScheduler: .main
         )
     }

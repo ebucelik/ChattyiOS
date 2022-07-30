@@ -8,9 +8,9 @@
 import Foundation
 
 struct Register: Equatable, Codable {
-    let username: String
-    let email: String
-    let password: String
+    var username: String
+    var email: String
+    var password: String
 
     init(username: String, email: String, password: String) {
         self.username = username

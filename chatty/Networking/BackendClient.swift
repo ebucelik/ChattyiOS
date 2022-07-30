@@ -14,7 +14,25 @@ class BackendClient {
 
     private func start<C: Call>(call: C, completion: @escaping (Result<C.Response, Error>) -> Void) {
 
-        guard let url = URL(string: domain + call.path) else {
+        // MARK: - Create URLComponents
+        guard var components = URLComponents(string: domain + call.path) else {
+            completion(.failure(APIError.unexpectedError("URLCompontens are not valid or empty.")))
+            return
+        }
+
+        if case .GET = call.httpMethod {
+            components.queryItems = call.parameters?.compactMap { (key, value) in
+                if let valueString = value as? String {
+                    return URLQueryItem(name: key, value: valueString)
+                }
+
+                return nil
+            }
+
+            components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+        }
+
+        guard let url = components.url else {
             completion(.failure(APIError.unexpectedError("URL is not valid or empty.")))
             return
         }
