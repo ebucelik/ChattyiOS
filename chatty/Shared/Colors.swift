@@ -13,4 +13,8 @@ struct Colors {
     static let gray = Color(.sRGB, red: 88/255, green: 88/255, blue: 88/255, opacity: 1)
 
     static let button = Color(.sRGB, red: 70/255, green: 85/255, blue: 111/255, opacity: 1)
+
+    static let error = Color(.sRGB, red: 171/255, green: 35/255, blue: 35/255, opacity: 1)
+
+    static let success = Color(.sRGB, red: 26/255, green: 102/255, blue: 42/255, opacity: 1)
 }

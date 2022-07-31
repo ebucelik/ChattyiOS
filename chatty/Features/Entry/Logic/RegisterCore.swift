@@ -29,6 +29,15 @@ class RegisterCore {
             return false
         }
         var error: String
+        var isAccountAvailable: Bool {
+            if case let .loaded(availability) = accountAvailabilityState {
+                return availability
+            }
+
+            return true
+        }
+
+        var tabSelection: Int = 0
 
         init(registerState: Loadable<Account> = .none,
              accountAvailabilityState: Loadable<Bool> = .none,
@@ -48,6 +57,8 @@ class RegisterCore {
         case registerStateChanged(Loadable<Account>)
 
         case checkUsername
+
+        case nextTab(Int?)
 
         case accountAvailabilityStateChanged(Loadable<Bool>)
 
@@ -132,11 +143,15 @@ class RegisterCore {
             .prepend(.accountAvailabilityStateChanged(.loading))
             .eraseToEffect()
 
-        case let .accountAvailabilityStateChanged(accountAvailabilityStateDidChanged):
-
-            if case let .loaded(availability) = accountAvailabilityStateDidChanged {
-                print(availability)
+        case let .nextTab(tab):
+            if let tab = tab {
+                state.tabSelection = tab
             }
+
+            return .none
+
+        case let .accountAvailabilityStateChanged(accountAvailabilityStateDidChanged):
+            state.accountAvailabilityState = accountAvailabilityStateDidChanged
 
             return .none
 
