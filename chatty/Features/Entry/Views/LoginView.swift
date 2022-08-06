@@ -41,6 +41,7 @@ struct LoginView: View {
                 TextField("E-Mail", text: viewStore.binding(\.$login.email))
                     .textContentType(.emailAddress)
                     .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
             }
             .padding()
             .overlay(
