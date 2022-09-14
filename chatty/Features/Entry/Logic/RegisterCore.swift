@@ -15,7 +15,9 @@ class RegisterCore {
 
     struct State: Equatable {
         var registerState: Loadable<Account>
-        var accountAvailabilityState: Loadable<Bool>
+        var usernameAvailableState: Loadable<Bool>
+        var emailAvailableState: Loadable<Bool>
+        var passwordValidState: Loadable<Bool>
 
         @BindableState
         var register: Register
@@ -26,28 +28,36 @@ class RegisterCore {
                 return true
             }
 
-            if case .error = accountAvailabilityState {
+            if case .error = usernameAvailableState {
                 return true
             }
 
             return false
         }
         var error: String
-        var isAccountAvailable: Bool {
-            if case let .loaded(availability) = accountAvailabilityState {
-                return availability
-            }
-
-            return true
-        }
-        var isEmailAndPasswordValid: Bool {
-            if case let .loaded(availability) = accountAvailabilityState,
-               !register.email.isEmpty,
-               !register.password.isEmpty {
+        var isUsernameAvailable: Bool {
+            if case let .loaded(availability) = usernameAvailableState {
                 return availability
             }
 
             return false
+        }
+        private var isEmailAvailable: Bool {
+            if case let .loaded(availability) = emailAvailableState {
+                return availability
+            }
+
+            return false
+        }
+        private var isPasswordValid: Bool {
+            if case let .loaded(availability) = passwordValidState {
+                return availability
+            }
+
+            return false
+        }
+        var isEmailAndPasswordValid: Bool {
+            return isEmailAvailable && isPasswordValid
         }
 
         var tabSelection: Int = 0
@@ -55,12 +65,16 @@ class RegisterCore {
         var showPassword: Bool = false
 
         init(registerState: Loadable<Account> = .none,
-             accountAvailabilityState: Loadable<Bool> = .none,
+             usernameAvailableState: Loadable<Bool> = .none,
+             emailAvailableState: Loadable<Bool> = .none,
+             passwordValidState: Loadable<Bool> = .none,
              register: Register = .empty,
              isLoading: Bool = false,
              error: String = "") {
             self.registerState = registerState
-            self.accountAvailabilityState = accountAvailabilityState
+            self.usernameAvailableState = usernameAvailableState
+            self.emailAvailableState = emailAvailableState
+            self.passwordValidState = passwordValidState
             self.register = register
             self.isLoading = isLoading
             self.error = error
@@ -79,7 +93,9 @@ class RegisterCore {
 
         case nextTab(Int?)
 
-        case accountAvailabilityStateChanged(Loadable<Bool>)
+        case usernameAvailableStateChanged(Loadable<Bool>)
+        case emailAvailableStateChanged(Loadable<Bool>)
+        case passwordValidStateChanged(Loadable<Bool>)
 
         case showLoginView
         case showHomepage
@@ -159,9 +175,9 @@ class RegisterCore {
             }
             .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
             .receive(on: environment.mainScheduler)
-            .compactMap({ .accountAvailabilityStateChanged(.loaded($0)) })
-            .catch({ Just(.accountAvailabilityStateChanged(.error($0))) })
-            .prepend(.accountAvailabilityStateChanged(.loading))
+            .compactMap({ .usernameAvailableStateChanged(.loaded($0)) })
+            .catch({ Just(.usernameAvailableStateChanged(.error($0))) })
+            .prepend(.usernameAvailableStateChanged(.loading))
             .eraseToEffect()
 
         case .checkIfEmailIsValid:
@@ -171,9 +187,9 @@ class RegisterCore {
 
             let loadable: Loadable = email.checkEmailValidation() ? .loaded(true) : .error(APIError.unexpectedError("Please provide a valid e-mail."))
 
-            return Effect(value: .accountAvailabilityStateChanged(loadable))
+            return Effect(value: .emailAvailableStateChanged(loadable))
                 .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
-                .prepend(.accountAvailabilityStateChanged(.loading))
+                .prepend(.emailAvailableStateChanged(.loading))
                 .eraseToEffect()
 
         case .checkPassword:
@@ -183,9 +199,9 @@ class RegisterCore {
 
             let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
 
-            return Effect(value: .accountAvailabilityStateChanged(loadable))
+            return Effect(value: .passwordValidStateChanged(loadable))
                 .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
-                .prepend(.accountAvailabilityStateChanged(.loading))
+                .prepend(.passwordValidStateChanged(.loading))
                 .eraseToEffect()
 
         case .showPassword:
@@ -196,15 +212,41 @@ class RegisterCore {
         case let .nextTab(tab):
             if let tab = tab {
                 state.tabSelection = tab
-                state.accountAvailabilityState = .none
+                state.usernameAvailableState = .none
             }
 
             return .none
 
-        case let .accountAvailabilityStateChanged(accountAvailabilityStateDidChanged):
-            state.accountAvailabilityState = accountAvailabilityStateDidChanged
+        case let .usernameAvailableStateChanged(accountAvailabilityStateDidChanged):
+            state.usernameAvailableState = accountAvailabilityStateDidChanged
 
             if case let .error(error) = accountAvailabilityStateDidChanged,
+               let apiError = error as? APIError,
+               case let .unexpectedError(unexpectedError) = apiError {
+                state.error = unexpectedError
+            } else {
+                state.error = ""
+            }
+
+            return .none
+
+        case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
+            state.emailAvailableState = emailAvailableStateDidChanged
+
+            if case let .error(error) = emailAvailableStateDidChanged,
+               let apiError = error as? APIError,
+               case let .unexpectedError(unexpectedError) = apiError {
+                state.error = unexpectedError
+            } else {
+                state.error = ""
+            }
+
+            return .none
+
+        case let .passwordValidStateChanged(passwordValidStateDidChanged):
+            state.passwordValidState = passwordValidStateDidChanged
+
+            if case let .error(error) = passwordValidStateDidChanged,
                let apiError = error as? APIError,
                case let .unexpectedError(unexpectedError) = apiError {
                 state.error = unexpectedError
@@ -220,7 +262,7 @@ class RegisterCore {
         case .reset:
             state.register = .empty
             state.tabSelection = 0
-            state.accountAvailabilityState = .none
+            state.usernameAvailableState = .none
             state.error = ""
 
             return .none
