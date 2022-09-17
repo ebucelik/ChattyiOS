@@ -222,7 +222,6 @@ struct RegisterView: View {
             .cornerRadius(8)
             .shadow(radius: 5)
             .opacity(viewStore.isEmailAndPasswordValid ? 1 : 0)
-            .padding()
 
             Spacer()
                 .frame(height: 30)
@@ -233,13 +232,61 @@ struct RegisterView: View {
     @ViewBuilder
     func provideProfilePicture(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
-                Image(systemName: "person.crop.circle.fill")
+            HStack {
+                Spacer()
+
+                Button(action: {
+                    print("SKIP")
+                }, label: {
+                    Text("Skip")
+                        .bold()
+                        .foregroundColor(Colors.error)
+                })
+            }
+            .padding()
+
+            Spacer()
+
+            Text("Welcome \(viewStore.register.username)")
+                .font(.title2)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Spacer()
+
+            if let selectedPhoto = viewStore.profilePhoto {
+                Image(uiImage: selectedPhoto)
                     .resizable()
-                    .frame(width: 120, height: 120, alignment: .center)
+                    .frame(width: 150, height: 150, alignment: .center)
                     .foregroundColor(Colors.gray)
                     .onTapGesture {
-                        print("Image tapped!")
+                        viewStore.send(.showImagePicker)
                     }
+            } else {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .frame(width: 150, height: 150, alignment: .center)
+                    .foregroundColor(Colors.gray)
+                    .onTapGesture {
+                        viewStore.send(.showImagePicker)
+                    }
+            }
+
+            Spacer()
+                .frame(height: 50)
+
+            Text("You're all set")
+                .font(.title3)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Text("Take a minute to upload a profile photo.")
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Spacer()
+        }
+        .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
+            ImagePicker(image: viewStore.binding(\.$profilePhoto))
         }
     }
 }

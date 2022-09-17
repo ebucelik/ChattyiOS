@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import ComposableArchitecture
 import SwiftHelper
+import UIKit
 
 class RegisterCore {
 
@@ -18,6 +19,15 @@ class RegisterCore {
         var usernameAvailableState: Loadable<Bool>
         var emailAvailableState: Loadable<Bool>
         var passwordValidState: Loadable<Bool>
+
+        var tabSelection: Int = 0
+        var showPassword: Bool = false
+
+        @BindableState
+        var showImagePicker: Bool = false
+
+        @BindableState
+        var profilePhoto: UIImage? = nil
 
         @BindableState
         var register: Register
@@ -60,10 +70,6 @@ class RegisterCore {
             return isEmailAvailable && isPasswordValid
         }
 
-        var tabSelection: Int = 0
-
-        var showPassword: Bool = false
-
         init(registerState: Loadable<Account> = .none,
              usernameAvailableState: Loadable<Bool> = .none,
              emailAvailableState: Loadable<Bool> = .none,
@@ -92,6 +98,8 @@ class RegisterCore {
         case showPassword
 
         case nextTab(Int?)
+
+        case showImagePicker
 
         case usernameAvailableStateChanged(Loadable<Bool>)
         case emailAvailableStateChanged(Loadable<Bool>)
@@ -214,6 +222,11 @@ class RegisterCore {
                 state.tabSelection = tab
                 state.usernameAvailableState = .none
             }
+
+            return .none
+
+        case .showImagePicker:
+            state.showImagePicker.toggle()
 
             return .none
 
