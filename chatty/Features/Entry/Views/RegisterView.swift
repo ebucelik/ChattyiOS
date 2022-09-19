@@ -15,8 +15,6 @@ struct RegisterView: View {
     typealias RegisterViewStore = ViewStore<RegisterCore.State, RegisterCore.Action>
     let store: Store<RegisterCore.State, RegisterCore.Action>
 
-    
-
     var body: some View {
         WithViewStore(store) { viewStore in
             TabView(selection: viewStore.binding(get: \.tabSelection, send: .nextTab(nil))) {
@@ -26,14 +24,6 @@ struct RegisterView: View {
                     .tag(1)
                 provideProfilePicture(viewStore)
                     .tag(2)
-                Button(
-                    action: {
-                        viewStore.send(.showLoginView)
-                    }, label: {
-                        Text("LoginView")
-                    }
-                )
-                .tag(3)
             }
             .tabViewStyle(.page)
             .onAppear {
@@ -90,26 +80,9 @@ struct RegisterView: View {
 
             Spacer()
 
-            VStack {
-                Button(
-                    action: {
-                        viewStore.send(.nextTab(viewStore.tabSelection + 1))
-                    }, label: {
-                        Text("Slide to next page")
-                            .font(.headline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .textCase(.uppercase)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding()
-                    }
-                )
-            }
-            .background(Colors.button)
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .opacity(viewStore.isUsernameAvailable ? 1 : 0)
-            .padding()
+            provideButton(text: "Slide to next page", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+                .opacity(viewStore.isUsernameAvailable ? 1 : 0)
+                .padding()
 
             Spacer()
                 .frame(height: 30)
@@ -203,25 +176,8 @@ struct RegisterView: View {
 
             Spacer()
 
-            VStack {
-                Button(
-                    action: {
-                        viewStore.send(.nextTab(viewStore.tabSelection + 1))
-                    }, label: {
-                        Text("Just one step is missing")
-                            .font(.headline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .textCase(.uppercase)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding()
-                    }
-                )
-            }
-            .background(Colors.button)
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .opacity(viewStore.isEmailAndPasswordValid ? 1 : 0)
+            provideButton(text: "Just one step is missing", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+                .opacity(viewStore.isEmailAndPasswordValid ? 1 : 0)
 
             Spacer()
                 .frame(height: 30)
@@ -235,13 +191,11 @@ struct RegisterView: View {
             HStack {
                 Spacer()
 
-                Button(action: {
-                    print("SKIP")
-                }, label: {
+                Button(action: { viewStore.send(.showHomepage) }) {
                     Text("Skip")
                         .bold()
                         .foregroundColor(Colors.error)
-                })
+                }
             }
             .padding()
 
@@ -259,6 +213,8 @@ struct RegisterView: View {
                     .resizable()
                     .frame(width: 150, height: 150, alignment: .center)
                     .foregroundColor(Colors.gray)
+                    .cornerRadius(75)
+                    .shadow(radius: 10)
                     .onTapGesture {
                         viewStore.send(.showImagePicker)
                     }
@@ -267,6 +223,7 @@ struct RegisterView: View {
                     .resizable()
                     .frame(width: 150, height: 150, alignment: .center)
                     .foregroundColor(Colors.gray)
+                    .shadow(radius: 10)
                     .onTapGesture {
                         viewStore.send(.showImagePicker)
                     }
@@ -284,10 +241,15 @@ struct RegisterView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
 
             Spacer()
+
+            provideButton(text: "Start with Chatty", action: { viewStore.send(.showHomepage) })
+                .opacity(viewStore.profilePhoto != nil ? 1 : 0)
+                .padding(.bottom, 30)
         }
         .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
             ImagePicker(image: viewStore.binding(\.$profilePhoto))
         }
+        .padding()
     }
 }
 
@@ -315,6 +277,25 @@ extension View {
         case .none:
             EmptyView()
         }
+    }
+
+    @ViewBuilder
+    func provideButton(text: String, action: @escaping () -> Void) -> some View {
+        VStack {
+            Button(action: action) {
+                Text(text)
+                    .font(.headline)
+                    .bold()
+                    .foregroundColor(.white)
+                    .textCase(.uppercase)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding()
+
+            }
+        }
+        .background(Colors.button)
+        .cornerRadius(8)
+        .shadow(radius: 5)
     }
 }
 
