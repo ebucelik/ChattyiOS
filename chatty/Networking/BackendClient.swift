@@ -47,6 +47,10 @@ class BackendClient {
             request.httpBody = body
         }
 
+#if DEBUG
+        print("REQUEST URL: \(String(describing: url.absoluteString))")
+#endif
+
         // MARK: - Start call
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

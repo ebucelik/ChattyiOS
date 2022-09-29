@@ -68,16 +68,15 @@ class LoginCore {
                 return Effect(value: .loginStateChanged(.error(APIError.notFound)))
             }
 
-            let login = state.login
-
-            return Effect.task {
-                try await environment.service
-                    .login(login: login)
+            return .task { [login = state.login] in
+                do {
+                    return .loginStateChanged(.loaded(try await environment.service.login(login: login)))
+                } catch {
+                    return .loginStateChanged(.error(error))
+                }
             }
             .debounce(id: Debounce(), for: .seconds(2), scheduler: environment.mainScheduler)
             .receive(on: environment.mainScheduler)
-            .compactMap({ .loginStateChanged(.loaded($0)) })
-            .catch({ Just(.loginStateChanged(.error($0))) })
             .prepend(.loginStateChanged(.loading))
             .eraseToEffect()
 

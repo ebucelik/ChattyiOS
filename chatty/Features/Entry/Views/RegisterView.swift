@@ -255,7 +255,7 @@ struct RegisterView: View {
 
 extension View {
     @ViewBuilder
-    func availabilityCheck<T: Codable>(for loadable: Loadable<T>) -> some View {
+    func availabilityCheck(for loadable: Loadable<Bool>) -> some View {
         switch loadable {
         case .loading, .refreshing:
             ProgressView()
@@ -268,11 +268,18 @@ extension View {
                 .frame(width: 30, height: 30)
                 .foregroundColor(Colors.error)
 
-        case .loaded:
+        case let .loaded(available):
+            if available {
                 Image(systemName: "checkmark.seal.fill")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .foregroundColor(Colors.success)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(Colors.success)
+            } else {
+                Image(systemName: "x.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(Colors.error)
+            }
 
         case .none:
             EmptyView()

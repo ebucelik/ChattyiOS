@@ -66,17 +66,15 @@ class FeedCore {
         Reducer { state, action, environment in
             switch action {
             case .logout:
-                return Effect.task {
-                    try await environment.service
-                        .logout()
+                return .task {
+                    do {
+                        return .logoutStateChanged(.loaded(try await environment.service.logout()))
+                    } catch {
+                        return .logoutStateChanged(.error(error))
+                    }
                 }
                 .receive(on: environment.mainScheduler)
-                .compactMap({
-                    .logoutStateChanged(.loaded($0))
-                })
-                .catch({
-                    Just(.logoutStateChanged(.error($0)))
-                })
+                .prepend(.logoutStateChanged(.loading))
                 .eraseToEffect()
 
             case let .logoutStateChanged(logoutStateDidChanged):

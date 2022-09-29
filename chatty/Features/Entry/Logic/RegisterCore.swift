@@ -93,6 +93,7 @@ class RegisterCore {
 
         case checkUsername
         case checkIfEmailIsValid
+        case checkEmail
         case checkPassword
 
         case showPassword
@@ -130,16 +131,15 @@ class RegisterCore {
                 return Effect(value: .registerStateChanged(.error(APIError.unexpectedError("Formular not completely filled."))))
             }
 
-            let register = state.register
-
-            return Effect.task {
-                try await environment.service
-                    .register(register: register)
+            return .task { [register = state.register] in
+                do {
+                    return .registerStateChanged(.loaded(try await environment.service.register(register: register)))
+                } catch {
+                    return .registerStateChanged(.error(error))
+                }
             }
             .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
             .receive(on: environment.mainScheduler)
-            .compactMap({ .registerStateChanged(.loaded($0)) })
-            .catch({ Just(.registerStateChanged(.error($0))) })
             .prepend(.registerStateChanged(.loading))
             .eraseToEffect()
 
@@ -178,13 +178,14 @@ class RegisterCore {
             let username = state.register.username
 
             return Effect.task {
-                try await environment.accountAvailabilityService
-                    .checkUsername(username: username)
+                do {
+                    return .usernameAvailableStateChanged(.loaded(try await environment.accountAvailabilityService.checkUsername(username: username)))
+                } catch {
+                    return .usernameAvailableStateChanged(.error(error))
+                }
             }
             .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
             .receive(on: environment.mainScheduler)
-            .compactMap({ .usernameAvailableStateChanged(.loaded($0)) })
-            .catch({ Just(.usernameAvailableStateChanged(.error($0))) })
             .prepend(.usernameAvailableStateChanged(.loading))
             .eraseToEffect()
 
@@ -193,12 +194,32 @@ class RegisterCore {
 
             let email = state.register.email
 
-            let loadable: Loadable = email.checkEmailValidation() ? .loaded(true) : .error(APIError.unexpectedError("Please provide a valid e-mail."))
+            if email.checkEmailValidation() {
+                return Effect(value: .checkEmail)
+                    .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
+                    .prepend(.emailAvailableStateChanged(.loading))
+                    .eraseToEffect()
+            }
 
-            return Effect(value: .emailAvailableStateChanged(loadable))
+            return Effect(value: .emailAvailableStateChanged(.error(APIError.unexpectedError("Please provide a valid e-mail."))))
                 .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
                 .prepend(.emailAvailableStateChanged(.loading))
                 .eraseToEffect()
+
+        case .checkEmail:
+            struct Debounce: Hashable { }
+
+            return .task { [email = state.register.email] in
+                do {
+                    return .emailAvailableStateChanged(.loaded(try await environment.accountAvailabilityService.checkEmail(email: email)))
+                } catch {
+                    return .emailAvailableStateChanged(.error(error))
+                }
+            }
+            .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
+            .receive(on: environment.mainScheduler)
+            .prepend(.emailAvailableStateChanged(.loading))
+            .eraseToEffect()
 
         case .checkPassword:
             struct Debounce: Hashable { }
@@ -246,6 +267,10 @@ class RegisterCore {
         case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
             state.emailAvailableState = emailAvailableStateDidChanged
 
+            if case let .loaded(available) = emailAvailableStateDidChanged {
+                print(available)
+            }
+
             if case let .error(error) = emailAvailableStateDidChanged,
                let apiError = error as? APIError,
                case let .unexpectedError(unexpectedError) = apiError {
@@ -269,13 +294,23 @@ class RegisterCore {
 
             return .none
 
-        case .showHomepage, .showLoginView:
+        case .showHomepage:
+            struct Debounce: Hashable { }
+
+            return Effect(value: .reset)
+                .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
+
+        case .showLoginView:
             return .none
 
         case .reset:
-            state.register = .empty
             state.tabSelection = 0
+            state.register = .empty
+            state.registerState = .none
             state.usernameAvailableState = .none
+            state.emailAvailableState = .none
+            state.passwordValidState = .none
+            state.profilePhoto = nil
             state.error = ""
 
             return .none
