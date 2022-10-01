@@ -37,15 +37,7 @@ class BackendClient {
             return
         }
 
-        // MARK: - Create request
-        var request = URLRequest(url: url)
-        request.httpMethod = call.httpMethod.rawValue
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
-
-        if let body = call.body {
-            request.httpBody = body
-        }
+        let request = createRequest(for: url, httpMethod: call.httpMethod, body: call.body)
 
 #if DEBUG
         print("REQUEST URL: \(String(describing: url.absoluteString))")
@@ -108,6 +100,26 @@ class BackendClient {
                 }
             }
         }
+    }
+
+
+    /// Creates an URLRequest object.
+    /// - Parameters:
+    ///   - url: To insert or get an object to or from the backend.
+    ///   - httpMethod: Define the http method (e.g. GET, POST, PUT, DELETE).
+    ///   - body: When a object should be inserted or updated at the backend.
+    /// - Returns: URLRequest object
+    private func createRequest(for url: URL, httpMethod: HTTPMethod, body: Data? = nil) -> URLRequest {
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = httpMethod.rawValue
+        urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
+
+        if let body = body {
+            urlRequest.httpBody = body
+        }
+
+        return urlRequest
     }
 }
 

@@ -78,6 +78,21 @@ struct RegisterView: View {
             }
             .padding()
 
+            VStack {
+                Divider()
+
+                HStack(spacing: 16) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                        .foregroundColor(.gray)
+                    Text(viewStore.error)
+                        .font(.footnote)
+                        .foregroundColor(.black)
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+            .opacity(viewStore.isError ? 1 : 0)
+
             Spacer()
 
             provideButton(text: "Slide to next page", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
@@ -164,7 +179,7 @@ struct RegisterView: View {
 
                 HStack(spacing: 16) {
                     Image(systemName: "exclamationmark.circle.fill")
-                        .foregroundColor(.red)
+                        .foregroundColor(.gray)
                     Text(viewStore.error)
                         .font(.footnote)
                         .foregroundColor(.black)

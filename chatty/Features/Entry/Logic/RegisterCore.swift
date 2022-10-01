@@ -42,6 +42,14 @@ class RegisterCore {
                 return true
             }
 
+            if case .error = emailAvailableState {
+                return true
+            }
+
+            if case .error = passwordValidState {
+                return true
+            }
+
             return false
         }
         var error: String
@@ -128,7 +136,7 @@ class RegisterCore {
             if state.register.username.isEmpty ||
                 state.register.email.isEmpty ||
                 state.register.password.isEmpty {
-                return Effect(value: .registerStateChanged(.error(APIError.unexpectedError("Formular not completely filled."))))
+                return Effect(value: .registerStateChanged(.error(APIError.unexpectedError("Formular is not complete."))))
             }
 
             return .task { [register = state.register] in
@@ -184,10 +192,29 @@ class RegisterCore {
                     return .usernameAvailableStateChanged(.error(error))
                 }
             }
-            .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
+            .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
             .receive(on: environment.mainScheduler)
             .prepend(.usernameAvailableStateChanged(.loading))
             .eraseToEffect()
+
+        case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
+            state.usernameAvailableState = usernameAvailabilityStateDidChanged
+
+            if case let .error(error) = usernameAvailabilityStateDidChanged,
+               let apiError = error as? APIError,
+               case let .unexpectedError(unexpectedError) = apiError {
+                state.error = unexpectedError
+            } else {
+                state.error = ""
+            }
+
+            if case let .loaded(availability) = usernameAvailabilityStateDidChanged,
+               !availability {
+                state.usernameAvailableState = .error(APIError.notFound)
+                state.error = "This username is already in use!"
+            }
+
+            return .none
 
         case .checkIfEmailIsValid:
             struct Debounce: Hashable { }
@@ -251,25 +278,8 @@ class RegisterCore {
 
             return .none
 
-        case let .usernameAvailableStateChanged(accountAvailabilityStateDidChanged):
-            state.usernameAvailableState = accountAvailabilityStateDidChanged
-
-            if case let .error(error) = accountAvailabilityStateDidChanged,
-               let apiError = error as? APIError,
-               case let .unexpectedError(unexpectedError) = apiError {
-                state.error = unexpectedError
-            } else {
-                state.error = ""
-            }
-
-            return .none
-
         case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
             state.emailAvailableState = emailAvailableStateDidChanged
-
-            if case let .loaded(available) = emailAvailableStateDidChanged {
-                print(available)
-            }
 
             if case let .error(error) = emailAvailableStateDidChanged,
                let apiError = error as? APIError,

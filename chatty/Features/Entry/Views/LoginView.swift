@@ -77,7 +77,7 @@ struct LoginView: View {
 
                 HStack(spacing: 16) {
                     Image(systemName: "exclamationmark.circle.fill")
-                        .foregroundColor(.red)
+                        .foregroundColor(.gray)
                     Text(viewStore.error)
                         .font(.footnote)
                         .foregroundColor(.black)
