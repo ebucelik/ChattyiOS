@@ -49,7 +49,9 @@ extension ImagePicker {
 
             if itemProvider.canLoadObject(ofClass: UIImage.self) {
                 itemProvider.loadObject(ofClass: UIImage.self) { itemProviderReading, _ in
-                    self.parent.image = itemProviderReading as? UIImage
+                    DispatchQueue.main.async {
+                        self.parent.image = itemProviderReading as? UIImage
+                    }
                 }
             }
         }

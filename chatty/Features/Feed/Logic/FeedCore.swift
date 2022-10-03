@@ -91,6 +91,7 @@ class FeedCore {
 
             case let .showEntryView(value):
                 if let showOrHide = value {
+                    state.showRegisterView = false
                     state.showEntryView = showOrHide
                 }
 

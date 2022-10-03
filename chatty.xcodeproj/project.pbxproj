@@ -30,6 +30,9 @@
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
 		7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA92882DC550061E03B /* LogoutCall.swift */; };
 		7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEAB2882DE490061E03B /* LogoutService.swift */; };
+		71692CCF28EB598E0025673A /* CustomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CCE28EB598E0025673A /* CustomUI.swift */; };
+		71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD028EB82EF0025673A /* UIImage+Extensions.swift */; };
+		71692CD328EB832D0025673A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD228EB832D0025673A /* String+Extensions.swift */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
@@ -84,6 +87,9 @@
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
 		7166BEA92882DC550061E03B /* LogoutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutCall.swift; sourceTree = "<group>"; };
 		7166BEAB2882DE490061E03B /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
+		71692CCE28EB598E0025673A /* CustomUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUI.swift; sourceTree = "<group>"; };
+		71692CD028EB82EF0025673A /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		71692CD228EB832D0025673A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
 		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -354,6 +360,9 @@
 				71C978022878C444004A457D /* ViewControllerRepresentable.swift */,
 				714D1773288406A50091BD10 /* Colors.swift */,
 				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
+				71692CCE28EB598E0025673A /* CustomUI.swift */,
+				71692CD028EB82EF0025673A /* UIImage+Extensions.swift */,
+				71692CD228EB832D0025673A /* String+Extensions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -499,6 +508,8 @@
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
+				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
+				71692CD328EB832D0025673A /* String+Extensions.swift in Sources */,
 				714D1776288413680091BD10 /* ErrorMessage.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
@@ -519,6 +530,7 @@
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethods.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
+				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,
 				714D177C288424980091BD10 /* RegisterService.swift in Sources */,
 				71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */,
 				71C978002878C3DE004A457D /* AccountView.swift in Sources */,
@@ -697,6 +709,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -729,6 +742,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

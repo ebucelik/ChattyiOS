@@ -32,7 +32,13 @@ class TabViewController: UITabBarController {
                 )
             )
         )
+        let feedViewTabBarItem = UITabBarItem(title: "Startpage", image: UIImage(systemName: "house.fill"), tag: 0)
+
+        feedViewController.tabBarItem = feedViewTabBarItem
+
         let accountViewController = UIHostingController(rootView: AccountView())
+        let accountViewTabBarItem = UITabBarItem(title: "Account", image: UIImage(systemName: "person.fill"), tag: 1)
+        accountViewController.tabBarItem = accountViewTabBarItem
 
         setViewControllers([feedViewController, accountViewController], animated: true)
     }

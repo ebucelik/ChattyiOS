@@ -31,6 +31,9 @@ struct RegisterView: View {
 
                 viewStore.send(.reset)
             }
+            .onDisappear {
+                viewStore.send(.reset)
+            }
             .contentShape(Rectangle())
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -40,7 +43,9 @@ struct RegisterView: View {
 
     @ViewBuilder
     func provideUsername(_ viewStore: RegisterViewStore) -> some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 16) {
+            ChattyIcon()
+
             Spacer()
 
             VStack(spacing: 16) {
@@ -54,6 +59,11 @@ struct RegisterView: View {
                             .disableAutocorrection(true)
                             .onChange(of: viewStore.register.username) { _ in
                                 viewStore.send(.checkUsername)
+                            }
+                            .onAppear {
+                                if !viewStore.register.username.isEmpty {
+                                    viewStore.send(.checkUsername)
+                                }
                             }
                     }
                     .padding()
@@ -76,10 +86,10 @@ struct RegisterView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .padding()
+            .padding(.horizontal)
 
             VStack {
-                Divider()
+                ChattyDivider()
 
                 HStack(spacing: 16) {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -91,11 +101,11 @@ struct RegisterView: View {
                 }
                 .padding(.horizontal)
             }
-            .opacity(viewStore.isError ? 1 : 0)
+            .opacity(viewStore.error.isEmpty ? 0 : 1)
 
             Spacer()
 
-            provideButton(text: "Slide to next page", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+            ChattyButton(text: "Slide to next page", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
                 .opacity(viewStore.isUsernameAvailable ? 1 : 0)
                 .padding()
 
@@ -107,6 +117,18 @@ struct RegisterView: View {
     @ViewBuilder
     func provideEmailAndPassword(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
+            HStack {
+                Button(action: { viewStore.send(.nextTab(viewStore.tabSelection - 1)) }) {
+                    Text("Back")
+                        .bold()
+                        .foregroundColor(Colors.gray)
+                }
+
+                Spacer()
+            }
+
+            ChattyIcon()
+
             Spacer()
 
             Group {
@@ -172,10 +194,11 @@ struct RegisterView: View {
 
                     availabilityCheck(for: viewStore.passwordValidState)
                 }
+                .padding(.bottom)
             }
 
             VStack {
-                Divider()
+                ChattyDivider()
 
                 HStack(spacing: 16) {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -187,11 +210,11 @@ struct RegisterView: View {
                 }
                 .padding(.horizontal)
             }
-            .opacity(viewStore.isError ? 1 : 0)
+            .opacity(viewStore.error.isEmpty ? 0 : 1)
 
             Spacer()
 
-            provideButton(text: "Just one step is missing", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+            ChattyButton(text: "Just one step is missing", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
                 .opacity(viewStore.isEmailAndPasswordValid ? 1 : 0)
 
             Spacer()
@@ -204,6 +227,12 @@ struct RegisterView: View {
     func provideProfilePicture(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
             HStack {
+                Button(action: { viewStore.send(.nextTab(viewStore.tabSelection - 1)) }) {
+                    Text("Back")
+                        .bold()
+                        .foregroundColor(Colors.gray)
+                }
+
                 Spacer()
 
                 Button(action: { viewStore.send(.showHomepage) }) {
@@ -212,7 +241,6 @@ struct RegisterView: View {
                         .foregroundColor(Colors.error)
                 }
             }
-            .padding()
 
             Spacer()
 
@@ -247,7 +275,7 @@ struct RegisterView: View {
             Spacer()
                 .frame(height: 50)
 
-            Text("You're all set")
+            Text("You're all set!")
                 .font(.title3)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -257,7 +285,7 @@ struct RegisterView: View {
 
             Spacer()
 
-            provideButton(text: "Start with Chatty", action: { viewStore.send(.showHomepage) })
+            ChattyButton(text: "Start with Chatty", action: { viewStore.send(.showHomepage) })
                 .opacity(viewStore.profilePhoto != nil ? 1 : 0)
                 .padding(.bottom, 30)
         }
@@ -299,25 +327,6 @@ extension View {
         case .none:
             EmptyView()
         }
-    }
-
-    @ViewBuilder
-    func provideButton(text: String, action: @escaping () -> Void) -> some View {
-        VStack {
-            Button(action: action) {
-                Text(text)
-                    .font(.headline)
-                    .bold()
-                    .foregroundColor(.white)
-                    .textCase(.uppercase)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding()
-
-            }
-        }
-        .background(Colors.button)
-        .cornerRadius(8)
-        .shadow(radius: 5)
     }
 }
 

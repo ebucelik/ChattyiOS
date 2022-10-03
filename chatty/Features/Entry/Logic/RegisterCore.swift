@@ -33,26 +33,42 @@ class RegisterCore {
         var register: Register
 
         var isLoading: Bool
-        var isError: Bool {
-            if case .error = registerState {
-                return true
+        var error: String {
+            if case let .error(error) = registerState {
+                if case let .unexpectedError(apiError) = error as? APIError {
+                    return apiError
+                }
+
+                return error.localizedDescription
             }
 
-            if case .error = usernameAvailableState {
-                return true
+            if case let .error(error) = usernameAvailableState {
+                if case let .unexpectedError(apiError) = error as? APIError {
+                    return apiError
+                }
+
+                return error.localizedDescription
             }
 
-            if case .error = emailAvailableState {
-                return true
+            if case let .error(error) = emailAvailableState {
+                if case let .unexpectedError(apiError) = error as? APIError {
+                    return apiError
+                }
+
+                return error.localizedDescription
             }
 
-            if case .error = passwordValidState {
-                return true
+            if case let .error(error) = passwordValidState {
+                if case let .unexpectedError(apiError) = error as? APIError {
+                    return apiError
+                }
+
+                return error.localizedDescription
             }
 
-            return false
+            return ""
         }
-        var error: String
+
         var isUsernameAvailable: Bool {
             if case let .loaded(availability) = usernameAvailableState {
                 return availability
@@ -83,15 +99,13 @@ class RegisterCore {
              emailAvailableState: Loadable<Bool> = .none,
              passwordValidState: Loadable<Bool> = .none,
              register: Register = .empty,
-             isLoading: Bool = false,
-             error: String = "") {
+             isLoading: Bool = false) {
             self.registerState = registerState
             self.usernameAvailableState = usernameAvailableState
             self.emailAvailableState = emailAvailableState
             self.passwordValidState = passwordValidState
             self.register = register
             self.isLoading = isLoading
-            self.error = error
         }
     }
 
@@ -133,12 +147,6 @@ class RegisterCore {
         case .register:
             struct Debounce: Hashable { }
 
-            if state.register.username.isEmpty ||
-                state.register.email.isEmpty ||
-                state.register.password.isEmpty {
-                return Effect(value: .registerStateChanged(.error(APIError.unexpectedError("Formular is not complete."))))
-            }
-
             return .task { [register = state.register] in
                 do {
                     return .registerStateChanged(.loaded(try await environment.service.register(register: register)))
@@ -171,11 +179,6 @@ class RegisterCore {
 
             if case let .error(error) = registerStateDidChanged {
                 state.isLoading = false
-
-                if let apiError = error as? APIError,
-                   case let .unexpectedError(stringError) = apiError {
-                    state.error = stringError
-                }
             }
 
             return .none
@@ -200,19 +203,25 @@ class RegisterCore {
         case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
             state.usernameAvailableState = usernameAvailabilityStateDidChanged
 
-            if case let .error(error) = usernameAvailabilityStateDidChanged,
-               let apiError = error as? APIError,
-               case let .unexpectedError(unexpectedError) = apiError {
-                state.error = unexpectedError
-            } else {
-                state.error = ""
-            }
-
             if case let .loaded(availability) = usernameAvailabilityStateDidChanged,
                !availability {
-                state.usernameAvailableState = .error(APIError.notFound)
-                state.error = "This username is already in use!"
+                state.usernameAvailableState = .error(APIError.unexpectedError("This username is already in use."))
             }
+
+            return .none
+
+        case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
+            state.emailAvailableState = emailAvailableStateDidChanged
+
+            if case let .loaded(availability) = emailAvailableStateDidChanged,
+               !availability {
+                state.emailAvailableState = .error(APIError.unexpectedError("This email is already in use."))
+            }
+
+            return .none
+
+        case let .passwordValidStateChanged(passwordValidStateDidChanged):
+            state.passwordValidState = passwordValidStateDidChanged
 
             return .none
 
@@ -278,32 +287,6 @@ class RegisterCore {
 
             return .none
 
-        case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
-            state.emailAvailableState = emailAvailableStateDidChanged
-
-            if case let .error(error) = emailAvailableStateDidChanged,
-               let apiError = error as? APIError,
-               case let .unexpectedError(unexpectedError) = apiError {
-                state.error = unexpectedError
-            } else {
-                state.error = ""
-            }
-
-            return .none
-
-        case let .passwordValidStateChanged(passwordValidStateDidChanged):
-            state.passwordValidState = passwordValidStateDidChanged
-
-            if case let .error(error) = passwordValidStateDidChanged,
-               let apiError = error as? APIError,
-               case let .unexpectedError(unexpectedError) = apiError {
-                state.error = unexpectedError
-            } else {
-                state.error = ""
-            }
-
-            return .none
-
         case .showHomepage:
             struct Debounce: Hashable { }
 
@@ -321,7 +304,6 @@ class RegisterCore {
             state.emailAvailableState = .none
             state.passwordValidState = .none
             state.profilePhoto = nil
-            state.error = ""
 
             return .none
 

@@ -16,9 +16,7 @@ struct FeedView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                Text("Hi")
-                Text("Ebu")
-                Text("BSc")
+                Text("Feed")
                 Button(action: {
                     viewStore.send(.logout)
                 }, label: {
@@ -26,18 +24,18 @@ struct FeedView: View {
                 })
             }
             .fullScreenCover(isPresented: viewStore.binding(get: \.showEntryView, send: .showEntryView(nil))) {
-                if !viewStore.showRegisterView {
-                    LoginView(
-                        store: store.scope(
-                            state: \.login,
-                            action: FeedCore.Action.login
-                        )
-                    )
-                } else {
+                if viewStore.showRegisterView {
                     RegisterView(
                         store: store.scope(
                             state: \.register,
                             action: FeedCore.Action.register
+                        )
+                    )
+                } else {
+                    LoginView(
+                        store: store.scope(
+                            state: \.login,
+                            action: FeedCore.Action.login
                         )
                     )
                 }

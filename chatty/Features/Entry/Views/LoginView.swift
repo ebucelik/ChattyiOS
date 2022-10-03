@@ -33,47 +33,52 @@ struct LoginView: View {
     @ViewBuilder
     func loginBody(_ viewStore: ViewStore<LoginCore.State, LoginCore.Action>) -> some View {
         VStack(spacing: 16) {
+            ChattyIcon()
+
             Spacer()
 
-            HStack(spacing: 16) {
-                Image(systemName: "person.fill")
-                    .foregroundColor(Colors.gray)
-                TextField("E-Mail", text: viewStore.binding(\.$login.email))
-                    .textContentType(.emailAddress)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-            }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(Colors.gray, lineWidth: 2)
-            )
+            VStack(spacing: 16) {
+                HStack(spacing: 16) {
+                    Image(systemName: "person.fill")
+                        .foregroundColor(Colors.gray)
+                    TextField("E-Mail", text: viewStore.binding(\.$login.email))
+                        .textContentType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(Colors.gray, lineWidth: 2)
+                )
 
-            HStack(spacing: 16) {
-                Image(systemName: "lock.fill")
-                    .foregroundColor(Colors.gray)
-                SecureField("Password", text: viewStore.binding(\.$login.password))
-                    .textContentType(.password)
-            }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(Colors.gray, lineWidth: 2)
-            )
+                HStack(spacing: 16) {
+                    Image(systemName: "lock.fill")
+                        .foregroundColor(Colors.gray)
+                    SecureField("Password", text: viewStore.binding(\.$login.password))
+                        .textContentType(.password)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(Colors.gray, lineWidth: 2)
+                )
 
-            Button(action: {
-                viewStore.send(.showRegisterView)
-            }, label: {
-                Text("Don't have an account? Sign up now.")
-                    .font(.footnote)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundColor(Colors.gray)
-            })
+                Button(action: {
+                    viewStore.send(.showRegisterView)
+                }, label: {
+                    Text("Don't have an account? Sign up now.")
+                        .font(.footnote)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Colors.gray)
+                })
+                .padding(.horizontal)
+                .padding(.bottom)
+            }
             .padding(.horizontal)
-            .padding(.bottom)
 
             VStack {
-                Divider()
+                ChattyDivider()
 
                 HStack(spacing: 16) {
                     Image(systemName: "exclamationmark.circle.fill")
@@ -89,29 +94,15 @@ struct LoginView: View {
 
             Spacer()
 
-            Button(action: {
-                viewStore.send(.login)
-            }, label: {
-                VStack {
-                    if case .loading = viewStore.loginState {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .tint(.white)
-                    } else {
-                        Text("LOGIN")
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .font(.headline)
-                    }
+            ChattyButton(
+                text: "LOGIN",
+                isLoading: viewStore.loginState == .loading,
+                action: {
+                    viewStore.send(.login)
                 }
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
-                .padding()
-                .background(Colors.button)
-                .cornerRadius(8)
-                .shadow(radius: 5)
-            })
+            )
+            .padding()
         }
-        .padding()
         .contentShape(Rectangle())
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
