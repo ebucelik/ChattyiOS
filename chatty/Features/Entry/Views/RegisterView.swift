@@ -251,26 +251,15 @@ struct RegisterView: View {
 
             Spacer()
 
-            if let selectedPhoto = viewStore.profilePhoto {
-                Image(uiImage: selectedPhoto)
-                    .resizable()
-                    .frame(width: 150, height: 150, alignment: .center)
-                    .foregroundColor(Colors.gray)
-                    .cornerRadius(75)
-                    .shadow(radius: 10)
-                    .onTapGesture {
-                        viewStore.send(.showImagePicker)
-                    }
-            } else {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .frame(width: 150, height: 150, alignment: .center)
-                    .foregroundColor(Colors.gray)
-                    .shadow(radius: 10)
-                    .onTapGesture {
-                        viewStore.send(.showImagePicker)
-                    }
-            }
+            getImage(from: viewStore.profilePhoto)
+                .resizable()
+                .frame(width: 150, height: 150, alignment: .center)
+                .foregroundColor(Colors.gray)
+                .cornerRadius(75)
+                .shadow(radius: 10)
+                .onTapGesture {
+                    viewStore.send(.showImagePicker)
+                }
 
             Spacer()
                 .frame(height: 50)
@@ -293,6 +282,14 @@ struct RegisterView: View {
             ImagePicker(image: viewStore.binding(\.$profilePhoto))
         }
         .padding()
+    }
+
+    private func getImage(from uiImage: UIImage?) -> Image {
+        if let uiImage = uiImage {
+            return Image(uiImage: uiImage)
+        }
+
+        return Image(systemName: "person.crop.circle.fill")
     }
 }
 

@@ -147,6 +147,7 @@ class RegisterCore {
         case .register:
             struct Debounce: Hashable { }
 
+            // TODO: Save somehow the profile picture of the user.
             return .task { [register = state.register] in
                 do {
                     return .registerStateChanged(.loaded(try await environment.service.register(register: register)))
@@ -308,6 +309,11 @@ class RegisterCore {
             return .none
 
         case .binding:
+
+            if let profilePhoto = state.profilePhoto {
+                state.register.profilePhoto = profilePhoto.base64
+            }
+
             return .none
         }
     }.binding()

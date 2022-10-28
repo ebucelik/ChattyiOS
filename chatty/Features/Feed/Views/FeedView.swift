@@ -16,12 +16,15 @@ struct FeedView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                Text("Feed")
-                Button(action: {
-                    viewStore.send(.logout)
-                }, label: {
-                    Text("Logout")
-                })
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible())], spacing: 16) {
+                        ForEach(0...50, id: \.self) { _ in
+                            PostView()
+
+                            Divider()
+                        }
+                    }
+                }
             }
             .fullScreenCover(isPresented: viewStore.binding(get: \.showEntryView, send: .showEntryView(nil))) {
                 if viewStore.showRegisterView {
