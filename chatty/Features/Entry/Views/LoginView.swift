@@ -114,13 +114,9 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView(
-            store: .init(
+            store: Store(
                 initialState: LoginCore.State(),
-                reducer: LoginCore.reducer,
-                environment: LoginCore.Environment(
-                    service: LoginService(),
-                    mainScheduler: .main
-                )
+                reducer: LoginCore()
             )
         )
     }

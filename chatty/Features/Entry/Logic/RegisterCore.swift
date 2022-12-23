@@ -12,7 +12,7 @@ import ComposableArchitecture
 import SwiftHelper
 import UIKit
 
-class RegisterCore {
+class RegisterCore: ReducerProtocol {
 
     struct State: Equatable {
         var registerState: Loadable<Account>
@@ -136,195 +136,187 @@ class RegisterCore {
         case binding(BindingAction<State>)
     }
 
-    struct Environment {
-        let service: RegisterServiceProtocol
-        let accountAvailabilityService: AccountAvailabilityProtocol
-        let mainScheduler: AnySchedulerOf<DispatchQueue>
-    }
+    @Dependency(\.registerService) var service
+    @Dependency(\.accountAvailabilityService) var accountAvailabilityService
+    @Dependency(\.mainScheduler) var mainScheduler
 
-    static let reducer = Reducer<State, Action, Environment> { state, action, environment in
-        switch action {
-        case .register:
-            struct Debounce: Hashable { }
+    var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
 
-            // TODO: Save somehow the profile picture of the user.
-            return .task { [register = state.register] in
-                do {
-                    return .registerStateChanged(.loaded(try await environment.service.register(register: register)))
-                } catch {
-                    return .registerStateChanged(.error(error))
+        Reduce { state, action in
+            switch action {
+            case .register:
+                struct Debounce: Hashable { }
+
+                // TODO: Save somehow the profile picture of the user.
+                return .task { [register = state.register] in
+                    do {
+                        return .registerStateChanged(.loaded(try await self.service.register(register: register)))
+                    } catch {
+                        return .registerStateChanged(.error(error))
+                    }
                 }
-            }
-            .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
-            .receive(on: environment.mainScheduler)
-            .prepend(.registerStateChanged(.loading))
-            .eraseToEffect()
+                .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .prepend(.registerStateChanged(.loading))
+                .eraseToEffect()
 
-        case let .registerStateChanged(registerStateDidChanged):
-            state.registerState = registerStateDidChanged
+            case let .registerStateChanged(registerStateDidChanged):
+                state.registerState = registerStateDidChanged
 
-            if case let .loaded(account) = registerStateDidChanged {
+                if case let .loaded(account) = registerStateDidChanged {
 
-                state.isLoading = false
+                    state.isLoading = false
 
-                return Effect(value: .showHomepage)
-            }
-
-            if case .none = registerStateDidChanged {
-                state.isLoading = false
-            }
-
-            if .loading == registerStateDidChanged, .refreshing == registerStateDidChanged {
-                state.isLoading = true
-            }
-
-            if case let .error(error) = registerStateDidChanged {
-                state.isLoading = false
-            }
-
-            return .none
-
-        case .checkUsername:
-            struct Debounce: Hashable { }
-
-            let username = state.register.username
-
-            return Effect.task {
-                do {
-                    return .usernameAvailableStateChanged(.loaded(try await environment.accountAvailabilityService.checkUsername(username: username)))
-                } catch {
-                    return .usernameAvailableStateChanged(.error(error))
+                    return Effect(value: .showHomepage)
                 }
-            }
-            .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
-            .receive(on: environment.mainScheduler)
-            .prepend(.usernameAvailableStateChanged(.loading))
-            .eraseToEffect()
 
-        case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
-            state.usernameAvailableState = usernameAvailabilityStateDidChanged
+                if case .none = registerStateDidChanged {
+                    state.isLoading = false
+                }
 
-            if case let .loaded(availability) = usernameAvailabilityStateDidChanged,
-               !availability {
-                state.usernameAvailableState = .error(APIError.unexpectedError("This username is already in use."))
-            }
+                if .loading == registerStateDidChanged, .refreshing == registerStateDidChanged {
+                    state.isLoading = true
+                }
 
-            return .none
+                if case let .error(error) = registerStateDidChanged {
+                    state.isLoading = false
+                }
 
-        case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
-            state.emailAvailableState = emailAvailableStateDidChanged
+                return .none
 
-            if case let .loaded(availability) = emailAvailableStateDidChanged,
-               !availability {
-                state.emailAvailableState = .error(APIError.unexpectedError("This email is already in use."))
-            }
+            case .checkUsername:
+                struct Debounce: Hashable { }
 
-            return .none
+                let username = state.register.username
 
-        case let .passwordValidStateChanged(passwordValidStateDidChanged):
-            state.passwordValidState = passwordValidStateDidChanged
+                return Effect.task {
+                    do {
+                        return .usernameAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkUsername(username: username)))
+                    } catch {
+                        return .usernameAvailableStateChanged(.error(error))
+                    }
+                }
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .prepend(.usernameAvailableStateChanged(.loading))
+                .eraseToEffect()
 
-            return .none
+            case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
+                state.usernameAvailableState = usernameAvailabilityStateDidChanged
 
-        case .checkIfEmailIsValid:
-            struct Debounce: Hashable { }
+                if case let .loaded(availability) = usernameAvailabilityStateDidChanged,
+                   !availability {
+                    state.usernameAvailableState = .error(APIError.unexpectedError("This username is already in use."))
+                }
 
-            let email = state.register.email
+                return .none
 
-            if email.checkEmailValidation() {
-                return Effect(value: .checkEmail)
-                    .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
+            case let .emailAvailableStateChanged(emailAvailableStateDidChanged):
+                state.emailAvailableState = emailAvailableStateDidChanged
+
+                if case let .loaded(availability) = emailAvailableStateDidChanged,
+                   !availability {
+                    state.emailAvailableState = .error(APIError.unexpectedError("This email is already in use."))
+                }
+
+                return .none
+
+            case let .passwordValidStateChanged(passwordValidStateDidChanged):
+                state.passwordValidState = passwordValidStateDidChanged
+
+                return .none
+
+            case .checkIfEmailIsValid:
+                struct Debounce: Hashable { }
+
+                let email = state.register.email
+
+                if email.checkEmailValidation() {
+                    return Effect(value: .checkEmail)
+                        .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                        .prepend(.emailAvailableStateChanged(.loading))
+                        .eraseToEffect()
+                }
+
+                return Effect(value: .emailAvailableStateChanged(.error(APIError.unexpectedError("Please provide a valid e-mail."))))
+                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                     .prepend(.emailAvailableStateChanged(.loading))
                     .eraseToEffect()
-            }
 
-            return Effect(value: .emailAvailableStateChanged(.error(APIError.unexpectedError("Please provide a valid e-mail."))))
-                .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
+            case .checkEmail:
+                struct Debounce: Hashable { }
+
+                return .task { [email = state.register.email] in
+                    do {
+                        return .emailAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkEmail(email: email)))
+                    } catch {
+                        return .emailAvailableStateChanged(.error(error))
+                    }
+                }
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
                 .prepend(.emailAvailableStateChanged(.loading))
                 .eraseToEffect()
 
-        case .checkEmail:
-            struct Debounce: Hashable { }
+            case .checkPassword:
+                struct Debounce: Hashable { }
 
-            return .task { [email = state.register.email] in
-                do {
-                    return .emailAvailableStateChanged(.loaded(try await environment.accountAvailabilityService.checkEmail(email: email)))
-                } catch {
-                    return .emailAvailableStateChanged(.error(error))
+                let password = state.register.password
+
+                let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
+
+                return Effect(value: .passwordValidStateChanged(loadable))
+                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                    .prepend(.passwordValidStateChanged(.loading))
+                    .eraseToEffect()
+
+            case .showPassword:
+                state.showPassword.toggle()
+
+                return .none
+
+            case let .nextTab(tab):
+                if let tab = tab {
+                    state.tabSelection = tab
+                    state.usernameAvailableState = .none
                 }
-            }
-            .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
-            .receive(on: environment.mainScheduler)
-            .prepend(.emailAvailableStateChanged(.loading))
-            .eraseToEffect()
 
-        case .checkPassword:
-            struct Debounce: Hashable { }
+                return .none
 
-            let password = state.register.password
+            case .showImagePicker:
+                state.showImagePicker.toggle()
 
-            let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
+                return .none
 
-            return Effect(value: .passwordValidStateChanged(loadable))
-                .debounce(id: Debounce(), for: 1, scheduler: environment.mainScheduler)
-                .prepend(.passwordValidStateChanged(.loading))
-                .eraseToEffect()
+            case .showHomepage:
+                struct Debounce: Hashable { }
 
-        case .showPassword:
-            state.showPassword.toggle()
+                return Effect(value: .reset)
+                    .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
 
-            return .none
+            case .showLoginView:
+                return .none
 
-        case let .nextTab(tab):
-            if let tab = tab {
-                state.tabSelection = tab
+            case .reset:
+                state.tabSelection = 0
+                state.register = .empty
+                state.registerState = .none
                 state.usernameAvailableState = .none
+                state.emailAvailableState = .none
+                state.passwordValidState = .none
+                state.profilePhoto = nil
+
+                return .none
+
+            case .binding:
+
+                if let profilePhoto = state.profilePhoto {
+                    state.register.profilePhoto = profilePhoto.base64
+                }
+
+                return .none
             }
-
-            return .none
-
-        case .showImagePicker:
-            state.showImagePicker.toggle()
-
-            return .none
-
-        case .showHomepage:
-            struct Debounce: Hashable { }
-
-            return Effect(value: .reset)
-                .debounce(id: Debounce(), for: 2, scheduler: environment.mainScheduler)
-
-        case .showLoginView:
-            return .none
-
-        case .reset:
-            state.tabSelection = 0
-            state.register = .empty
-            state.registerState = .none
-            state.usernameAvailableState = .none
-            state.emailAvailableState = .none
-            state.passwordValidState = .none
-            state.profilePhoto = nil
-
-            return .none
-
-        case .binding:
-
-            if let profilePhoto = state.profilePhoto {
-                state.register.profilePhoto = profilePhoto.base64
-            }
-
-            return .none
         }
-    }.binding()
-}
-
-extension RegisterCore.Environment {
-    static var app: RegisterCore.Environment {
-        return RegisterCore.Environment(
-            service: RegisterService(),
-            accountAvailabilityService: AccountAvailabilityService(),
-            mainScheduler: .main
-        )
     }
 }

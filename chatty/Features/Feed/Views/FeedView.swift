@@ -56,16 +56,9 @@ struct FeedView: View {
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {
         FeedView(
-            store: .init(
-                initialState: FeedCore.State(
-                    login: LoginCore.State(),
-                    register: RegisterCore.State()
-                ),
-                reducer: FeedCore.reducer,
-                environment: FeedCore.Environment(
-                    service: LogoutService(),
-                    mainScheduler: .main
-                )
+            store: Store(
+                initialState: FeedCore.State(),
+                reducer: FeedCore()
             )
         )
     }

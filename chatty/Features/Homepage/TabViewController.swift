@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import ComposableArchitecture
 
 class TabViewController: UITabBarController {
 
@@ -19,16 +20,9 @@ class TabViewController: UITabBarController {
     func setViewController() {
         let feedViewController = UIHostingController(
             rootView: FeedView(
-                store: .init(
-                    initialState: FeedCore.State(
-                        login: LoginCore.State(),
-                        register: RegisterCore.State()
-                    ),
-                    reducer: FeedCore.reducer,
-                    environment: FeedCore.Environment(
-                        service: LogoutService(),
-                        mainScheduler: .main
-                    )
+                store: Store(
+                    initialState: FeedCore.State(),
+                    reducer: FeedCore()
                 )
             )
         )

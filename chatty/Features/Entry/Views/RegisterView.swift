@@ -331,14 +331,9 @@ extension View {
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
         RegisterView(
-            store: .init(
+            store: Store(
                 initialState: RegisterCore.State(),
-                reducer: RegisterCore.reducer,
-                environment: RegisterCore.Environment(
-                    service: RegisterService(),
-                    accountAvailabilityService: AccountAvailabilityService(),
-                    mainScheduler: .main
-                )
+                reducer: RegisterCore()
             )
         )
     }

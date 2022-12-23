@@ -11,8 +11,7 @@ import SwiftHelper
 import ComposableArchitecture
 import Combine
 
-class FeedCore {
-
+class FeedCore: ReducerProtocol {
     struct State: Equatable {
         var logoutState: Loadable<String> = .none
 
@@ -20,19 +19,15 @@ class FeedCore {
         var showRegisterView: Bool
         var showEntryView: Bool
 
-        var login: LoginCore.State
-        var register: RegisterCore.State
+        var login = LoginCore.State()
+        var register = RegisterCore.State()
 
         init(showLoginView: Bool = false,
              showRegisterView: Bool = false,
-             showEntryView: Bool = false,
-             login: LoginCore.State,
-             register: RegisterCore.State) {
+             showEntryView: Bool = false) {
             self.showLoginView = showLoginView
             self.showRegisterView = showRegisterView
             self.showEntryView = showEntryView
-            self.login = login
-            self.register = register
         }
     }
 
@@ -45,35 +40,21 @@ class FeedCore {
         case register(RegisterCore.Action)
     }
 
-    struct Environment {
-        let service: LogoutServiceProtocol
-        let mainScheduler: AnySchedulerOf<DispatchQueue>
-    }
+    @Dependency(\.logoutService) var service
+    @Dependency(\.mainScheduler) var mainScheduler
 
-    static let reducer: Reducer<State, Action, Environment> = .combine(
-        LoginCore.reducer.pullback(
-            state: \.login,
-            action: /Action.login,
-            environment: { _ in .app }
-        ),
-
-        RegisterCore.reducer.pullback(
-            state: \.register,
-            action: /Action.register,
-            environment: { _ in .app }
-        ),
-
-        Reducer { state, action, environment in
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
             switch action {
             case .logout:
                 return .task {
                     do {
-                        return .logoutStateChanged(.loaded(try await environment.service.logout()))
+                        return .logoutStateChanged(.loaded(try await self.service.logout()))
                     } catch {
                         return .logoutStateChanged(.error(error))
                     }
                 }
-                .receive(on: environment.mainScheduler)
+                .receive(on: self.mainScheduler)
                 .prepend(.logoutStateChanged(.loading))
                 .eraseToEffect()
 
@@ -120,5 +101,13 @@ class FeedCore {
                 return .none
             }
         }
-    )
+
+        Scope(state: \.login, action: /Action.login) {
+            LoginCore()
+        }
+
+        Scope(state: \.register, action: /Action.register) {
+            RegisterCore()
+        }
+    }
 }

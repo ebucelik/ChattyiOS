@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import ComposableArchitecture
 
 protocol RegisterServiceProtocol {
     func register(register: Register) async throws -> Account
 }
 
-class RegisterService: BackendClient, RegisterServiceProtocol {
+class RegisterService: BackendClient, RegisterServiceProtocol, DependencyKey {
+    static let liveValue = RegisterService()
+
     func register(register: Register) async throws -> Account {
         try await start(call: RegisterCall(body: register))
     }

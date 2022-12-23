@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import ComposableArchitecture
 
 protocol AccountAvailabilityProtocol {
     func checkUsername(username: String) async throws -> Bool
     func checkEmail(email: String) async throws -> Bool
 }
 
-class AccountAvailabilityService: BackendClient, AccountAvailabilityProtocol {
+class AccountAvailabilityService: BackendClient, AccountAvailabilityProtocol, DependencyKey {
+    static let liveValue = AccountAvailabilityService()
+
     func checkUsername(username: String) async throws -> Bool {
         try await start(call: AccountAvailabilityCall(parameters: ["username" : username]))
     }
