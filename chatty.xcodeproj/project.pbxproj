@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 71005641287ACE8600EBD93A /* ComposableArchitecture */; };
 		71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005643287ACF8A00EBD93A /* LoginCore.swift */; };
-		71005647287ACFB800EBD93A /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71005646287ACFB800EBD93A /* SwiftHelper */; };
 		71005649287AD30200EBD93A /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005648287AD30200EBD93A /* Login.swift */; };
 		7100564B287AD35000EBD93A /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7100564A287AD35000EBD93A /* Register.swift */; };
 		7100564D287AD3DD00EBD93A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7100564C287AD3DD00EBD93A /* Account.swift */; };
@@ -47,6 +46,7 @@
 		71C977F62878C1FF004A457D /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977F52878C1FF004A457D /* FeedView.swift */; };
 		71C978002878C3DE004A457D /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977FF2878C3DE004A457D /* AccountView.swift */; };
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
+		71C98AEE2956266A0011A61D /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71C98AED2956266A0011A61D /* SwiftHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71005647287ACFB800EBD93A /* SwiftHelper in Frameworks */,
+				71C98AEE2956266A0011A61D /* SwiftHelper in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,7 +224,7 @@
 				71C978012878C401004A457D /* Shared */,
 				71C977F22878C0F2004A457D /* Features */,
 				71C977CA2878AA8D004A457D /* Info.plist */,
-				71C977F12878C06A004A457D /* Networking */,
+				71C977F12878C06A004A457D /* Network */,
 				71C977F32878C108004A457D /* Resources */,
 			);
 			path = chatty;
@@ -247,7 +247,7 @@
 			path = chattyUITests;
 			sourceTree = "<group>";
 		};
-		71C977F12878C06A004A457D /* Networking */ = {
+		71C977F12878C06A004A457D /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				7100564F287AE39200EBD93A /* BackendClient.swift */,
@@ -256,7 +256,7 @@
 				71005657287AF99100EBD93A /* APIError.swift */,
 				714D1775288413680091BD10 /* ErrorMessage.swift */,
 			);
-			path = Networking;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		71C977F22878C0F2004A457D /* Features */ = {
@@ -388,7 +388,7 @@
 			name = chatty;
 			packageProductDependencies = (
 				71005641287ACE8600EBD93A /* ComposableArchitecture */,
-				71005646287ACFB800EBD93A /* SwiftHelper */,
+				71C98AED2956266A0011A61D /* SwiftHelper */,
 			);
 			productName = chatty;
 			productReference = 71C977B92878AA8C004A457D /* chatty.app */;
@@ -464,7 +464,7 @@
 			mainGroup = 71C977B02878AA8C004A457D;
 			packageReferences = (
 				71005640287ACE8600EBD93A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
-				71005645287ACFB800EBD93A /* XCRemoteSwiftPackageReference "swifthelper" */,
+				71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */,
 			);
 			productRefGroup = 71C977BA2878AA8C004A457D /* Products */;
 			projectDirPath = "";
@@ -894,9 +894,9 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		71005645287ACFB800EBD93A /* XCRemoteSwiftPackageReference "swifthelper" */ = {
+		71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://gitlab.com/ebucelik/swifthelper";
+			repositoryURL = "https://github.com/ebucelik/SwiftHelper.git";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -910,9 +910,9 @@
 			package = 71005640287ACE8600EBD93A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		71005646287ACFB800EBD93A /* SwiftHelper */ = {
+		71C98AED2956266A0011A61D /* SwiftHelper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 71005645287ACFB800EBD93A /* XCRemoteSwiftPackageReference "swifthelper" */;
+			package = 71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */;
 			productName = SwiftHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
