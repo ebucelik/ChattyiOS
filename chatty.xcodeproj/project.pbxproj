@@ -33,6 +33,9 @@
 		71692CCF28EB598E0025673A /* CustomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CCE28EB598E0025673A /* CustomUI.swift */; };
 		71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD028EB82EF0025673A /* UIImage+Extensions.swift */; };
 		71692CD328EB832D0025673A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD228EB832D0025673A /* String+Extensions.swift */; };
+		716DB8B929585534003BF4A9 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8B829585534003BF4A9 /* EntryView.swift */; };
+		716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BA29585547003BF4A9 /* EntryCore.swift */; };
+		716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
@@ -47,6 +50,7 @@
 		71C978002878C3DE004A457D /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977FF2878C3DE004A457D /* AccountView.swift */; };
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
 		71C98AEE2956266A0011A61D /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71C98AED2956266A0011A61D /* SwiftHelper */; };
+		71C98AF0295643E30011A61D /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C98AEF295643E30011A61D /* AppCore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +96,9 @@
 		71692CCE28EB598E0025673A /* CustomUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUI.swift; sourceTree = "<group>"; };
 		71692CD028EB82EF0025673A /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		71692CD228EB832D0025673A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		716DB8B829585534003BF4A9 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		716DB8BA29585547003BF4A9 /* EntryCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCore.swift; sourceTree = "<group>"; };
+		716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
 		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +116,7 @@
 		71C977F52878C1FF004A457D /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		71C977FF2878C3DE004A457D /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		71C978022878C444004A457D /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
+		71C98AEF295643E30011A61D /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +162,7 @@
 			children = (
 				71005643287ACF8A00EBD93A /* LoginCore.swift */,
 				714D177728841FB60091BD10 /* RegisterCore.swift */,
+				716DB8BA29585547003BF4A9 /* EntryCore.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -172,6 +181,7 @@
 			children = (
 				71005660287B6E1600EBD93A /* LoginView.swift */,
 				714D177D288434180091BD10 /* RegisterView.swift */,
+				716DB8B829585534003BF4A9 /* EntryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -198,6 +208,16 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		716DB8BC2959DEEA003BF4A9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				71692CD028EB82EF0025673A /* UIImage+Extensions.swift */,
+				71692CD228EB832D0025673A /* String+Extensions.swift */,
+				716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		71C977B02878AA8C004A457D = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +241,7 @@
 		71C977BB2878AA8C004A457D /* chatty */ = {
 			isa = PBXGroup;
 			children = (
+				716DB8BC2959DEEA003BF4A9 /* Extensions */,
 				71C978012878C401004A457D /* Shared */,
 				71C977F22878C0F2004A457D /* Features */,
 				71C977CA2878AA8D004A457D /* Info.plist */,
@@ -266,6 +287,7 @@
 				71C977FB2878C367004A457D /* Account */,
 				71C977F72878C25A004A457D /* Feed */,
 				71C977F42878C13B004A457D /* Homepage */,
+				71C98AEF295643E30011A61D /* AppCore.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -364,8 +386,6 @@
 				714D1773288406A50091BD10 /* Colors.swift */,
 				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
-				71692CD028EB82EF0025673A /* UIImage+Extensions.swift */,
-				71692CD228EB832D0025673A /* String+Extensions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -525,6 +545,7 @@
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				714D1774288406A50091BD10 /* Colors.swift in Sources */,
+				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
 				71005658287AF99100EBD93A /* APIError.swift in Sources */,
 				71005661287B6E1600EBD93A /* LoginView.swift in Sources */,
@@ -534,11 +555,14 @@
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethods.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
+				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
 				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,
+				716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */,
 				714D177C288424980091BD10 /* RegisterService.swift in Sources */,
 				71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */,
 				71C978002878C3DE004A457D /* AccountView.swift in Sources */,
 				7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */,
+				716DB8B929585534003BF4A9 /* EntryView.swift in Sources */,
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
 			);

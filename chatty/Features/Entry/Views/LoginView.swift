@@ -33,6 +33,9 @@ struct LoginView: View {
     @ViewBuilder
     func loginBody(_ viewStore: ViewStore<LoginCore.State, LoginCore.Action>) -> some View {
         VStack(spacing: 16) {
+            Spacer()
+                .frame(height: 36)
+            
             ChattyIcon()
 
             Spacer()
@@ -64,14 +67,21 @@ struct LoginView: View {
                         .strokeBorder(Colors.gray, lineWidth: 2)
                 )
 
-                Button(action: {
-                    viewStore.send(.showRegisterView)
-                }, label: {
-                    Text("Don't have an account? Sign up now.")
+                HStack(spacing: 5) {
+                    Text("Don't have an account?")
                         .font(.footnote)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(Colors.gray)
-                })
+
+                    Button(action: {
+                        viewStore.send(.showRegisterView)
+                    }, label: {
+                        Text("Sign up now.")
+                            .font(.footnote)
+                            .bold()
+                            .foregroundColor(Colors.gray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    })
+                }
                 .padding(.horizontal)
                 .padding(.bottom)
             }

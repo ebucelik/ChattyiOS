@@ -19,7 +19,6 @@ class LoginCore: ReducerProtocol {
         @BindableState
         var login: Login
 
-        var showRegister: Bool
         var isError: Bool {
             if case .error = loginState {
                 return true
@@ -32,11 +31,9 @@ class LoginCore: ReducerProtocol {
 
         init(loginState: Loadable<Account> = .none,
              login: Login = .empty,
-             showRegister: Bool = false,
              error: String = "") {
             self.loginState = loginState
             self.login = login
-            self.showRegister = showRegister
             self.error = error
         }
     }
@@ -46,7 +43,7 @@ class LoginCore: ReducerProtocol {
         case loginStateChanged(Loadable<Account>)
 
         case showRegisterView
-        case showHomepage
+        case showFeed
 
         case reset
 
@@ -85,14 +82,9 @@ class LoginCore: ReducerProtocol {
 
                 if case let .loaded(account) = changedState {
 
-                    do {
-                        let data = try JSONEncoder().encode(account)
-                        UserDefaults.standard.set(data, forKey: "account")
-                    } catch {
-                        print("ERROR: \(error)")
-                    }
+                    Account.addToUserDefaults(account)
 
-                    return Effect(value: .showHomepage)
+                    return Effect(value: .showFeed)
                 }
 
                 if case let .error(error) = changedState {
@@ -106,7 +98,7 @@ class LoginCore: ReducerProtocol {
 
                 return .none
 
-            case .showHomepage, .showRegisterView:
+            case .showFeed, .showRegisterView:
                 return .none
 
             case .reset:

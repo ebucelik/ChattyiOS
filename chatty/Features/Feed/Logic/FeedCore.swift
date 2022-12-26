@@ -14,30 +14,12 @@ import Combine
 class FeedCore: ReducerProtocol {
     struct State: Equatable {
         var logoutState: Loadable<String> = .none
-
-        var showLoginView: Bool
-        var showRegisterView: Bool
-        var showEntryView: Bool
-
-        var login = LoginCore.State()
-        var register = RegisterCore.State()
-
-        init(showLoginView: Bool = false,
-             showRegisterView: Bool = false,
-             showEntryView: Bool = false) {
-            self.showLoginView = showLoginView
-            self.showRegisterView = showRegisterView
-            self.showEntryView = showEntryView
-        }
     }
 
     enum Action {
         case logout
         case logoutStateChanged(Loadable<String>)
-        case showEntryView(Bool?)
-
-        case login(LoginCore.Action)
-        case register(RegisterCore.Action)
+        case showLoginView
     }
 
     @Dependency(\.logoutService) var service
@@ -64,50 +46,15 @@ class FeedCore: ReducerProtocol {
                 if case let .error(error) = logoutStateDidChanged {
                     if let apiError = error as? APIError,
                        case .unauthorized = apiError {
-                        return Effect(value: .showEntryView(true))
+                        return Effect(value: .showLoginView)
                     }
                 }
 
                 return .none
 
-            case let .showEntryView(value):
-                if let showOrHide = value {
-                    state.showRegisterView = false
-                    state.showEntryView = showOrHide
-                }
-
-                return .none
-
-                // MARK: - LoginCore Actions
-            case .login(.showRegisterView):
-                state.showRegisterView = true
-                return .none
-
-            case .login(.showHomepage):
-                return Effect(value: .showEntryView(false))
-
-            case .login:
-                return .none
-
-                // MARK: - RegisterCore Actions
-            case .register(.showLoginView):
-                state.showRegisterView = false
-                return .none
-
-            case .register(.showHomepage):
-                return Effect(value: .showEntryView(false))
-
-            case .register:
+            case .showLoginView:
                 return .none
             }
-        }
-
-        Scope(state: \.login, action: /Action.login) {
-            LoginCore()
-        }
-
-        Scope(state: \.register, action: /Action.register) {
-            RegisterCore()
         }
     }
 }

@@ -66,7 +66,7 @@ class BackendClient {
                             completion(.failure(error))
                         }
                     } else if response.statusCode == 401 {
-                        Account.removeUserDefaults()
+                        Account.removeFromUserDefaults()
                         completion(.failure(APIError.unauthorized))
                     } else {
                         do {

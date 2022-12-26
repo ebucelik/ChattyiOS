@@ -20,8 +20,11 @@ class RegisterCore: ReducerProtocol {
         var emailAvailableState: Loadable<Bool>
         var passwordValidState: Loadable<Bool>
 
-        var tabSelection: Int = 0
         var showPassword: Bool = false
+
+        var showUsernameView = true
+        var showEmailAndPasswordView = false
+        var showProfilePictureView = false
 
         @BindableState
         var showImagePicker: Bool = false
@@ -120,7 +123,9 @@ class RegisterCore: ReducerProtocol {
 
         case showPassword
 
-        case nextTab(Int?)
+        case showUsernameView
+        case showEmailAndPasswordView
+        case showProfilePictureView
 
         case showImagePicker
 
@@ -129,7 +134,7 @@ class RegisterCore: ReducerProtocol {
         case passwordValidStateChanged(Loadable<Bool>)
 
         case showLoginView
-        case showHomepage
+        case showFeed
 
         case reset
 
@@ -168,7 +173,9 @@ class RegisterCore: ReducerProtocol {
 
                     state.isLoading = false
 
-                    return Effect(value: .showHomepage)
+                    Account.addToUserDefaults(account)
+
+                    return Effect(value: .showFeed)
                 }
 
                 if case .none = registerStateDidChanged {
@@ -276,11 +283,22 @@ class RegisterCore: ReducerProtocol {
 
                 return .none
 
-            case let .nextTab(tab):
-                if let tab = tab {
-                    state.tabSelection = tab
-                    state.usernameAvailableState = .none
-                }
+            case .showUsernameView:
+                state.showEmailAndPasswordView = false
+                state.showUsernameView = true
+
+                return .none
+
+            case .showEmailAndPasswordView:
+                state.showUsernameView = false
+                state.showProfilePictureView = false
+                state.showEmailAndPasswordView = true
+
+                return .none
+
+            case .showProfilePictureView:
+                state.showEmailAndPasswordView = false
+                state.showProfilePictureView = true
 
                 return .none
 
@@ -289,7 +307,7 @@ class RegisterCore: ReducerProtocol {
 
                 return .none
 
-            case .showHomepage:
+            case .showFeed:
                 struct Debounce: Hashable { }
 
                 return Effect(value: .reset)
@@ -299,7 +317,6 @@ class RegisterCore: ReducerProtocol {
                 return .none
 
             case .reset:
-                state.tabSelection = 0
                 state.register = .empty
                 state.registerState = .none
                 state.usernameAvailableState = .none

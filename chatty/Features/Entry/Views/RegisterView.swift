@@ -17,24 +17,25 @@ struct RegisterView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            TabView(selection: viewStore.binding(get: \.tabSelection, send: .nextTab(nil))) {
-                provideUsername(viewStore)
-                    .tag(0)
-                provideEmailAndPassword(viewStore)
-                    .tag(1)
-                provideProfilePicture(viewStore)
-                    .tag(2)
-            }
-            .tabViewStyle(.page)
-            .onAppear {
-                UIScrollView.appearance().isScrollEnabled = false
+            ZStack {
+                if viewStore.showUsernameView {
+                    provideUsername(viewStore)
+                }
 
+                if viewStore.showEmailAndPasswordView {
+                    provideEmailAndPassword(viewStore)
+                }
+
+                if viewStore.showProfilePictureView {
+                    provideProfilePicture(viewStore)
+                }
+            }
+            .onAppear {
                 viewStore.send(.reset)
             }
             .onDisappear {
                 viewStore.send(.reset)
             }
-            .contentShape(Rectangle())
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
@@ -44,6 +45,9 @@ struct RegisterView: View {
     @ViewBuilder
     func provideUsername(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
+            Spacer()
+                .frame(height: 36)
+
             ChattyIcon()
 
             Spacer()
@@ -53,6 +57,7 @@ struct RegisterView: View {
                     HStack(spacing: 16) {
                         Image(systemName: "person.fill")
                             .foregroundColor(Colors.gray)
+
                         TextField("Username", text: viewStore.binding(\.$register.username))
                             .textContentType(.username)
                             .textInputAutocapitalization(.never)
@@ -65,24 +70,33 @@ struct RegisterView: View {
                                     viewStore.send(.checkUsername)
                                 }
                             }
+
+                        Spacer()
+
+                        availabilityCheck(for: viewStore.usernameAvailableState)
                     }
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .strokeBorder(Colors.gray, lineWidth: 2)
                     )
-
-                    availabilityCheck(for: viewStore.usernameAvailableState)
                 }
 
-                Button(action: {
-                    viewStore.send(.showLoginView)
-                }, label: {
-                    Text("Already have an account? Sign in now.")
+                HStack(spacing: 5) {
+                    Text("Already have an account?")
                         .font(.footnote)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(Colors.gray)
-                })
+
+                    Button(action: {
+                        viewStore.send(.showLoginView)
+                    }, label: {
+                        Text("Sign in now.")
+                            .font(.footnote)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Colors.gray)
+                    })
+                }
                 .padding(.horizontal)
                 .padding(.bottom)
             }
@@ -105,12 +119,9 @@ struct RegisterView: View {
 
             Spacer()
 
-            ChattyButton(text: "Slide to next page", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+            ChattyButton(text: "Step 2", action: { viewStore.send(.showEmailAndPasswordView) })
                 .opacity(viewStore.isUsernameAvailable ? 1 : 0)
                 .padding()
-
-            Spacer()
-                .frame(height: 30)
         }
     }
 
@@ -118,7 +129,7 @@ struct RegisterView: View {
     func provideEmailAndPassword(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
             HStack {
-                Button(action: { viewStore.send(.nextTab(viewStore.tabSelection - 1)) }) {
+                Button(action: { viewStore.send(.showUsernameView) }) {
                     Text("Back")
                         .bold()
                         .foregroundColor(Colors.gray)
@@ -136,6 +147,7 @@ struct RegisterView: View {
                     HStack(spacing: 16) {
                         Image(systemName: "envelope.fill")
                             .foregroundColor(Colors.gray)
+
                         TextField("E-Mail", text: viewStore.binding(\.$register.email))
                             .textContentType(.emailAddress)
                             .textInputAutocapitalization(.never)
@@ -143,14 +155,16 @@ struct RegisterView: View {
                             .onChange(of: viewStore.register.email) { _ in
                                 viewStore.send(.checkIfEmailIsValid)
                             }
+
+                        Spacer()
+
+                        availabilityCheck(for: viewStore.emailAvailableState)
                     }
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .strokeBorder(Colors.gray, lineWidth: 2)
                     )
-
-                    availabilityCheck(for: viewStore.emailAvailableState)
                 }
 
                 HStack(spacing: 16) {
@@ -185,14 +199,14 @@ struct RegisterView: View {
                                     .foregroundColor(Colors.gray)
                             }
                         )
+
+                        availabilityCheck(for: viewStore.passwordValidState)
                     }
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .strokeBorder(Colors.gray, lineWidth: 2)
                     )
-
-                    availabilityCheck(for: viewStore.passwordValidState)
                 }
                 .padding(.bottom)
             }
@@ -214,11 +228,8 @@ struct RegisterView: View {
 
             Spacer()
 
-            ChattyButton(text: "Just one step is missing", action: { viewStore.send(.nextTab(viewStore.tabSelection + 1)) })
+            ChattyButton(text: "Just one step is missing", action: { viewStore.send(.showProfilePictureView) })
                 .opacity(viewStore.isEmailAndPasswordValid ? 1 : 0)
-
-            Spacer()
-                .frame(height: 30)
         }
         .padding()
     }
@@ -227,7 +238,7 @@ struct RegisterView: View {
     func provideProfilePicture(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
             HStack {
-                Button(action: { viewStore.send(.nextTab(viewStore.tabSelection - 1)) }) {
+                Button(action: { viewStore.send(.showEmailAndPasswordView) }) {
                     Text("Back")
                         .bold()
                         .foregroundColor(Colors.gray)
@@ -235,7 +246,7 @@ struct RegisterView: View {
 
                 Spacer()
 
-                Button(action: { viewStore.send(.showHomepage) }) {
+                Button(action: { viewStore.send(.register) }) {
                     Text("Skip")
                         .bold()
                         .foregroundColor(Colors.error)
@@ -274,9 +285,8 @@ struct RegisterView: View {
 
             Spacer()
 
-            ChattyButton(text: "Start with Chatty", action: { viewStore.send(.showHomepage) })
+            ChattyButton(text: "Start with Chatty", action: { viewStore.send(.register) })
                 .opacity(viewStore.profilePhoto != nil ? 1 : 0)
-                .padding(.bottom, 30)
         }
         .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
             ImagePicker(image: viewStore.binding(\.$profilePhoto))
@@ -290,40 +300,6 @@ struct RegisterView: View {
         }
 
         return Image(systemName: "person.crop.circle.fill")
-    }
-}
-
-extension View {
-    @ViewBuilder
-    func availabilityCheck(for loadable: Loadable<Bool>) -> some View {
-        switch loadable {
-        case .loading, .refreshing:
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-                .frame(width: 30, height: 30, alignment: .center)
-
-        case .error:
-            Image(systemName: "x.circle.fill")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .foregroundColor(Colors.error)
-
-        case let .loaded(available):
-            if available {
-                Image(systemName: "checkmark.seal.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(Colors.success)
-            } else {
-                Image(systemName: "x.circle.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(Colors.error)
-            }
-
-        case .none:
-            EmptyView()
-        }
     }
 }
 

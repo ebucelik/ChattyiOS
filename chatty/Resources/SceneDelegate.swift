@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ComposableArchitecture
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -14,8 +15,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        let tabViewController = TabViewController(
+            store: Store(
+                initialState: AppCore.State(),
+                reducer: AppCore()
+            )
+        )
+
+        let navigationController = UINavigationController(rootViewController: tabViewController)
+
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = TabViewController()
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 

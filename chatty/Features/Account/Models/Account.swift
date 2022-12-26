@@ -15,10 +15,35 @@ struct Account: Equatable, Codable {
         self.username = username
         self.email = email
     }
+}
 
-    static func removeUserDefaults() {
+extension Account {
+    static let identifier = "account"
+
+    static func removeFromUserDefaults() {
         let domain = Bundle.main.bundleIdentifier!
         UserDefaults.standard.removePersistentDomain(forName: domain)
         UserDefaults.standard.synchronize()
+    }
+
+    static func addToUserDefaults(_ account: Self) {
+        do {
+            let data = try JSONEncoder().encode(account)
+            UserDefaults.standard.set(data, forKey: Account.identifier)
+        } catch {
+            print("ERROR: \(error)")
+        }
+    }
+
+    static func getFromUserDefaults() -> Account? {
+        if let data = UserDefaults.standard.data(forKey: Account.identifier) {
+            do {
+                return try JSONDecoder().decode(self, from: data)
+            } catch {
+                print("ERROR: \(error)")
+            }
+        }
+
+        return nil
     }
 }
