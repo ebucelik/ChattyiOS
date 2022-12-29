@@ -134,7 +134,7 @@ class RegisterCore: ReducerProtocol {
         case passwordValidStateChanged(Loadable<Bool>)
 
         case showLoginView
-        case showFeed
+        case showFeed(Account)
 
         case reset
 
@@ -175,7 +175,7 @@ class RegisterCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return Effect(value: .showFeed)
+                    return Effect(value: .showFeed(account))
                 }
 
                 if case .none = registerStateDidChanged {

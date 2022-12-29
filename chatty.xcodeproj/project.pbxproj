@@ -20,7 +20,7 @@
 		7100565A287B474E00EBD93A /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005659287B474E00EBD93A /* LoginService.swift */; };
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
-		714D1774288406A50091BD10 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* Colors.swift */; };
+		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
 		714D1776288413680091BD10 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* ErrorMessage.swift */; };
 		714D177828841FB60091BD10 /* RegisterCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177728841FB60091BD10 /* RegisterCore.swift */; };
 		714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1779288423FB0091BD10 /* RegisterCall.swift */; };
@@ -36,6 +36,9 @@
 		716DB8B929585534003BF4A9 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8B829585534003BF4A9 /* EntryView.swift */; };
 		716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BA29585547003BF4A9 /* EntryCore.swift */; };
 		716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */; };
+		716E7F44295E3590006C5513 /* AccountCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F43295E3590006C5513 /* AccountCore.swift */; };
+		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
+		716E7F48295E376C006C5513 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F47295E376C006C5513 /* ErrorView.swift */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
@@ -83,7 +86,7 @@
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
-		714D1773288406A50091BD10 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		714D1775288413680091BD10 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		714D177728841FB60091BD10 /* RegisterCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCore.swift; sourceTree = "<group>"; };
 		714D1779288423FB0091BD10 /* RegisterCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCall.swift; sourceTree = "<group>"; };
@@ -99,6 +102,9 @@
 		716DB8B829585534003BF4A9 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		716DB8BA29585547003BF4A9 /* EntryCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCore.swift; sourceTree = "<group>"; };
 		716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		716E7F43295E3590006C5513 /* AccountCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCore.swift; sourceTree = "<group>"; };
+		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		716E7F47295E376C006C5513 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
 		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -367,6 +373,7 @@
 		71C977FD2878C37D004A457D /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				716E7F43295E3590006C5513 /* AccountCore.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -383,9 +390,11 @@
 			isa = PBXGroup;
 			children = (
 				71C978022878C444004A457D /* ViewControllerRepresentable.swift */,
-				714D1773288406A50091BD10 /* Colors.swift */,
+				714D1773288406A50091BD10 /* AppColor.swift */,
 				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
+				716E7F45295E36AF006C5513 /* LoadingView.swift */,
+				716E7F47295E376C006C5513 /* ErrorView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -534,17 +543,20 @@
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
 				71692CD328EB832D0025673A /* String+Extensions.swift in Sources */,
 				714D1776288413680091BD10 /* ErrorMessage.swift in Sources */,
+				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
 				7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */,
+				716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */,
 				711A2C40290BD26600DD0684 /* PostView.swift in Sources */,
 				71005656287AE55800EBD93A /* Call.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
+				716E7F48295E376C006C5513 /* ErrorView.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
-				714D1774288406A50091BD10 /* Colors.swift in Sources */,
+				714D1774288406A50091BD10 /* AppColor.swift in Sources */,
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
 				71005658287AF99100EBD93A /* APIError.swift in Sources */,

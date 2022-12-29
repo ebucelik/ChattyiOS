@@ -21,19 +21,19 @@ extension View {
             Image(systemName: "x.circle.fill")
                 .resizable()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Colors.error)
+                .foregroundColor(AppColor.error)
 
         case let .loaded(available):
             if available {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Colors.success)
+                    .foregroundColor(AppColor.success)
             } else {
                 Image(systemName: "x.circle.fill")
                     .resizable()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Colors.error)
+                    .foregroundColor(AppColor.error)
             }
 
         case .none:

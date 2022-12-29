@@ -18,14 +18,14 @@ class EntryCore: ReducerProtocol {
     enum Action {
         case login(LoginCore.Action)
         case register(RegisterCore.Action)
-        case showFeed
+        case showFeed(Account)
     }
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .login(.showFeed), .register(.showFeed):
-                return EffectTask(value: .showFeed)
+            case let .login(.showFeed(account)), let .register(.showFeed(account)):
+                return EffectTask(value: .showFeed(account))
 
             case .login(.showRegisterView):
                 state.showRegister = true

@@ -30,6 +30,7 @@ extension Account {
         do {
             let data = try JSONEncoder().encode(account)
             UserDefaults.standard.set(data, forKey: Account.identifier)
+            UserDefaults.standard.synchronize()
         } catch {
             print("ERROR: \(error)")
         }

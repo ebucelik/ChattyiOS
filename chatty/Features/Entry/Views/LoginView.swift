@@ -40,11 +40,17 @@ struct LoginView: View {
 
             Spacer()
 
+            Text("To get started, enter your email and password")
+                .font(.title2.bold())
+                .foregroundColor(AppColor.button)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
                     Image(systemName: "person.fill")
-                        .foregroundColor(Colors.gray)
-                    TextField("E-Mail", text: viewStore.binding(\.$login.email))
+                        .foregroundColor(AppColor.gray)
+                    TextField("Email", text: viewStore.binding(\.$login.email))
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
@@ -52,25 +58,45 @@ struct LoginView: View {
                 .padding()
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(Colors.gray, lineWidth: 2)
+                        .strokeBorder(AppColor.gray, lineWidth: 2)
                 )
 
                 HStack(spacing: 16) {
                     Image(systemName: "lock.fill")
-                        .foregroundColor(Colors.gray)
-                    SecureField("Password", text: viewStore.binding(\.$login.password))
-                        .textContentType(.password)
+                        .foregroundColor(AppColor.gray)
+
+                    if viewStore.state.showPassword {
+                        TextField("Password", text: viewStore.binding(\.$login.password))
+                            .textContentType(.password)
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                    } else {
+                        SecureField("Password", text: viewStore.binding(\.$login.password))
+                            .textContentType(.password)
+                            .textInputAutocapitalization(.never)
+                    }
+
+                    Spacer()
+
+                    Button(
+                        action: {
+                            viewStore.send(.showPassword)
+                        }, label: {
+                            Image(systemName: viewStore.state.showPassword ? "eye.fill" : "eye.slash.fill")
+                                .foregroundColor(AppColor.gray)
+                        }
+                    )
                 }
                 .padding()
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(Colors.gray, lineWidth: 2)
+                        .strokeBorder(AppColor.gray, lineWidth: 2)
                 )
 
                 HStack(spacing: 5) {
                     Text("Don't have an account?")
                         .font(.footnote)
-                        .foregroundColor(Colors.gray)
+                        .foregroundColor(AppColor.gray)
 
                     Button(action: {
                         viewStore.send(.showRegisterView)
@@ -78,14 +104,13 @@ struct LoginView: View {
                         Text("Sign up now.")
                             .font(.footnote)
                             .bold()
-                            .foregroundColor(Colors.gray)
+                            .foregroundColor(AppColor.gray)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     })
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .padding(.horizontal)
 
             VStack {
                 ChattyDivider()
@@ -105,14 +130,14 @@ struct LoginView: View {
             Spacer()
 
             ChattyButton(
-                text: "LOGIN",
+                text: "Log in",
                 isLoading: viewStore.loginState == .loading,
                 action: {
                     viewStore.send(.login)
                 }
             )
-            .padding()
         }
+        .padding()
         .contentShape(Rectangle())
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

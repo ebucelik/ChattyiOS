@@ -52,11 +52,17 @@ struct RegisterView: View {
 
             Spacer()
 
+            Text("In the first step, enter your username")
+                .font(.title2.bold())
+                .foregroundColor(AppColor.button)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
                         Image(systemName: "person.fill")
-                            .foregroundColor(Colors.gray)
+                            .foregroundColor(AppColor.gray)
 
                         TextField("Username", text: viewStore.binding(\.$register.username))
                             .textContentType(.username)
@@ -78,14 +84,14 @@ struct RegisterView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(Colors.gray, lineWidth: 2)
+                            .strokeBorder(AppColor.gray, lineWidth: 2)
                     )
                 }
 
                 HStack(spacing: 5) {
                     Text("Already have an account?")
                         .font(.footnote)
-                        .foregroundColor(Colors.gray)
+                        .foregroundColor(AppColor.gray)
 
                     Button(action: {
                         viewStore.send(.showLoginView)
@@ -94,13 +100,12 @@ struct RegisterView: View {
                             .font(.footnote)
                             .bold()
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundColor(Colors.gray)
+                            .foregroundColor(AppColor.gray)
                     })
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .padding(.horizontal)
 
             VStack {
                 ChattyDivider()
@@ -121,8 +126,8 @@ struct RegisterView: View {
 
             ChattyButton(text: "Step 2", action: { viewStore.send(.showEmailAndPasswordView) })
                 .opacity(viewStore.isUsernameAvailable ? 1 : 0)
-                .padding()
         }
+        .padding()
     }
 
     @ViewBuilder
@@ -132,7 +137,7 @@ struct RegisterView: View {
                 Button(action: { viewStore.send(.showUsernameView) }) {
                     Text("Back")
                         .bold()
-                        .foregroundColor(Colors.gray)
+                        .foregroundColor(AppColor.gray)
                 }
 
                 Spacer()
@@ -142,11 +147,17 @@ struct RegisterView: View {
 
             Spacer()
 
+            Text("Enter your email and password")
+                .font(.title2.bold())
+                .foregroundColor(AppColor.button)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             Group {
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
                         Image(systemName: "envelope.fill")
-                            .foregroundColor(Colors.gray)
+                            .foregroundColor(AppColor.gray)
 
                         TextField("E-Mail", text: viewStore.binding(\.$register.email))
                             .textContentType(.emailAddress)
@@ -163,14 +174,14 @@ struct RegisterView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(Colors.gray, lineWidth: 2)
+                            .strokeBorder(AppColor.gray, lineWidth: 2)
                     )
                 }
 
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
                         Image(systemName: "lock.fill")
-                            .foregroundColor(Colors.gray)
+                            .foregroundColor(AppColor.gray)
 
                         if viewStore.state.showPassword {
                             TextField("Password", text: viewStore.binding(\.$register.password))
@@ -196,7 +207,7 @@ struct RegisterView: View {
                                 viewStore.send(.showPassword)
                             }, label: {
                                 Image(systemName: viewStore.state.showPassword ? "eye.fill" : "eye.slash.fill")
-                                    .foregroundColor(Colors.gray)
+                                    .foregroundColor(AppColor.gray)
                             }
                         )
 
@@ -205,7 +216,7 @@ struct RegisterView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(Colors.gray, lineWidth: 2)
+                            .strokeBorder(AppColor.gray, lineWidth: 2)
                     )
                 }
                 .padding(.bottom)
@@ -241,7 +252,7 @@ struct RegisterView: View {
                 Button(action: { viewStore.send(.showEmailAndPasswordView) }) {
                     Text("Back")
                         .bold()
-                        .foregroundColor(Colors.gray)
+                        .foregroundColor(AppColor.gray)
                 }
 
                 Spacer()
@@ -249,7 +260,7 @@ struct RegisterView: View {
                 Button(action: { viewStore.send(.register) }) {
                     Text("Skip")
                         .bold()
-                        .foregroundColor(Colors.error)
+                        .foregroundColor(AppColor.error)
                 }
             }
 
@@ -265,7 +276,7 @@ struct RegisterView: View {
             getImage(from: viewStore.profilePhoto)
                 .resizable()
                 .frame(width: 150, height: 150, alignment: .center)
-                .foregroundColor(Colors.gray)
+                .foregroundColor(AppColor.gray)
                 .cornerRadius(75)
                 .shadow(radius: 10)
                 .onTapGesture {

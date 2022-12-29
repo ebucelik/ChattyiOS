@@ -15,6 +15,7 @@ class AppCore: ReducerProtocol {
         var showFeed = false
 
         var feed = FeedCore.State()
+        var account = AccountCore.State()
         var entry = EntryCore.State()
     }
 
@@ -24,6 +25,7 @@ class AppCore: ReducerProtocol {
         case accountStateChanged(Loadable<Account?>)
 
         case feed(FeedCore.Action)
+        case account(AccountCore.Action)
         case entry(EntryCore.Action)
     }
 
@@ -43,9 +45,15 @@ class AppCore: ReducerProtocol {
             case let .accountStateChanged(accountStateChanged):
                 state.accountState = accountStateChanged
 
+                if case let .loaded(loadedAccount) = accountStateChanged,
+                   let account = loadedAccount {
+                    state.account = AccountCore.State(accountState: .loaded(account))
+                }
+
                 return .none
 
-            case .entry(.showFeed):
+            case let .entry(.showFeed(account)):
+                state.accountState = .loaded(account)
                 state.showFeed = true
 
                 return .none
@@ -60,6 +68,13 @@ class AppCore: ReducerProtocol {
             action: /Action.feed
         ) {
             FeedCore()
+        }
+
+        Scope(
+            state: \.account,
+            action: /Action.account
+        ) {
+            AccountCore()
         }
 
         Scope(

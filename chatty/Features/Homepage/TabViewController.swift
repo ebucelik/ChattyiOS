@@ -17,6 +17,7 @@ class TabViewController: UITabBarController {
     var cancellables = Set<AnyCancellable>()
 
     let feedView: FeedView
+    let accountView: AccountView
     let entryView: EntryView
 
     init(store: StoreOf<AppCore>) {
@@ -27,6 +28,13 @@ class TabViewController: UITabBarController {
             store: store.scope(
                 state: \.feed,
                 action: AppCore.Action.feed
+            )
+        )
+
+        self.accountView = AccountView(
+            store: store.scope(
+                state: \.account,
+                action: AppCore.Action.account
             )
         )
 
@@ -51,7 +59,9 @@ class TabViewController: UITabBarController {
 
         viewStore.publisher.accountState.sink { [self] accountState in
             if case let .loaded(account) = accountState {
-                account == nil ? pushViewController(with: entryView) : dismiss(animated: true)
+                if account == nil {
+                    pushViewController(with: entryView)
+                }
             }
         }.store(in: &cancellables)
 
@@ -71,11 +81,15 @@ class TabViewController: UITabBarController {
     private func setCoreViewController() {
         let viewController = UIHostingController(
             rootView: feedView
+                .navigationBarHidden(true)
         )
         let feedViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "house.fill"), tag: 0)
         viewController.tabBarItem = feedViewTabBarItem
 
-        let accountViewController = UIHostingController(rootView: AccountView())
+        let accountViewController = UIHostingController(
+            rootView: accountView
+                .navigationBarHidden(true)
+        )
         let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 1)
         accountViewController.tabBarItem = accountViewTabBarItem
 
