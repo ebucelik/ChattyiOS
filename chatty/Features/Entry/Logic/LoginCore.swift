@@ -72,7 +72,7 @@ class LoginCore: ReducerProtocol {
                     do {
                         return .loginStateChanged(.loaded(try await self.service.login(login: login)))
                     } catch {
-                        return .loginStateChanged(.error(error))
+                        return .loginStateChanged(.error(.error(error)))
                     }
                 }
                 .debounce(id: Debounce(), for: .seconds(2), scheduler: self.mainScheduler)
@@ -91,9 +91,8 @@ class LoginCore: ReducerProtocol {
                 }
 
                 if case let .error(error) = changedState {
-                    if let apiError = error as? APIError,
-                       case let .unexpectedError(stringError) = apiError {
-                        state.error = stringError
+                    if case let .unexpectedError(apiError) = error {
+                        state.error = apiError
                     } else {
                         state.error = "Unexpected error has occured"
                     }

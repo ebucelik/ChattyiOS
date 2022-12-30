@@ -107,8 +107,6 @@ class TabViewController: UITabBarController {
         addPushTransitionToNavigationController()
 
         navigationController?.pushViewController(viewController, animated: false)
-
-        print("EBU: ")
     }
 
     private func popViewController() {

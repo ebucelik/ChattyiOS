@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftHelper
 import Combine
 
 class BackendClient {

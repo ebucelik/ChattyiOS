@@ -16,7 +16,6 @@
 		71005652287AE3FC00EBD93A /* HTTPMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005651287AE3FC00EBD93A /* HTTPMethods.swift */; };
 		71005654287AE54100EBD93A /* LoginCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005653287AE54100EBD93A /* LoginCall.swift */; };
 		71005656287AE55800EBD93A /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005655287AE55800EBD93A /* Call.swift */; };
-		71005658287AF99100EBD93A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005657287AF99100EBD93A /* APIError.swift */; };
 		7100565A287B474E00EBD93A /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005659287B474E00EBD93A /* LoginService.swift */; };
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
@@ -52,8 +51,8 @@
 		71C977F62878C1FF004A457D /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977F52878C1FF004A457D /* FeedView.swift */; };
 		71C978002878C3DE004A457D /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977FF2878C3DE004A457D /* AccountView.swift */; };
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
-		71C98AEE2956266A0011A61D /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71C98AED2956266A0011A61D /* SwiftHelper */; };
 		71C98AF0295643E30011A61D /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C98AEF295643E30011A61D /* AppCore.swift */; };
+		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +81,6 @@
 		71005651287AE3FC00EBD93A /* HTTPMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethods.swift; sourceTree = "<group>"; };
 		71005653287AE54100EBD93A /* LoginCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCall.swift; sourceTree = "<group>"; };
 		71005655287AE55800EBD93A /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
-		71005657287AF99100EBD93A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
@@ -130,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71C98AEE2956266A0011A61D /* SwiftHelper in Frameworks */,
+				71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,7 +278,6 @@
 				7100564F287AE39200EBD93A /* BackendClient.swift */,
 				71005651287AE3FC00EBD93A /* HTTPMethods.swift */,
 				71005655287AE55800EBD93A /* Call.swift */,
-				71005657287AF99100EBD93A /* APIError.swift */,
 				714D1775288413680091BD10 /* ErrorMessage.swift */,
 			);
 			path = Network;
@@ -417,7 +414,7 @@
 			name = chatty;
 			packageProductDependencies = (
 				71005641287ACE8600EBD93A /* ComposableArchitecture */,
-				71C98AED2956266A0011A61D /* SwiftHelper */,
+				71D7D6F2295EF94D00484831 /* SwiftHelper */,
 			);
 			productName = chatty;
 			productReference = 71C977B92878AA8C004A457D /* chatty.app */;
@@ -493,7 +490,7 @@
 			mainGroup = 71C977B02878AA8C004A457D;
 			packageReferences = (
 				71005640287ACE8600EBD93A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
-				71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */,
+				71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */,
 			);
 			productRefGroup = 71C977BA2878AA8C004A457D /* Products */;
 			projectDirPath = "";
@@ -559,7 +556,6 @@
 				714D1774288406A50091BD10 /* AppColor.swift in Sources */,
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
-				71005658287AF99100EBD93A /* APIError.swift in Sources */,
 				71005661287B6E1600EBD93A /* LoginView.swift in Sources */,
 				7151BE4C28D4BB61000E58EF /* ImagePicker.swift in Sources */,
 				714D177E288434180091BD10 /* RegisterView.swift in Sources */,
@@ -930,12 +926,12 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */ = {
+		71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ebucelik/SwiftHelper.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -946,9 +942,9 @@
 			package = 71005640287ACE8600EBD93A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		71C98AED2956266A0011A61D /* SwiftHelper */ = {
+		71D7D6F2295EF94D00484831 /* SwiftHelper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 71C98AEC2956266A0011A61D /* XCRemoteSwiftPackageReference "SwiftHelper" */;
+			package = 71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */;
 			productName = SwiftHelper;
 		};
 /* End XCSwiftPackageProductDependency section */

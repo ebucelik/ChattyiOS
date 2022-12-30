@@ -33,7 +33,7 @@ class FeedCore: ReducerProtocol {
                     do {
                         return .logoutStateChanged(.loaded(try await self.service.logout()))
                     } catch {
-                        return .logoutStateChanged(.error(error))
+                        return .logoutStateChanged(.error(.error(error)))
                     }
                 }
                 .receive(on: self.mainScheduler)
@@ -43,9 +43,8 @@ class FeedCore: ReducerProtocol {
             case let .logoutStateChanged(logoutStateDidChanged):
                 state.logoutState = logoutStateDidChanged
 
-                if case let .error(error) = logoutStateDidChanged {
-                    if let apiError = error as? APIError,
-                       case .unauthorized = apiError {
+                if case let .error(apiError) = logoutStateDidChanged {
+                    if case .unauthorized = apiError {
                         return Effect(value: .showLoginView)
                     }
                 }

@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ebucelik/SwiftHelper.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "0259270e65287c3e0bb7b77f073222c934435219"
+        "revision" : "44d0e9803047aa4f28c8925d65a8a68780a242ef",
+        "version" : "1.0.2"
       }
     },
     {

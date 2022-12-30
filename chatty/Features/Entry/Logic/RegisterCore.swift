@@ -38,7 +38,7 @@ class RegisterCore: ReducerProtocol {
         var isLoading: Bool
         var error: String {
             if case let .error(error) = registerState {
-                if case let .unexpectedError(apiError) = error as? APIError {
+                if case let .unexpectedError(apiError) = error {
                     return apiError
                 }
 
@@ -46,7 +46,7 @@ class RegisterCore: ReducerProtocol {
             }
 
             if case let .error(error) = usernameAvailableState {
-                if case let .unexpectedError(apiError) = error as? APIError {
+                if case let .unexpectedError(apiError) = error {
                     return apiError
                 }
 
@@ -54,7 +54,7 @@ class RegisterCore: ReducerProtocol {
             }
 
             if case let .error(error) = emailAvailableState {
-                if case let .unexpectedError(apiError) = error as? APIError {
+                if case let .unexpectedError(apiError) = error {
                     return apiError
                 }
 
@@ -62,7 +62,7 @@ class RegisterCore: ReducerProtocol {
             }
 
             if case let .error(error) = passwordValidState {
-                if case let .unexpectedError(apiError) = error as? APIError {
+                if case let .unexpectedError(apiError) = error {
                     return apiError
                 }
 
@@ -158,7 +158,7 @@ class RegisterCore: ReducerProtocol {
                     do {
                         return .registerStateChanged(.loaded(try await self.service.register(register: register)))
                     } catch {
-                        return .registerStateChanged(.error(error))
+                        return .registerStateChanged(.error(.error(error)))
                     }
                 }
                 .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
@@ -201,7 +201,7 @@ class RegisterCore: ReducerProtocol {
                     do {
                         return .usernameAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkUsername(username: username)))
                     } catch {
-                        return .usernameAvailableStateChanged(.error(error))
+                        return .usernameAvailableStateChanged(.error(.error(error)))
                     }
                 }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
@@ -258,7 +258,7 @@ class RegisterCore: ReducerProtocol {
                     do {
                         return .emailAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkEmail(email: email)))
                     } catch {
-                        return .emailAvailableStateChanged(.error(error))
+                        return .emailAvailableStateChanged(.error(.error(error)))
                     }
                 }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
