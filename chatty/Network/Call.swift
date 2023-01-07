@@ -8,18 +8,28 @@
 import Foundation
 
 protocol Call {
-    associatedtype Response: Decodable
+    associatedtype Response: Codable
 
+    var scheme: String { get }
+    var domain: String { get }
+    var resource: String { get }
     var path: String { get }
     var httpMethod: HTTPMethod { get }
-    var body: Data? { get }
+    var body: Codable? { get }
     var parameters: [String : Any]? { get }
 }
 
 extension Call {
-    var body: Data? {
+    var scheme: String { "http://" }
+
+    var domain: String { "localhost:8080/api/v1/" }
+
+    var path: String { scheme + domain + resource}
+    
+    var body: Codable? {
         get { nil }
     }
+
     var parameters: [String : Any]? {
         get { nil }
     }

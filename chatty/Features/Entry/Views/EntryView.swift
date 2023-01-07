@@ -14,10 +14,12 @@ struct EntryView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            if viewStore.showRegister {
-                registerViewBody()
-            } else {
+            switch viewStore.entryViewState {
+            case .login:
                 loginViewBody()
+
+            case .register:
+                registerViewBody()
             }
         }
     }

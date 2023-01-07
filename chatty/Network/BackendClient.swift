@@ -11,12 +11,10 @@ import Combine
 
 class BackendClient {
 
-    private let domain = "http://localhost:8080/api/v1/"
-
     private func start<C: Call>(call: C, completion: @escaping (Result<C.Response, Error>) -> Void) {
 
         // MARK: - Create URLComponents
-        guard var components = URLComponents(string: domain + call.path) else {
+        guard var components = URLComponents(string: call.path) else {
             completion(.failure(APIError.unexpectedError("URLCompontens are not valid or empty.")))
             return
         }
@@ -38,7 +36,11 @@ class BackendClient {
             return
         }
 
-        let request = createRequest(for: url, httpMethod: call.httpMethod, body: call.body)
+        let request = createRequest(
+            for: url,
+            httpMethod: call.httpMethod,
+            body: call.body
+        )
 
 #if DEBUG
         print("REQUEST URL: \(String(describing: url.absoluteString))")
@@ -110,14 +112,15 @@ class BackendClient {
     ///   - httpMethod: Define the http method (e.g. GET, POST, PUT, DELETE).
     ///   - body: When a object should be inserted or updated at the backend.
     /// - Returns: URLRequest object
-    private func createRequest(for url: URL, httpMethod: HTTPMethod, body: Data? = nil) -> URLRequest {
+    private func createRequest(for url: URL, httpMethod: HTTPMethod, body: Codable? = nil) -> URLRequest {
         var urlRequest = URLRequest(url: url)
+
         urlRequest.httpMethod = httpMethod.rawValue
         urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")
 
         if let body = body {
-            urlRequest.httpBody = body
+            urlRequest.httpBody = try? JSONEncoder().encode(body)
         }
 
         return urlRequest

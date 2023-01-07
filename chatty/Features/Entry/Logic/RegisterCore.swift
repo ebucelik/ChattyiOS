@@ -156,7 +156,9 @@ class RegisterCore: ReducerProtocol {
                 // TODO: Save somehow the profile picture of the user.
                 return .task { [register = state.register] in
                     do {
-                        return .registerStateChanged(.loaded(try await self.service.register(register: register)))
+                        let account = try await self.service.register(register: register)
+
+                        return .registerStateChanged(.loaded(account))
                     } catch {
                         return .registerStateChanged(.error(.error(error)))
                     }

@@ -10,6 +10,6 @@ import Foundation
 class LogoutCall: Call {
     typealias Response = String
 
-    let path: String = "logout"
+    let resource: String = "logout"
     let httpMethod: HTTPMethod = .POST
 }

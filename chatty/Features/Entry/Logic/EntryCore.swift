@@ -9,8 +9,14 @@ import Foundation
 import ComposableArchitecture
 
 class EntryCore: ReducerProtocol {
+
+    enum EntryViewState {
+        case login
+        case register
+    }
+
     struct State: Equatable {
-        var showRegister = false
+        var entryViewState: EntryViewState = .login
         var login = LoginCore.State()
         var register = RegisterCore.State()
     }
@@ -28,12 +34,12 @@ class EntryCore: ReducerProtocol {
                 return EffectTask(value: .showFeed(account))
 
             case .login(.showRegisterView):
-                state.showRegister = true
+                state.entryViewState = .register
 
                 return .none
 
             case .register(.showLoginView):
-                state.showRegister = false
+                state.entryViewState = .login
 
                 return .none
 

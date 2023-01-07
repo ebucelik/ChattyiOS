@@ -10,17 +10,11 @@ import Foundation
 class RegisterCall: Call {
     typealias Response = Account
 
-    let path: String = "register"
+    let resource: String = "register"
     let httpMethod: HTTPMethod = .POST
-    let body: Data?
+    let body: Codable?
 
-    init(body: Register) {
-        do {
-            self.body = try JSONEncoder().encode(body)
-        } catch {
-            self.body = nil
-
-            print(error)
-        }
+    init(body: Codable) {
+        self.body = body
     }
 }

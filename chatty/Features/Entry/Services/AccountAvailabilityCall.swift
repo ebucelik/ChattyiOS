@@ -10,7 +10,7 @@ import Foundation
 class AccountAvailabilityCall: Call {
     typealias Response = Bool
 
-    var path: String = "account"
+    var resource: String = "account"
     var httpMethod: HTTPMethod = .GET
     var parameters: [String : Any]?
 
