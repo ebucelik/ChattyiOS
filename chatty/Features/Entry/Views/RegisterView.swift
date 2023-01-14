@@ -255,6 +255,7 @@ struct RegisterView: View {
                         .bold()
                         .foregroundColor(AppColor.gray)
                 }
+                .disabled(.loading == viewStore.registerState)
 
                 Spacer()
 
@@ -263,6 +264,8 @@ struct RegisterView: View {
                         .bold()
                         .foregroundColor(AppColor.error)
                 }
+                .disabled(.loading == viewStore.registerState)
+                .opacity(viewStore.picture != nil ? 0 : 1)
             }
 
             Spacer()
@@ -283,6 +286,7 @@ struct RegisterView: View {
                 .onTapGesture {
                     viewStore.send(.showImagePicker)
                 }
+                .disabled(.loading == viewStore.registerState)
 
             Spacer()
                 .frame(height: 50)
@@ -292,13 +296,17 @@ struct RegisterView: View {
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("Take a minute to upload a profile photo.")
+            Text("Take a minute to upload a profile picture.")
                 .frame(maxWidth: .infinity, alignment: .center)
 
             Spacer()
 
-            ChattyButton(text: "Start with Chatty", action: { viewStore.send(.register) })
-                .opacity(viewStore.picture != nil ? 1 : 0)
+            ChattyButton(
+                text: "Start with Chatty",
+                isLoading: .loading == viewStore.registerState,
+                action: { viewStore.send(.register) }
+            )
+            .opacity(viewStore.picture != nil ? 1 : 0)
         }
         .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
             ImagePicker(image: viewStore.binding(\.$picture))

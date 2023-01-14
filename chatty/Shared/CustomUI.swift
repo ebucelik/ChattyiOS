@@ -58,10 +58,12 @@ public struct ChattyButton: View {
                         .font(.headline)
                         .bold()
                         .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
+            .disabled(isLoading ?? false)
         }
         .background(AppColor.button)
         .cornerRadius(8)
