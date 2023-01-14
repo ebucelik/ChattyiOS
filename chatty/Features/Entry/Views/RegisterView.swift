@@ -279,6 +279,7 @@ struct RegisterView: View {
 
             getImage(from: viewStore.picture)
                 .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 150, height: 150, alignment: .center)
                 .foregroundColor(AppColor.gray)
                 .cornerRadius(75)
