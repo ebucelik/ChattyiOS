@@ -8,6 +8,7 @@
 import Foundation
 
 struct Account: Equatable, Codable {
+    let id: Int
     let username: String
     let email: String
     let picture: String
@@ -15,7 +16,8 @@ struct Account: Equatable, Codable {
     let subscribedCount: Int
     let postCount: Int
 
-    init(username: String, email: String, picture: String, subscriberCount: Int, subscribedCount: Int, postCount: Int) {
+    init(id: Int, username: String, email: String, picture: String, subscriberCount: Int, subscribedCount: Int, postCount: Int) {
+        self.id = id
         self.username = username
         self.email = email
         self.picture = picture
