@@ -30,7 +30,7 @@ public struct ChattyIcon: View {
             .resizable(resizingMode: .stretch)
             .frame(width: width, height: height)
             .padding()
-            .foregroundColor(AppColor.button)
+            .foregroundColor(AppColor.primary)
     }
 }
 
@@ -55,7 +55,7 @@ public struct ChattyButton: View {
                         .tint(.white)
                 } else {
                     Text(text)
-                        .font(.headline)
+                        .font(AppFont.headline)
                         .bold()
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -65,7 +65,7 @@ public struct ChattyButton: View {
             .padding()
             .disabled(isLoading ?? false)
         }
-        .background(AppColor.button)
+        .background(AppColor.primary)
         .cornerRadius(8)
         .shadow(radius: 5)
     }

@@ -14,6 +14,12 @@ import UIKit
 
 class RegisterCore: ReducerProtocol {
 
+    enum ViewState {
+        case usernameView
+        case emailAndPasswordView
+        case profilePictureView
+    }
+
     struct State: Equatable {
         var registerState: Loadable<Account>
         var usernameAvailableState: Loadable<Bool>
@@ -22,9 +28,7 @@ class RegisterCore: ReducerProtocol {
 
         var showPassword: Bool = false
 
-        var showUsernameView = true
-        var showEmailAndPasswordView = false
-        var showProfilePictureView = false
+        var viewState: ViewState = .usernameView
 
         @BindableState
         var showImagePicker: Bool = false
@@ -35,7 +39,6 @@ class RegisterCore: ReducerProtocol {
         @BindableState
         var register: Register
 
-        var isLoading: Bool
         var error: String {
             if case let .error(error) = registerState {
                 if case let .unexpectedError(apiError) = error {
@@ -101,14 +104,12 @@ class RegisterCore: ReducerProtocol {
              usernameAvailableState: Loadable<Bool> = .none,
              emailAvailableState: Loadable<Bool> = .none,
              passwordValidState: Loadable<Bool> = .none,
-             register: Register = .empty,
-             isLoading: Bool = false) {
+             register: Register = .empty) {
             self.registerState = registerState
             self.usernameAvailableState = usernameAvailableState
             self.emailAvailableState = emailAvailableState
             self.passwordValidState = passwordValidState
             self.register = register
-            self.isLoading = isLoading
         }
     }
 
@@ -154,23 +155,34 @@ class RegisterCore: ReducerProtocol {
             case .register:
                 struct Debounce: Hashable { }
 
-                // TODO: Save somehow the profile picture of the user.
                 return .task { [register = state.register, picture = state.picture] in
-                    do {
-                        if let picture = picture,
-                           let jpegData = picture.jpegData(compressionQuality: 1.0) {
-                            let imageLink = try await self.imageService.uploadImage(imageData: jpegData)
-                            print(imageLink)
-                        }
+                    if let picture = picture,
+                       let jpegData = picture.jpegData(compressionQuality: 1.0) {
+                        let pictureLink = try await self.imageService.uploadImage(imageData: jpegData)
 
+                        let account = try await self.service.register(
+                            register: Register(
+                                username: register.username,
+                                email: register.email,
+                                password: register.password,
+                                picture: pictureLink
+                            )
+                        )
+
+                        return .registerStateChanged(.loaded(account))
+                    } else {
                         let account = try await self.service.register(register: register)
 
                         return .registerStateChanged(.loaded(account))
-                    } catch {
+                    }
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .registerStateChanged(.error(apiError))
+                    } else {
                         return .registerStateChanged(.error(.error(error)))
                     }
                 }
-                .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                 .receive(on: self.mainScheduler)
                 .prepend(.registerStateChanged(.loading))
                 .eraseToEffect()
@@ -180,23 +192,9 @@ class RegisterCore: ReducerProtocol {
 
                 if case let .loaded(account) = registerStateDidChanged {
 
-                    state.isLoading = false
-
                     Account.addToUserDefaults(account)
 
                     return Effect(value: .showFeed(account))
-                }
-
-                if case .none = registerStateDidChanged {
-                    state.isLoading = false
-                }
-
-                if .loading == registerStateDidChanged, .refreshing == registerStateDidChanged {
-                    state.isLoading = true
-                }
-
-                if case let .error(error) = registerStateDidChanged {
-                    state.isLoading = false
                 }
 
                 return .none
@@ -206,10 +204,12 @@ class RegisterCore: ReducerProtocol {
 
                 let username = state.register.username
 
-                return Effect.task {
-                    do {
-                        return .usernameAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkUsername(username: username)))
-                    } catch {
+                return .task {
+                    return .usernameAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkUsername(username: username)))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .usernameAvailableStateChanged(.error(apiError))
+                    } else {
                         return .usernameAvailableStateChanged(.error(.error(error)))
                     }
                 }
@@ -255,18 +255,28 @@ class RegisterCore: ReducerProtocol {
                         .eraseToEffect()
                 }
 
-                return Effect(value: .emailAvailableStateChanged(.error(APIError.unexpectedError("Please provide a valid e-mail."))))
-                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                    .prepend(.emailAvailableStateChanged(.loading))
-                    .eraseToEffect()
+                return Effect(
+                    value: .emailAvailableStateChanged(
+                        .error(
+                            APIError.unexpectedError("Please provide a valid e-mail.")
+                        )
+                    )
+                )
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .prepend(.emailAvailableStateChanged(.loading))
+                .eraseToEffect()
 
             case .checkEmail:
                 struct Debounce: Hashable { }
 
                 return .task { [email = state.register.email] in
-                    do {
-                        return .emailAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkEmail(email: email)))
-                    } catch {
+                    return .emailAvailableStateChanged(
+                        .loaded(try await self.accountAvailabilityService.checkEmail(email: email))
+                    )
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .emailAvailableStateChanged(.error(apiError))
+                    } else {
                         return .emailAvailableStateChanged(.error(.error(error)))
                     }
                 }
@@ -293,21 +303,17 @@ class RegisterCore: ReducerProtocol {
                 return .none
 
             case .showUsernameView:
-                state.showEmailAndPasswordView = false
-                state.showUsernameView = true
+                state.viewState = .usernameView
 
                 return .none
 
             case .showEmailAndPasswordView:
-                state.showUsernameView = false
-                state.showProfilePictureView = false
-                state.showEmailAndPasswordView = true
+                state.viewState = .emailAndPasswordView
 
                 return .none
 
             case .showProfilePictureView:
-                state.showEmailAndPasswordView = false
-                state.showProfilePictureView = true
+                state.viewState = .profilePictureView
 
                 return .none
 

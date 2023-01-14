@@ -29,6 +29,11 @@ struct AccountView: View {
                     )
                 }
             }
+            .onAppear {
+                if case .none = viewStore.accountState {
+                    viewStore.send(.fetchAccount)
+                }
+            }
         }
     }
 
@@ -36,35 +41,65 @@ struct AccountView: View {
     private func accountBody(with account: Account, _ viewStore: ViewStoreOf<AccountCore>) -> some View {
         ScrollView(.vertical) {
             VStack(spacing: 24) {
-                Image(systemName: "person.circle")
-                    .renderingMode(.template)
-                    .resizable()
+                if account.picture.isEmpty {
+                    Image(systemName: "person.circle")
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 125, height: 125)
+                        .foregroundColor(AppColor.gray)
+                } else {
+                    AsyncImage(url: URL(string: account.picture)) { profilePicture in
+                        profilePicture
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        LoadingView()
+                    }
                     .frame(width: 125, height: 125)
-                    .foregroundColor(AppColor.button)
-
-                ChattyDivider()
-
-                HStack(spacing: 16) {
-                    Text("287")
-                        .font(.headline.monospaced())
-
-                    ChattyDivider()
-
-                    Text("115")
-                        .font(.headline.monospaced())
-
-                    ChattyDivider()
-
-                    Text("10")
-                        .font(.headline.monospaced())
+                    .cornerRadius(75)
+                    .shadow(radius: 10)
                 }
 
                 ChattyDivider()
 
-                ChattyButton(text: "I want to know", action: {})
-                    .padding(.horizontal)
+                HStack(spacing: 16) {
+                    VStack(spacing: 10) {
+                        Text("Subscriber")
+                            .font(AppFont.caption)
+
+                        Text(String(account.subscriberCount))
+                            .font(AppFont.caption)
+                    }
+
+                    ChattyDivider()
+
+                    VStack(spacing: 10) {
+                        Text("Subscribed")
+                            .font(AppFont.caption)
+
+                        Text(String(account.subscribedCount))
+                            .font(AppFont.caption)
+                    }
+
+                    ChattyDivider()
+
+                    VStack(spacing: 10) {
+                        Text("Posts")
+                            .font(AppFont.caption)
+
+                        Text(String(account.postCount))
+                            .font(AppFont.caption)
+                    }
+                }
 
                 ChattyDivider()
+
+                if viewStore.isOtherAccount {
+                    ChattyButton(text: "I want to know", action: {})
+                        .padding(.horizontal)
+
+                    ChattyDivider()
+                }
             }
             .padding()
             .padding(.top, 24)

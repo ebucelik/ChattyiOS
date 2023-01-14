@@ -23,7 +23,7 @@ protocol Call {
 extension Call {
     var scheme: String { "http://" }
 
-    var domain: String { "192.168.1.10:8080/api/v1/" }
+    var domain: String { "localhost:8080/api/v1/" }
 
     var path: String { scheme + domain + resource}
     

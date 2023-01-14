@@ -10,7 +10,7 @@ import Foundation
 class RegisterCall: Call {
     typealias Response = Account
 
-    let resource: String = "account/register"
+    let resource: String = "auth/register"
     let httpMethod: HTTPMethod = .POST
     let body: Codable?
 

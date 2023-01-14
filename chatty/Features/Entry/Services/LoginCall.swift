@@ -10,7 +10,7 @@ import Foundation
 class LoginCall: Call {
     typealias Response = Account
 
-    let resource: String = "account/login"
+    let resource: String = "auth/login"
     let httpMethod: HTTPMethod = .POST
     let body: Codable?
 

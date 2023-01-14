@@ -45,6 +45,7 @@
 		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
 		716E7F48295E376C006C5513 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F47295E376C006C5513 /* ErrorView.swift */; };
 		71B5975B2973163D00EAECC2 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975A2973163D00EAECC2 /* FormData.swift */; };
+		71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975C2973452D00EAECC2 /* AppFont.swift */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
@@ -116,6 +117,7 @@
 		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		716E7F47295E376C006C5513 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		71B5975A2973163D00EAECC2 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
+		71B5975C2973452D00EAECC2 /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
 		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				714FCC8C296A0BDE00AA3F48 /* Image */,
+				71B5975C2973452D00EAECC2 /* AppFont.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 			files = (
 				714FCC852969E57D00AA3F48 /* DependencyValues.swift in Sources */,
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
+				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
 				714FCC872969E5B100AA3F48 /* DispatchQueue+Extensions.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,

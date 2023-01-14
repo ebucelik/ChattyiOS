@@ -13,9 +13,11 @@ class AccountCore: ReducerProtocol {
 
     struct State: Equatable {
         var accountState: Loadable<Account>
+        var isOtherAccount: Bool
 
-        init(accountState: Loadable<Account> = .none) {
+        init(accountState: Loadable<Account> = .none, isOtherAccount: Bool = false) {
             self.accountState = accountState
+            self.isOtherAccount = isOtherAccount
         }
     }
 

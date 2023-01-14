@@ -56,6 +56,11 @@ class AppCore: ReducerProtocol {
                 state.accountState = .loaded(account)
                 state.showFeed = true
 
+                if case let .loaded(loadedAccount) = state.accountState,
+                   let account = loadedAccount {
+                    state.account = AccountCore.State(accountState: Loadable<Account>.loaded(account))
+                }
+
                 return .none
 
             default:

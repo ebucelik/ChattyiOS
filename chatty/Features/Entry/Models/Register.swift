@@ -11,11 +11,13 @@ struct Register: Equatable, Codable {
     var username: String
     var email: String
     var password: String
+    var picture: String
 
-    init(username: String, email: String, password: String) {
+    init(username: String, email: String, password: String, picture: String) {
         self.username = username
         self.email = email
         self.password = password
+        self.picture = picture
     }
 }
 
@@ -24,7 +26,8 @@ extension Register {
         Register(
             username: "",
             email: "",
-            password: ""
+            password: "",
+            picture: ""
         )
     }
 }

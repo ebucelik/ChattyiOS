@@ -11,7 +11,7 @@ struct LoadingView: View {
     let tint: Color
     let fullScreen: Bool
 
-    init(_ tint: Color = AppColor.button, fullScreen: Bool = false) {
+    init(_ tint: Color = AppColor.primary, fullScreen: Bool = false) {
         self.tint = tint
         self.fullScreen = fullScreen
     }

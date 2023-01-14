@@ -69,11 +69,13 @@ class LoginCore: ReducerProtocol {
                 }
 
                 return .task { [login = state.login] in
-                    do {
-                        let account = try await self.service.login(login: login)
+                    let account = try await self.service.login(login: login)
 
-                        return .loginStateChanged(.loaded(account))
-                    } catch {
+                    return .loginStateChanged(.loaded(account))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .loginStateChanged(.error(apiError))
+                    } else {
                         return .loginStateChanged(.error(.error(error)))
                     }
                 }

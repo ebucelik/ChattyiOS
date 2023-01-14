@@ -18,15 +18,14 @@ struct RegisterView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             ZStack {
-                if viewStore.showUsernameView {
+                switch viewStore.viewState {
+                case .usernameView:
                     provideUsername(viewStore)
-                }
 
-                if viewStore.showEmailAndPasswordView {
+                case .emailAndPasswordView:
                     provideEmailAndPassword(viewStore)
-                }
 
-                if viewStore.showProfilePictureView {
+                case .profilePictureView:
                     provideProfilePicture(viewStore)
                 }
             }
@@ -54,8 +53,8 @@ struct RegisterView: View {
             Spacer()
 
             Text("In the first step, enter your username")
-                .font(.title2.bold())
-                .foregroundColor(AppColor.button)
+                .font(AppFont.title2.bold())
+                .foregroundColor(AppColor.primary)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -91,14 +90,14 @@ struct RegisterView: View {
 
                 HStack(spacing: 5) {
                     Text("Already have an account?")
-                        .font(.footnote)
+                        .font(AppFont.footnote)
                         .foregroundColor(AppColor.gray)
 
                     Button(action: {
                         viewStore.send(.showLoginView)
                     }, label: {
                         Text("Sign in now.")
-                            .font(.footnote)
+                            .font(AppFont.footnote)
                             .bold()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .foregroundColor(AppColor.gray)
@@ -115,7 +114,7 @@ struct RegisterView: View {
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundColor(.gray)
                     Text(viewStore.error)
-                        .font(.footnote)
+                        .font(AppFont.footnote)
                         .foregroundColor(.black)
                     Spacer()
                 }
@@ -149,8 +148,8 @@ struct RegisterView: View {
             Spacer()
 
             Text("Enter your email and password")
-                .font(.title2.bold())
-                .foregroundColor(AppColor.button)
+                .font(AppFont.title2.bold())
+                .foregroundColor(AppColor.primary)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -230,7 +229,7 @@ struct RegisterView: View {
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundColor(.gray)
                     Text(viewStore.error)
-                        .font(.footnote)
+                        .font(AppFont.footnote)
                         .foregroundColor(.black)
                     Spacer()
                 }
@@ -271,7 +270,7 @@ struct RegisterView: View {
             Spacer()
 
             Text("Welcome \(viewStore.register.username)")
-                .font(.title2)
+                .font(AppFont.title2)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .center)
 
@@ -293,7 +292,7 @@ struct RegisterView: View {
                 .frame(height: 50)
 
             Text("You're all set!")
-                .font(.title3)
+                .font(AppFont.title3)
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .center)
 

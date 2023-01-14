@@ -21,7 +21,7 @@ struct ErrorView: View {
             Spacer()
 
             Text(error)
-                .font(.title2.bold())
+                .font(AppFont.title2.bold())
 
             if let action = action {
                 ChattyButton(text: "Retry", action: action)

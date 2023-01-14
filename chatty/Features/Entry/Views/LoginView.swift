@@ -41,8 +41,8 @@ struct LoginView: View {
             Spacer()
 
             Text("To get started, enter your email and password")
-                .font(.title2.bold())
-                .foregroundColor(AppColor.button)
+                .font(AppFont.title2.bold())
+                .foregroundColor(AppColor.primary)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -95,14 +95,14 @@ struct LoginView: View {
 
                 HStack(spacing: 5) {
                     Text("Don't have an account?")
-                        .font(.footnote)
+                        .font(AppFont.footnote)
                         .foregroundColor(AppColor.gray)
 
                     Button(action: {
                         viewStore.send(.showRegisterView)
                     }, label: {
                         Text("Sign up now.")
-                            .font(.footnote)
+                            .font(AppFont.footnote)
                             .bold()
                             .foregroundColor(AppColor.gray)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -119,7 +119,7 @@ struct LoginView: View {
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundColor(.gray)
                     Text(viewStore.error)
-                        .font(.footnote)
+                        .font(AppFont.footnote)
                         .foregroundColor(.black)
                     Spacer()
                 }
