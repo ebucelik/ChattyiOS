@@ -36,6 +36,7 @@ struct RegisterView: View {
             .onDisappear {
                 viewStore.send(.reset)
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
@@ -273,7 +274,7 @@ struct RegisterView: View {
 
             Spacer()
 
-            getImage(from: viewStore.profilePhoto)
+            getImage(from: viewStore.picture)
                 .resizable()
                 .frame(width: 150, height: 150, alignment: .center)
                 .foregroundColor(AppColor.gray)
@@ -297,10 +298,10 @@ struct RegisterView: View {
             Spacer()
 
             ChattyButton(text: "Start with Chatty", action: { viewStore.send(.register) })
-                .opacity(viewStore.profilePhoto != nil ? 1 : 0)
+                .opacity(viewStore.picture != nil ? 1 : 0)
         }
         .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
-            ImagePicker(image: viewStore.binding(\.$profilePhoto))
+            ImagePicker(image: viewStore.binding(\.$picture))
         }
         .padding()
     }

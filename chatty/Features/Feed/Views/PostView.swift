@@ -29,8 +29,10 @@ struct PostView: View {
     }
 }
 
+#if DEBUG
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
         PostView()
     }
 }
+#endif

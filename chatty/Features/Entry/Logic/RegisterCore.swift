@@ -30,7 +30,7 @@ class RegisterCore: ReducerProtocol {
         var showImagePicker: Bool = false
 
         @BindableState
-        var profilePhoto: UIImage? = nil
+        var picture: UIImage? = nil
 
         @BindableState
         var register: Register
@@ -143,6 +143,7 @@ class RegisterCore: ReducerProtocol {
 
     @Dependency(\.registerService) var service
     @Dependency(\.accountAvailabilityService) var accountAvailabilityService
+    @Dependency(\.imageService) var imageService
     @Dependency(\.mainScheduler) var mainScheduler
 
     var body: some ReducerProtocol<State, Action> {
@@ -154,8 +155,14 @@ class RegisterCore: ReducerProtocol {
                 struct Debounce: Hashable { }
 
                 // TODO: Save somehow the profile picture of the user.
-                return .task { [register = state.register] in
+                return .task { [register = state.register, picture = state.picture] in
                     do {
+                        if let picture = picture,
+                           let jpegData = picture.jpegData(compressionQuality: 1.0) {
+                            let imageLink = try await self.imageService.uploadImage(imageData: jpegData)
+                            print(imageLink)
+                        }
+
                         let account = try await self.service.register(register: register)
 
                         return .registerStateChanged(.loaded(account))
@@ -324,16 +331,11 @@ class RegisterCore: ReducerProtocol {
                 state.usernameAvailableState = .none
                 state.emailAvailableState = .none
                 state.passwordValidState = .none
-                state.profilePhoto = nil
+                state.picture = nil
 
                 return .none
 
             case .binding:
-
-                if let profilePhoto = state.profilePhoto {
-                    state.register.profilePhoto = profilePhoto.base64
-                }
-
                 return .none
             }
         }

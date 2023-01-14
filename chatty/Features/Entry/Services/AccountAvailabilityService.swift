@@ -17,10 +17,10 @@ class AccountAvailabilityService: BackendClient, AccountAvailabilityProtocol, De
     static let liveValue = AccountAvailabilityService()
 
     func checkUsername(username: String) async throws -> Bool {
-        try await start(call: AccountAvailabilityCall(parameters: ["username" : username]))
+        try await sendRequest(call: AccountAvailabilityCall(parameters: ["username" : username]))
     }
 
     func checkEmail(email: String) async throws -> Bool {
-        try await start(call: AccountAvailabilityCall(parameters: ["email" : email]))
+        try await sendRequest(call: AccountAvailabilityCall(parameters: ["email" : email]))
     }
 }

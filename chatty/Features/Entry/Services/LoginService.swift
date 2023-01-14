@@ -17,6 +17,6 @@ class LoginService: BackendClient, LoginServiceProtocol, DependencyKey {
     static let liveValue = LoginService()
 
     func login(login: Login) async throws -> Account {
-        try await self.start(call: LoginCall(body: login))
+        try await self.sendRequest(call: LoginCall(body: login))
     }
 }
