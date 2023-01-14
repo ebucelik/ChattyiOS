@@ -10,11 +10,11 @@ import Foundation
 class LoginCall: Call {
     typealias Response = Account
 
-    let resource: String = "login"
+    let resource: String = "account/login"
     let httpMethod: HTTPMethod = .POST
     let body: Codable?
 
-    init(body: Codable) {
+    init(body: Login) {
         self.body = body
     }
 }

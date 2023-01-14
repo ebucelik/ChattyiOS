@@ -17,12 +17,13 @@ protocol Call {
     var httpMethod: HTTPMethod { get }
     var body: Codable? { get }
     var parameters: [String : Any]? { get }
+    var imageData: Data? { get }
 }
 
 extension Call {
     var scheme: String { "http://" }
 
-    var domain: String { "localhost:8080/api/v1/" }
+    var domain: String { "192.168.1.10:8080/api/v1/" }
 
     var path: String { scheme + domain + resource}
     
@@ -31,6 +32,10 @@ extension Call {
     }
 
     var parameters: [String : Any]? {
+        get { nil }
+    }
+
+    var imageData: Data? {
         get { nil }
     }
 }

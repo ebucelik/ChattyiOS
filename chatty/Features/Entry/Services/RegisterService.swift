@@ -16,6 +16,6 @@ class RegisterService: BackendClient, RegisterServiceProtocol, DependencyKey {
     static let liveValue = RegisterService()
 
     func register(register: Register) async throws -> Account {
-        try await start(call: RegisterCall(body: register))
+        try await sendRequest(call: RegisterCall(body: register))
     }
 }
