@@ -34,6 +34,11 @@ extension DependencyValues {
         set { self[ImageService.self] = newValue }
     }
 
+    var accountService: AccountService {
+        get { self[AccountService.self] }
+        set { self[AccountService.self] = newValue }
+    }
+
     var mainScheduler: DispatchQueue {
         get { self[DispatchQueue.self] }
         set { self[DispatchQueue.self] = newValue }

@@ -20,6 +20,9 @@
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
 		7111696C296CB89800AAF736 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7111696B296CB89800AAF736 /* Alamofire */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
+		7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83A29741A8E0077D91C /* AccountCall.swift */; };
+		7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83C29741B400077D91C /* AccountServiceProtocol.swift */; };
+		7137C83F29741B680077D91C /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83E29741B680077D91C /* AccountService.swift */; };
 		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
 		714D1776288413680091BD10 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* ErrorMessage.swift */; };
 		714D177828841FB60091BD10 /* RegisterCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177728841FB60091BD10 /* RegisterCore.swift */; };
@@ -92,6 +95,9 @@
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		7137C83A29741A8E0077D91C /* AccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCall.swift; sourceTree = "<group>"; };
+		7137C83C29741B400077D91C /* AccountServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceProtocol.swift; sourceTree = "<group>"; };
+		7137C83E29741B680077D91C /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		714D1775288413680091BD10 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		714D177728841FB60091BD10 /* RegisterCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCore.swift; sourceTree = "<group>"; };
@@ -215,6 +221,16 @@
 				714D177B288424980091BD10 /* RegisterService.swift */,
 				71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */,
 				71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7137C83929741A800077D91C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7137C83A29741A8E0077D91C /* AccountCall.swift */,
+				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
+				7137C83E29741B680077D91C /* AccountService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -405,6 +421,7 @@
 		71C977FB2878C367004A457D /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				7137C83929741A800077D91C /* Services */,
 				71C977FD2878C37D004A457D /* Logic */,
 				71C977FE2878C383004A457D /* Models */,
 				71C977FC2878C371004A457D /* Views */,
@@ -598,6 +615,7 @@
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
+				7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */,
 				71692CD328EB832D0025673A /* String+Extensions.swift in Sources */,
 				714D1776288413680091BD10 /* ErrorMessage.swift in Sources */,
 				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
@@ -608,7 +626,9 @@
 				716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */,
 				711A2C40290BD26600DD0684 /* PostView.swift in Sources */,
 				71005656287AE55800EBD93A /* Call.swift in Sources */,
+				7137C83F29741B680077D91C /* AccountService.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
+				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				716E7F48295E376C006C5513 /* ErrorView.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,

@@ -29,6 +29,9 @@ struct AccountView: View {
                     )
                 }
             }
+            .refreshable {
+                viewStore.send(.fetchAccount)
+            }
             .onAppear {
                 if case .none = viewStore.accountState {
                     viewStore.send(.fetchAccount)

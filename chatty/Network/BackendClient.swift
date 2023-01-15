@@ -45,6 +45,10 @@ class BackendClient {
                     return URLQueryItem(name: key, value: valueString)
                 }
 
+                if let valueInt = value as? Int {
+                    return URLQueryItem(name: key, value: String(valueInt))
+                }
+
                 return nil
             }
 

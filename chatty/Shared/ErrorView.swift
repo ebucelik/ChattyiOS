@@ -29,5 +29,6 @@ struct ErrorView: View {
 
             Spacer()
         }
+        .padding()
     }
 }
