@@ -39,6 +39,11 @@ extension DependencyValues {
         set { self[AccountService.self] = newValue }
     }
 
+    var subscriberService: SubscriberService {
+        get { self[SubscriberService.self] }
+        set { self[SubscriberService.self] = newValue }
+    }
+
     var mainScheduler: DispatchQueue {
         get { self[DispatchQueue.self] }
         set { self[DispatchQueue.self] = newValue }

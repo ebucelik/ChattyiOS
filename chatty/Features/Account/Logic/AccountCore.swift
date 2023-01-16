@@ -13,10 +13,18 @@ class AccountCore: ReducerProtocol {
 
     struct State: Equatable {
         var accountState: Loadable<Account>
+        var subscribeState: Loadable<Subscriber>
+        var subscriptionInfoState: Loadable<Subscriber>
+
         var isOtherAccount: Bool
 
-        init(accountState: Loadable<Account> = .none, isOtherAccount: Bool = false) {
+        init(accountState: Loadable<Account> = .none,
+             subscribeState: Loadable<Subscriber> = .none,
+             subscriptionInfoState: Loadable<Subscriber> = .none,
+             isOtherAccount: Bool = false) {
             self.accountState = accountState
+            self.subscribeState = subscribeState
+            self.subscriptionInfoState = subscriptionInfoState
             self.isOtherAccount = isOtherAccount
         }
     }
@@ -27,8 +35,10 @@ class AccountCore: ReducerProtocol {
     }
 
     @Dependency(\.accountService) var service
+    @Dependency(\.subscriberService) var subscriberService
     @Dependency(\.mainScheduler) var mainScheduler
 
+    // TODO: Make Subscription API calls
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
         case .fetchAccount:

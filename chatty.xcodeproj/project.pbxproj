@@ -23,8 +23,15 @@
 		7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83A29741A8E0077D91C /* AccountCall.swift */; };
 		7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83C29741B400077D91C /* AccountServiceProtocol.swift */; };
 		7137C83F29741B680077D91C /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83E29741B680077D91C /* AccountService.swift */; };
+		713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887B12975F4DC00BF01DA /* Subscriber.swift */; };
+		713887B42975F62300BF01DA /* SubscribeCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887B32975F62300BF01DA /* SubscribeCall.swift */; };
+		713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */; };
+		713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */; };
+		713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */; };
+		713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BC2975FA5200BF01DA /* SubscriberService.swift */; };
+		713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */; };
 		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
-		714D1776288413680091BD10 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* ErrorMessage.swift */; };
+		714D1776288413680091BD10 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* Message.swift */; };
 		714D177828841FB60091BD10 /* RegisterCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177728841FB60091BD10 /* RegisterCore.swift */; };
 		714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1779288423FB0091BD10 /* RegisterCall.swift */; };
 		714D177C288424980091BD10 /* RegisterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177B288424980091BD10 /* RegisterService.swift */; };
@@ -98,8 +105,15 @@
 		7137C83A29741A8E0077D91C /* AccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCall.swift; sourceTree = "<group>"; };
 		7137C83C29741B400077D91C /* AccountServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountServiceProtocol.swift; sourceTree = "<group>"; };
 		7137C83E29741B680077D91C /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
+		713887B12975F4DC00BF01DA /* Subscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.swift; sourceTree = "<group>"; };
+		713887B32975F62300BF01DA /* SubscribeCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeCall.swift; sourceTree = "<group>"; };
+		713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionInfoCall.swift; sourceTree = "<group>"; };
+		713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptSubscriptionCall.swift; sourceTree = "<group>"; };
+		713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineSubscriptionCall.swift; sourceTree = "<group>"; };
+		713887BC2975FA5200BF01DA /* SubscriberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberService.swift; sourceTree = "<group>"; };
+		713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberServiceProtocol.swift; sourceTree = "<group>"; };
 		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
-		714D1775288413680091BD10 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
+		714D1775288413680091BD10 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		714D177728841FB60091BD10 /* RegisterCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCore.swift; sourceTree = "<group>"; };
 		714D1779288423FB0091BD10 /* RegisterCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCall.swift; sourceTree = "<group>"; };
 		714D177B288424980091BD10 /* RegisterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterService.swift; sourceTree = "<group>"; };
@@ -228,11 +242,25 @@
 		7137C83929741A800077D91C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				713887B52975F7A400BF01DA /* Subscription */,
 				7137C83A29741A8E0077D91C /* AccountCall.swift */,
 				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
 				7137C83E29741B680077D91C /* AccountService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		713887B52975F7A400BF01DA /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				713887B32975F62300BF01DA /* SubscribeCall.swift */,
+				713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */,
+				713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */,
+				713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */,
+				713887BC2975FA5200BF01DA /* SubscriberService.swift */,
+				713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */,
+			);
+			path = Subscription;
 			sourceTree = "<group>";
 		};
 		714FCC822969E0E000AA3F48 /* Views */ = {
@@ -345,7 +373,7 @@
 				7100564F287AE39200EBD93A /* BackendClient.swift */,
 				71005651287AE3FC00EBD93A /* HTTPMethod.swift */,
 				71005655287AE55800EBD93A /* Call.swift */,
-				714D1775288413680091BD10 /* ErrorMessage.swift */,
+				714D1775288413680091BD10 /* Message.swift */,
 				714FCC842969E57D00AA3F48 /* DependencyValues.swift */,
 				71B5975A2973163D00EAECC2 /* FormData.swift */,
 			);
@@ -449,6 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				7100564C287AD3DD00EBD93A /* Account.swift */,
+				713887B12975F4DC00BF01DA /* Subscriber.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -612,16 +641,19 @@
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
 				714FCC872969E5B100AA3F48 /* DispatchQueue+Extensions.swift in Sources */,
+				713887B42975F62300BF01DA /* SubscribeCall.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
 				7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */,
+				713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */,
 				71692CD328EB832D0025673A /* String+Extensions.swift in Sources */,
-				714D1776288413680091BD10 /* ErrorMessage.swift in Sources */,
+				714D1776288413680091BD10 /* Message.swift in Sources */,
 				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
+				713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */,
 				7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */,
 				716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */,
 				711A2C40290BD26600DD0684 /* PostView.swift in Sources */,
@@ -629,6 +661,7 @@
 				7137C83F29741B680077D91C /* AccountService.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
+				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				716E7F48295E376C006C5513 /* ErrorView.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
@@ -646,6 +679,7 @@
 				71005652287AE3FC00EBD93A /* HTTPMethod.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
+				713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */,
 				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,
 				716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */,
 				714D177C288424980091BD10 /* RegisterService.swift in Sources */,
@@ -655,6 +689,8 @@
 				716DB8B929585534003BF4A9 /* EntryView.swift in Sources */,
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
+				713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */,
+				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
 			);

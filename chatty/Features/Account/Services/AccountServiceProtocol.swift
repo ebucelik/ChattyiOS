@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol AccountServiceProtocol {
+protocol AccountServiceProtocol {
     func getAccountBy(id: Int) async throws -> Account
 }

@@ -1,5 +1,5 @@
 //
-//  ErrorMessage.swift
+//  Message.swift
 //  chatty
 //
 //  Created by Ing. Ebu Celik, BSc on 17.07.22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ErrorMessage: Decodable {
+struct Message: Codable {
     public let message: String
 
     init(message: String) {

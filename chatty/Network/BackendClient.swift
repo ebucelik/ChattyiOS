@@ -137,7 +137,7 @@ class BackendClient {
                 completion(.failure(APIError.unauthorized))
             } else {
                 do {
-                    let errorModel = try JSONDecoder().decode(ErrorMessage.self, from: data)
+                    let errorModel = try JSONDecoder().decode(Message.self, from: data)
                     completion(.failure(APIError.unexpectedError(errorModel.message)))
                 } catch {
                     completion(.failure(APIError.error(error)))
