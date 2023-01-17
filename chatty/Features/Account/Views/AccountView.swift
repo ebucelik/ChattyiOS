@@ -36,6 +36,8 @@ struct AccountView: View {
                 if case .none = viewStore.accountState {
                     viewStore.send(.fetchAccount)
                 }
+
+                viewStore.send(.fetchSubscriberInfo)
             }
         }
     }
@@ -73,6 +75,8 @@ struct AccountView: View {
                         Text(String(account.subscriberCount))
                             .font(AppFont.caption)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.leading)
 
                     ChattyDivider()
 
@@ -93,6 +97,8 @@ struct AccountView: View {
                         Text(String(account.postCount))
                             .font(AppFont.caption)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.trailing)
                 }
 
                 ChattyDivider()

@@ -8,6 +8,10 @@
 import Foundation
 
 protocol SubscriberServiceProtocol {
+    func getSubscribedBy(id: Int) async throws -> [Account]
+
+    func getSubscriberBy(id: Int) async throws -> [Account]
+
     func subscribe(subscriber: Subscriber) async throws -> Message
 
     func subscriptionInfo(subscriber: Subscriber) async throws -> Bool

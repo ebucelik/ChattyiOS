@@ -29,6 +29,9 @@ class AppCore: ReducerProtocol {
         case entry(EntryCore.Action)
     }
 
+    @Dependency(\.accountService) var accountService
+    @Dependency(\.mainScheduler) var mainScheduler
+
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
@@ -36,11 +39,33 @@ class AppCore: ReducerProtocol {
                 return EffectTask(value: .loadAccount)
 
             case .loadAccount:
-                return EffectTask(
-                    value: .accountStateChanged(
-                        .loaded(Account.getFromUserDefaults())
-                    )
-                )
+                guard let account = Account.getFromUserDefaults() else { return .task { .accountStateChanged(.loaded(nil)) } }
+
+                return .task {
+                    let loadedAccount = try await self.accountService.getAccountBy(id: account.id)
+
+                    if loadedAccount.username != account.username ||
+                        loadedAccount.email != account.email ||
+                        loadedAccount.picture != account.picture ||
+                        loadedAccount.subscriberCount != account.subscriberCount ||
+                        loadedAccount.subscribedCount != account.subscribedCount ||
+                        loadedAccount.postCount != account.postCount {
+
+                        Account.addToUserDefaults(loadedAccount)
+
+                        return .accountStateChanged(.loaded(loadedAccount))
+                    } else {
+                        return .accountStateChanged(.loaded(account))
+                    }
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .accountStateChanged(.error(apiError))
+                    } else {
+                        return .accountStateChanged(.error(.error(error)))
+                    }
+                }
+                .receive(on: self.mainScheduler)
+                .eraseToEffect()
 
             case let .accountStateChanged(accountStateChanged):
                 state.accountState = accountStateChanged

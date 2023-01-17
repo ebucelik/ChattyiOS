@@ -20,6 +20,20 @@ class TabViewController: UITabBarController {
     let accountView: AccountView
     let entryView: EntryView
 
+    let loadingView: UIHostingController<LoadingView> = {
+        let loadingView = UIHostingController(rootView: LoadingView(fullScreen: true))
+        loadingView.view.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.view.isHidden = true
+        return loadingView
+    }()
+
+    let errorView: UIHostingController<ErrorView> = {
+        let errorView = UIHostingController(rootView: ErrorView())
+        errorView.view.translatesAutoresizingMaskIntoConstraints = false
+        errorView.view.isHidden = true
+        return errorView
+    }()
+
     init(store: StoreOf<AppCore>) {
         self.store = store
         self.viewStore = ViewStore(store)
@@ -55,13 +69,30 @@ class TabViewController: UITabBarController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        setupView()
+
+        setConstraints()
+
         viewStore.send(.onAppear)
 
         viewStore.publisher.accountState.sink { [self] accountState in
-            if case let .loaded(account) = accountState {
+            switch accountState {
+            case .loading, .refreshing, .none:
+                loadingView.view.isHidden = false
+                errorView.view.isHidden = true
+
+            case let .loaded(account):
+                loadingView.view.isHidden = true
+                errorView.view.isHidden = true
+
                 if account == nil {
                     pushViewController(with: entryView)
                 }
+
+            case .error:
+                loadingView.view.isHidden = true
+                errorView.view.isHidden = false
+                
             }
         }.store(in: &cancellables)
 
@@ -76,6 +107,25 @@ class TabViewController: UITabBarController {
         super.viewDidLoad()
 
         setCoreViewController()
+    }
+
+    private func setupView() {
+        view.addSubview(loadingView.view)
+        view.addSubview(errorView.view)
+    }
+
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            loadingView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.view.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            errorView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.view.topAnchor.constraint(equalTo: view.topAnchor),
+            errorView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
     private func setCoreViewController() {

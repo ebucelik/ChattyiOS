@@ -9,6 +9,18 @@ import Foundation
 import ComposableArchitecture
 
 class SubscriberService: BackendClient, SubscriberServiceProtocol {
+    func getSubscriberBy(id: Int) async throws -> [Account] {
+        let subscriberCall = SubscriberCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: subscriberCall)
+    }
+
+    func getSubscribedBy(id: Int) async throws -> [Account] {
+        let subscribedCall = SubscribedCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: subscribedCall)
+    }
+
     func subscribe(subscriber: Subscriber) async throws -> Message {
         let subscribeCall = SubscribeCall(body: subscriber)
 
