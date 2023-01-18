@@ -44,6 +44,8 @@
 		714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */; };
 		714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC91296A0D0200AA3F48 /* ImageService.swift */; };
 		7151BE4C28D4BB61000E58EF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7151BE4B28D4BB61000E58EF /* ImagePicker.swift */; };
+		7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765229789613009AF5E2 /* SubscriptionView.swift */; };
+		7160765529789F47009AF5E2 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765429789F47009AF5E2 /* InfoView.swift */; };
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
 		7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA92882DC550061E03B /* LogoutCall.swift */; };
 		7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEAB2882DE490061E03B /* LogoutService.swift */; };
@@ -128,6 +130,8 @@
 		714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageServiceProtocol.swift; sourceTree = "<group>"; };
 		714FCC91296A0D0200AA3F48 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		7151BE4B28D4BB61000E58EF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		7160765229789613009AF5E2 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
+		7160765429789F47009AF5E2 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
 		7166BEA92882DC550061E03B /* LogoutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutCall.swift; sourceTree = "<group>"; };
 		7166BEAB2882DE490061E03B /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
@@ -246,7 +250,6 @@
 		7137C83929741A800077D91C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				713887B52975F7A400BF01DA /* Subscription */,
 				7137C83A29741A8E0077D91C /* AccountCall.swift */,
 				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
 				7137C83E29741B680077D91C /* AccountService.swift */,
@@ -257,14 +260,8 @@
 		713887B52975F7A400BF01DA /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
-				713887B32975F62300BF01DA /* SubscribeCall.swift */,
-				713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */,
-				713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */,
-				713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */,
-				713887BC2975FA5200BF01DA /* SubscriberService.swift */,
-				713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */,
-				71367C83297745A100D92CC0 /* SubscriberCall.swift */,
-				71367C85297745EC00D92CC0 /* SubscribedCall.swift */,
+				71607651297895F1009AF5E2 /* Views */,
+				71607650297895E3009AF5E2 /* Services */,
 			);
 			path = Subscription;
 			sourceTree = "<group>";
@@ -301,6 +298,29 @@
 				714FCC91296A0D0200AA3F48 /* ImageService.swift */,
 			);
 			path = Image;
+			sourceTree = "<group>";
+		};
+		71607650297895E3009AF5E2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				713887B32975F62300BF01DA /* SubscribeCall.swift */,
+				713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */,
+				713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */,
+				713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */,
+				713887BC2975FA5200BF01DA /* SubscriberService.swift */,
+				713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */,
+				71367C83297745A100D92CC0 /* SubscriberCall.swift */,
+				71367C85297745EC00D92CC0 /* SubscribedCall.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		71607651297895F1009AF5E2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7160765229789613009AF5E2 /* SubscriptionView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7166BEA82882DC450061E03B /* Services */ = {
@@ -389,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				7100563C287ACDDC00EBD93A /* Entry */,
+				713887B52975F7A400BF01DA /* Subscription */,
 				71C977FB2878C367004A457D /* Account */,
 				71C977F72878C25A004A457D /* Feed */,
 				71C977F42878C13B004A457D /* App */,
@@ -499,6 +520,7 @@
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
 				716E7F45295E36AF006C5513 /* LoadingView.swift */,
 				716E7F47295E376C006C5513 /* ErrorView.swift */,
+				7160765429789F47009AF5E2 /* InfoView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -671,7 +693,9 @@
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				716E7F48295E376C006C5513 /* ErrorView.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
+				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
+				7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */,
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				714FCC8E296A0C2200AA3F48 /* ImageCall.swift in Sources */,

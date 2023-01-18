@@ -39,6 +39,20 @@ struct AccountView: View {
 
                 viewStore.send(.fetchSubscriberInfo)
             }
+            .sheet(isPresented: viewStore.binding(\.$showSubscribedView)) {
+                if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
+                    SubscriptionView(accounts: subscribedAccounts, subcriptionMode: .subscribed)
+                } else {
+                    ErrorView()
+                }
+            }
+            .sheet(isPresented: viewStore.binding(\.$showSubscriberView)) {
+                if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
+                    SubscriptionView(accounts: subscriberAccounts, subcriptionMode: .subscriber)
+                } else {
+                    ErrorView()
+                }
+            }
         }
     }
 
@@ -46,24 +60,10 @@ struct AccountView: View {
     private func accountBody(with account: Account, _ viewStore: ViewStoreOf<AccountCore>) -> some View {
         ScrollView(.vertical) {
             VStack(spacing: 24) {
-                if account.picture.isEmpty {
-                    Image(systemName: "person.circle")
-                        .renderingMode(.template)
-                        .resizable()
-                        .frame(width: 125, height: 125)
-                        .foregroundColor(AppColor.gray)
-                } else {
-                    AsyncImage(url: URL(string: account.picture)) { profilePicture in
-                        profilePicture
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        LoadingView()
-                    }
-                    .frame(width: 125, height: 125)
-                    .cornerRadius(75)
-                    .shadow(radius: 10)
-                }
+                ChattyImage(
+                    picture: account.picture,
+                    frame: CGSize(width: 125, height: 125)
+                )
 
                 ChattyDivider()
 
@@ -77,6 +77,9 @@ struct AccountView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.leading)
+                    .onTapGesture {
+                        viewStore.send(.showSubscriberView)
+                    }
 
                     ChattyDivider()
 
@@ -86,6 +89,9 @@ struct AccountView: View {
 
                         Text(String(account.subscribedCount))
                             .font(AppFont.caption)
+                    }
+                    .onTapGesture {
+                        viewStore.send(.showSubscribedView)
                     }
 
                     ChattyDivider()

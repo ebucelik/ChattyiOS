@@ -14,4 +14,5 @@ struct AppFont {
     static let caption = Font.caption
     static let headline = Font.headline
     static let footnote = Font.footnote
+    static let body = Font.body
 }

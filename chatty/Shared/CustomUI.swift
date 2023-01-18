@@ -70,3 +70,33 @@ public struct ChattyButton: View {
         .shadow(radius: 5)
     }
 }
+
+public struct ChattyImage: View {
+    let picture: String
+    let frame: CGSize
+
+    public init(picture: String, frame: CGSize) {
+        self.picture = picture
+        self.frame = frame
+    }
+
+    public var body: some View {
+        if picture.isEmpty {
+            Image(systemName: "person.circle")
+                .renderingMode(.template)
+                .resizable()
+                .frame(width: frame.width, height: frame.height)
+                .foregroundColor(AppColor.gray)
+        } else {
+            AsyncImage(url: URL(string: picture)) { profilePicture in
+                profilePicture
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                LoadingView()
+            }
+            .frame(width: frame.width, height: frame.height)
+            .cornerRadius(frame.width / 2)
+        }
+    }
+}
