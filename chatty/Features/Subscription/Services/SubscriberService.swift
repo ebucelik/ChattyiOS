@@ -27,7 +27,7 @@ class SubscriberService: BackendClient, SubscriberServiceProtocol {
         return try await sendRequest(call: subscribeCall)
     }
 
-    func subscriptionInfo(subscriber: Subscriber) async throws -> Bool {
+    func subscriptionInfo(subscriber: Subscriber) async throws -> SubscriptionInfo {
         let subscriptionInfoCall = SubscriptionInfoCall(body: subscriber)
 
         return try await sendRequest(call: subscriptionInfoCall)

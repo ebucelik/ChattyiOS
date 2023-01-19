@@ -8,10 +8,10 @@
 import Foundation
 
 struct SubscriptionInfoCall: Call {
-    typealias Response = Bool
+    typealias Response = SubscriptionInfo
 
     var resource: String = "account/subscriptionInfo"
-    var httpMethod: HTTPMethod = .GET
+    var httpMethod: HTTPMethod = .POST
     var body: Codable?
 
     init(body: Subscriber) {

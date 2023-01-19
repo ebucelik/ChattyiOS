@@ -12,26 +12,29 @@ import ComposableArchitecture
 class AccountCore: ReducerProtocol {
 
     struct State: Equatable {
+        var ownAccountId: Int?
         var accountState: Loadable<Account>
         var subscriberState: Loadable<[Account]>
         var subscribedState: Loadable<[Account]>
         var subscribeState: Loadable<Subscriber>
-        var subscriptionInfoState: Loadable<Subscriber>
+        var subscriptionInfoState: Loadable<SubscriptionInfo>
 
-        var isOtherAccount: Bool
+        var isOtherAccount: Bool {
+            ownAccountId != nil
+        }
 
-        init(accountState: Loadable<Account> = .none,
+        init(ownAccountId: Int? = nil,
+             accountState: Loadable<Account> = .none,
              subscriberState: Loadable<[Account]> = .none,
              subscribedState: Loadable<[Account]> = .none,
              subscribeState: Loadable<Subscriber> = .none,
-             subscriptionInfoState: Loadable<Subscriber> = .none,
-             isOtherAccount: Bool = false) {
+             subscriptionInfoState: Loadable<SubscriptionInfo> = .none) {
+            self.ownAccountId = ownAccountId
             self.accountState = accountState
             self.subscriberState = subscriberState
             self.subscribedState = subscribedState
             self.subscribeState = subscribeState
             self.subscriptionInfoState = subscriptionInfoState
-            self.isOtherAccount = isOtherAccount
         }
     }
 
@@ -46,6 +49,9 @@ class AccountCore: ReducerProtocol {
 
         case fetchSubscribed
         case subscribedStateChanged(Loadable<[Account]>)
+
+        case fetchSubscriptionInfo
+        case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
     }
 
     @Dependency(\.accountService) var service
@@ -138,6 +144,29 @@ class AccountCore: ReducerProtocol {
 
         case let .subscribedStateChanged(subscribedState):
             state.subscribedState = subscribedState
+
+            return .none
+
+        case .fetchSubscriptionInfo:
+
+            guard let ownAccountId = state.ownAccountId,
+                  case let .loaded(account) = state.accountState else { return .none }
+
+            return .task {
+                let subscriber = Subscriber(userId: ownAccountId, followerId: account.id, accepted: false)
+                let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
+
+                return .subscriptionInfoChanged(.loaded(subscriptionInfo))
+            } catch: { error in
+                if let apiError = error as? APIError {
+                    return .subscriptionInfoChanged(.error(apiError))
+                } else {
+                    return .subscriptionInfoChanged(.error(.error(error)))
+                }
+            }
+
+        case let .subscriptionInfoChanged(subscriptionInfoState):
+            state.subscriptionInfoState = subscriptionInfoState
 
             return .none
         }

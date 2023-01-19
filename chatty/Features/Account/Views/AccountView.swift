@@ -59,6 +59,7 @@ struct AccountView: View {
                             SubscriptionView(
                                 store: Store(
                                     initialState: SubscriptionCore.State(
+                                        ownAccountId: account.id,
                                         accounts: subscriberAccounts,
                                         subscriptionMode: .subscriber
                                     ),
@@ -78,6 +79,7 @@ struct AccountView: View {
                         .padding(.leading)
                         .foregroundColor(AppColor.black)
                     }
+                    .disabled(viewStore.isOtherAccount)
 
                     ChattyDivider()
 
@@ -86,6 +88,7 @@ struct AccountView: View {
                             SubscriptionView(
                                 store: Store(
                                     initialState: SubscriptionCore.State(
+                                        ownAccountId: account.id,
                                         accounts: subscribedAccounts,
                                         subscriptionMode: .subscribed
                                     ),
@@ -103,6 +106,7 @@ struct AccountView: View {
                         }
                         .foregroundColor(AppColor.black)
                     }
+                    .disabled(viewStore.isOtherAccount)
 
                     ChattyDivider()
 
@@ -120,8 +124,24 @@ struct AccountView: View {
                 ChattyDivider()
 
                 if viewStore.isOtherAccount {
-                    ChattyButton(text: "I want to know", action: {})
-                        .padding(.horizontal)
+                    switch viewStore.subscriptionInfoState {
+                    case let .loaded(subscriptionInfo):
+                        ChattyButton(text: subscriptionInfo.status, action: {})
+                            .padding(.horizontal)
+
+                    case .loading, .refreshing, .none:
+                        ChattyButton(text: "I want to know", action: {})
+                            .padding(.horizontal)
+                            .onAppear {
+                                viewStore.send(.fetchSubscriptionInfo)
+                            }
+
+                    case .error:
+                        ChattyButton(text: "Error", action: {})
+                            .padding(.horizontal)
+                            .disabled(true)
+                            .opacity(0.5)
+                    }
 
                     ChattyDivider()
                 }

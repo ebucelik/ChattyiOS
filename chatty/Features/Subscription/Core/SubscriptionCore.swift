@@ -18,11 +18,13 @@ struct SubscriptionCore: ReducerProtocol {
         @BindableState
         var showAccountDetails: Bool = false
 
+        let ownAccountId: Int
         let accounts: [Account]
         let title: String
         let info: String
 
-        public init(accounts: [Account], subscriptionMode: SubscriptionMode) {
+        public init(ownAccountId: Int, accounts: [Account], subscriptionMode: SubscriptionMode) {
+            self.ownAccountId = ownAccountId
             self.accounts = accounts
 
             switch subscriptionMode {
