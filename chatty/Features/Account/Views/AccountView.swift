@@ -14,7 +14,7 @@ struct AccountView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            NavigationView {
+            NavigationStack {
                 switch viewStore.accountState {
                 case .loading, .refreshing, .none:
                     LoadingView()
@@ -39,20 +39,6 @@ struct AccountView: View {
 
                 viewStore.send(.fetchSubscriberInfo)
             }
-            .sheet(isPresented: viewStore.binding(\.$showSubscribedView)) {
-                if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
-                    SubscriptionView(accounts: subscribedAccounts, subcriptionMode: .subscribed)
-                } else {
-                    ErrorView()
-                }
-            }
-            .sheet(isPresented: viewStore.binding(\.$showSubscriberView)) {
-                if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
-                    SubscriptionView(accounts: subscriberAccounts, subcriptionMode: .subscriber)
-                } else {
-                    ErrorView()
-                }
-            }
         }
     }
 
@@ -68,30 +54,54 @@ struct AccountView: View {
                 ChattyDivider()
 
                 HStack(spacing: 16) {
-                    VStack(spacing: 10) {
-                        Text("Subscriber")
-                            .font(AppFont.caption)
+                    NavigationLink {
+                        if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
+                            SubscriptionView(
+                                store: Store(
+                                    initialState: SubscriptionCore.State(
+                                        accounts: subscriberAccounts,
+                                        subscriptionMode: .subscriber
+                                    ),
+                                    reducer: SubscriptionCore()
+                                )
+                            )
+                        }
+                    } label: {
+                        VStack(spacing: 10) {
+                            Text("Subscriber")
+                                .font(AppFont.caption)
 
-                        Text(String(account.subscriberCount))
-                            .font(AppFont.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.leading)
-                    .onTapGesture {
-                        viewStore.send(.showSubscriberView)
+                            Text(String(account.subscriberCount))
+                                .font(AppFont.caption)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.leading)
+                        .foregroundColor(AppColor.black)
                     }
 
                     ChattyDivider()
 
-                    VStack(spacing: 10) {
-                        Text("Subscribed")
-                            .font(AppFont.caption)
+                    NavigationLink {
+                        if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
+                            SubscriptionView(
+                                store: Store(
+                                    initialState: SubscriptionCore.State(
+                                        accounts: subscribedAccounts,
+                                        subscriptionMode: .subscribed
+                                    ),
+                                    reducer: SubscriptionCore()
+                                )
+                            )
+                        }
+                    } label: {
+                        VStack(spacing: 10) {
+                            Text("Subscribed")
+                                .font(AppFont.caption)
 
-                        Text(String(account.subscribedCount))
-                            .font(AppFont.caption)
-                    }
-                    .onTapGesture {
-                        viewStore.send(.showSubscribedView)
+                            Text(String(account.subscribedCount))
+                                .font(AppFont.caption)
+                        }
+                        .foregroundColor(AppColor.black)
                     }
 
                     ChattyDivider()

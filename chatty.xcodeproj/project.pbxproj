@@ -32,6 +32,7 @@
 		713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */; };
 		713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BC2975FA5200BF01DA /* SubscriberService.swift */; };
 		713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */; };
+		713F7BEE2979A9D4003B29B3 /* SubscriptionCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */; };
 		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
 		714D1776288413680091BD10 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* Message.swift */; };
 		714D177828841FB60091BD10 /* RegisterCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177728841FB60091BD10 /* RegisterCore.swift */; };
@@ -118,6 +119,7 @@
 		713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineSubscriptionCall.swift; sourceTree = "<group>"; };
 		713887BC2975FA5200BF01DA /* SubscriberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberService.swift; sourceTree = "<group>"; };
 		713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberServiceProtocol.swift; sourceTree = "<group>"; };
+		713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCore.swift; sourceTree = "<group>"; };
 		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		714D1775288413680091BD10 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		714D177728841FB60091BD10 /* RegisterCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCore.swift; sourceTree = "<group>"; };
@@ -260,10 +262,58 @@
 		713887B52975F7A400BF01DA /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				713F7BEC2979A9C4003B29B3 /* Core */,
 				71607651297895F1009AF5E2 /* Views */,
 				71607650297895E3009AF5E2 /* Services */,
 			);
 			path = Subscription;
+			sourceTree = "<group>";
+		};
+		713F7BE72979A83F003B29B3 /* UploadPost */ = {
+			isa = PBXGroup;
+			children = (
+				713F7BEB2979A8C9003B29B3 /* Models */,
+				713F7BEA2979A8BC003B29B3 /* Views */,
+				713F7BE92979A8B4003B29B3 /* Logic */,
+				713F7BE82979A8AC003B29B3 /* Services */,
+			);
+			path = UploadPost;
+			sourceTree = "<group>";
+		};
+		713F7BE82979A8AC003B29B3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		713F7BE92979A8B4003B29B3 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		713F7BEA2979A8BC003B29B3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		713F7BEB2979A8C9003B29B3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		713F7BEC2979A9C4003B29B3 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		714FCC822969E0E000AA3F48 /* Views */ = {
@@ -408,6 +458,7 @@
 		71C977F22878C0F2004A457D /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				713F7BE72979A83F003B29B3 /* UploadPost */,
 				7100563C287ACDDC00EBD93A /* Entry */,
 				713887B52975F7A400BF01DA /* Subscription */,
 				71C977FB2878C367004A457D /* Account */,
@@ -676,6 +727,7 @@
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
 				7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */,
 				713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */,
+				713F7BEE2979A9D4003B29B3 /* SubscriptionCore.swift in Sources */,
 				71692CD328EB832D0025673A /* String+Extensions.swift in Sources */,
 				714D1776288413680091BD10 /* Message.swift in Sources */,
 				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
@@ -822,7 +874,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -876,7 +928,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -902,7 +954,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -935,7 +987,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

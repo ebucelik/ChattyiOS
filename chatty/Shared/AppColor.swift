@@ -16,4 +16,6 @@ struct AppColor {
     static let error = Color(.sRGB, red: 171/255, green: 35/255, blue: 35/255, opacity: 1)
 
     static let success = Color(.sRGB, red: 26/255, green: 102/255, blue: 42/255, opacity: 1)
+
+    static let black = Color(.sRGB, red: 0/255, green: 0/255, blue: 0/255, opacity: 1)
 }

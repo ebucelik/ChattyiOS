@@ -6,56 +6,53 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct SubscriptionView: View {
 
-    enum SubscriptionMode {
-        case subscriber
-        case subscribed
-    }
+    let store: StoreOf<SubscriptionCore>
 
-    let accounts: [Account]
-    let title: String
-    let info: String
-
-    init(accounts: [Account], subcriptionMode: SubscriptionMode) {
-        self.accounts = accounts
-
-        switch subcriptionMode {
-        case .subscriber:
-            self.title = "Subscriber"
-            self.info = "You have no subscriber."
-
-        case .subscribed:
-            self.title = "Subscribed"
-            self.info = "You have no user subscribed."
-        }
+    init(store: StoreOf<SubscriptionCore>) {
+        self.store = store
     }
 
     var body: some View {
-        NavigationView {
-            if accounts.isEmpty {
-                InfoView(info: info)
+        WithViewStore(store) { viewStore in
+            if viewStore.accounts.isEmpty {
+                InfoView(info: viewStore.info)
             } else {
                 ScrollView {
                     VStack {
-                        ForEach(accounts, id: \.id) { account in
-                            HStack {
-                                ChattyImage(
-                                    picture: account.picture,
-                                    frame: CGSize(width: 30, height: 30)
+                        ForEach(viewStore.accounts, id: \.id) { account in
+                            NavigationLink {
+                                AccountView(
+                                    store: Store(
+                                        initialState: AccountCore.State(
+                                            accountState: .loaded(account),
+                                            isOtherAccount: true
+                                        ),
+                                        reducer: AccountCore()
+                                    )
                                 )
+                            } label: {
+                                HStack {
+                                    ChattyImage(
+                                        picture: account.picture,
+                                        frame: CGSize(width: 30, height: 30)
+                                    )
 
-                                Text(account.username)
-                                    .font(AppFont.body)
+                                    Text(account.username)
+                                        .font(AppFont.body)
+                                        .foregroundColor(AppColor.black)
 
-                                Spacer()
+                                    Spacer()
+                                }
                             }
                         }
                     }
                 }
                 .padding(.horizontal, 24)
-                .navigationTitle(Text(title))
+                .navigationTitle(Text(viewStore.title))
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
