@@ -11,7 +11,6 @@ import SwiftHelper
 public struct ChattyDivider: View {
     public var body: some View {
         Divider()
-            .padding(.horizontal)
     }
 }
 

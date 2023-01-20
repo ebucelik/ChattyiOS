@@ -21,6 +21,12 @@ class SubscriberService: BackendClient, SubscriberServiceProtocol {
         return try await sendRequest(call: subscribedCall)
     }
 
+    func getSubscriptionRequestsBy(id: Int) async throws -> [Account] {
+        let subscriptionRequestCall = SubscriptionRequestCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: subscriptionRequestCall)
+    }
+
     func subscribe(subscriber: Subscriber) async throws -> Message {
         let subscribeCall = SubscribeCall(body: subscriber)
 

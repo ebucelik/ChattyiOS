@@ -21,7 +21,7 @@ struct InfoView: View {
             Spacer()
 
             Text(info)
-                .font(AppFont.title2.bold())
+                .font(AppFont.title3.bold())
 
             if let action = action {
                 ChattyButton(text: "Retry", action: action)

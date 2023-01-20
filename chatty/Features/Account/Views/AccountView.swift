@@ -51,6 +51,25 @@ struct AccountView: View {
                     frame: CGSize(width: 125, height: 125)
                 )
 
+                HStack {
+                    Text("@\(account.username)")
+                        .font(AppFont.caption)
+
+                    NavigationLink {
+                        SubscriptionRequestView(
+                            store: Store(
+                                initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
+                                reducer: SubscriptionRequestCore()
+                            )
+                        )
+                    } label: {
+                        Image(systemName: "rectangle.stack.person.crop")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(AppColor.primary)
+                    }
+                }
+
                 ChattyDivider()
 
                 HStack(spacing: 16) {
@@ -104,6 +123,7 @@ struct AccountView: View {
                             Text(String(account.subscribedCount))
                                 .font(AppFont.caption)
                         }
+                        .frame(maxWidth: .infinity)
                         .foregroundColor(AppColor.black)
                     }
                     .disabled(viewStore.isOtherAccount)
