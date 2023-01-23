@@ -51,24 +51,8 @@ struct AccountView: View {
                     frame: CGSize(width: 125, height: 125)
                 )
 
-                HStack {
-                    Text("@\(account.username)")
-                        .font(AppFont.caption)
-
-                    NavigationLink {
-                        SubscriptionRequestView(
-                            store: Store(
-                                initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
-                                reducer: SubscriptionRequestCore()
-                            )
-                        )
-                    } label: {
-                        Image(systemName: "rectangle.stack.person.crop")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(AppColor.primary)
-                    }
-                }
+                Text("@\(account.username)")
+                    .font(AppFont.title3.bold())
 
                 ChattyDivider()
 
@@ -169,8 +153,22 @@ struct AccountView: View {
             .padding()
             .padding(.top, 24)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    ChattyIcon(width: 30, height: 30)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if !viewStore.isOtherAccount {
+                        NavigationLink {
+                            SubscriptionRequestView(
+                                store: Store(
+                                    initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
+                                    reducer: SubscriptionRequestCore()
+                                )
+                            )
+                        } label: {
+                            Image(systemName: "person.fill.badge.plus")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(AppColor.primary)
+                        }
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
