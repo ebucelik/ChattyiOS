@@ -15,6 +15,7 @@ class AppCore: ReducerProtocol {
         var showFeed = false
 
         var feed = FeedCore.State()
+        var search = SearchCore.State()
         var account = AccountCore.State()
         var entry = EntryCore.State()
     }
@@ -25,6 +26,7 @@ class AppCore: ReducerProtocol {
         case accountStateChanged(Loadable<Account?>)
 
         case feed(FeedCore.Action)
+        case search(SearchCore.Action)
         case account(AccountCore.Action)
         case entry(EntryCore.Action)
     }
@@ -40,6 +42,8 @@ class AppCore: ReducerProtocol {
 
             case .loadAccount:
                 guard let account = Account.getFromUserDefaults() else { return .task { .accountStateChanged(.loaded(nil)) } }
+
+                state.search.ownAccountId = account.id
 
                 return .task {
                     let loadedAccount = try await self.accountService.getAccountBy(id: account.id)
@@ -80,6 +84,7 @@ class AppCore: ReducerProtocol {
             case let .entry(.showFeed(account)):
                 state.accountState = .loaded(account)
                 state.showFeed = true
+                state.search.ownAccountId = account.id
 
                 if case let .loaded(loadedAccount) = state.accountState,
                    let account = loadedAccount {
@@ -98,6 +103,13 @@ class AppCore: ReducerProtocol {
             action: /Action.feed
         ) {
             FeedCore()
+        }
+
+        Scope(
+            state: \.search,
+            action: /Action.search
+        ) {
+            SearchCore()
         }
 
         Scope(

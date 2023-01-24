@@ -17,6 +17,7 @@ class TabViewController: UITabBarController {
     var cancellables = Set<AnyCancellable>()
 
     let feedView: FeedView
+    let searchView: SearchView
     let accountView: AccountView
     let entryView: EntryView
 
@@ -42,6 +43,13 @@ class TabViewController: UITabBarController {
             store: store.scope(
                 state: \.feed,
                 action: AppCore.Action.feed
+            )
+        )
+
+        self.searchView = SearchView(
+            store: store.scope(
+                state: \.search,
+                action: AppCore.Action.search
             )
         )
 
@@ -136,14 +144,28 @@ class TabViewController: UITabBarController {
         let feedViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "house.fill"), tag: 0)
         viewController.tabBarItem = feedViewTabBarItem
 
+        let searchViewController = UIHostingController(
+            rootView: searchView
+                .navigationBarHidden(true)
+        )
+        let searchViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "magnifyingglass"), tag: 1)
+        searchViewController.tabBarItem = searchViewTabBarItem
+
         let accountViewController = UIHostingController(
             rootView: accountView
                 .navigationBarHidden(true)
         )
-        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 1)
+        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 2)
         accountViewController.tabBarItem = accountViewTabBarItem
 
-        setViewControllers([viewController, accountViewController], animated: true)
+        setViewControllers(
+            [
+                viewController,
+                searchViewController,
+                accountViewController
+            ],
+            animated: true
+        )
     }
 
     private func pushViewController(with view: some View) {

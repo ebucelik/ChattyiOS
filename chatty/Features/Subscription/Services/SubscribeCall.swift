@@ -8,7 +8,7 @@
 import Foundation
 
 struct SubscribeCall: Call {
-    typealias Response = Message
+    typealias Response = SubscriptionInfo
 
     var resource: String = "account/subscribe"
     var httpMethod: HTTPMethod = .POST

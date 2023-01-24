@@ -14,7 +14,7 @@ protocol SubscriberServiceProtocol {
 
     func getSubscriptionRequestsBy(id: Int) async throws -> [Account]
 
-    func subscribe(subscriber: Subscriber) async throws -> Message
+    func subscribe(subscriber: Subscriber) async throws -> SubscriptionInfo
 
     func subscriptionInfo(subscriber: Subscriber) async throws -> SubscriptionInfo
 

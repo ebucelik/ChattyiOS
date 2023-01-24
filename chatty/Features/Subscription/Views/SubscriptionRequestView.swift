@@ -48,9 +48,9 @@ struct SubscriptionRequestView: View {
                                 }
                             }
                         }
-                        .refreshable {
-                            viewStore.send(.fetchSubscriptionRequests)
-                        }
+                    }
+                    .refreshable {
+                        viewStore.send(.fetchSubscriptionRequests)
                     }
                 }
 

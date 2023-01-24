@@ -9,12 +9,12 @@ import Foundation
 
 struct Subscriber: Codable, Equatable {
     let userId: Int
-    let followerId: Int
+    let subscribedUserId: Int
     let accepted: Bool
 
-    init(userId: Int, followerId: Int, accepted: Bool) {
+    init(userId: Int, subscribedUserId: Int, accepted: Bool) {
         self.userId = userId
-        self.followerId = followerId
+        self.subscribedUserId = subscribedUserId
         self.accepted = accepted
     }
 }

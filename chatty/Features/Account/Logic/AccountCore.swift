@@ -29,12 +29,18 @@ class AccountCore: ReducerProtocol {
              subscribedState: Loadable<[Account]> = .none,
              subscribeState: Loadable<Subscriber> = .none,
              subscriptionInfoState: Loadable<SubscriptionInfo> = .none) {
-            self.ownAccountId = ownAccountId
             self.accountState = accountState
             self.subscriberState = subscriberState
             self.subscribedState = subscribedState
             self.subscribeState = subscribeState
             self.subscriptionInfoState = subscriptionInfoState
+
+            if case let .loaded(account) = accountState,
+               account.id != ownAccountId {
+                self.ownAccountId = ownAccountId
+            } else {
+                self.ownAccountId = nil
+            }
         }
     }
 
@@ -51,6 +57,7 @@ class AccountCore: ReducerProtocol {
         case subscribedStateChanged(Loadable<[Account]>)
 
         case fetchSubscriptionInfo
+        case sendSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
     }
 
@@ -153,8 +160,26 @@ class AccountCore: ReducerProtocol {
                   case let .loaded(account) = state.accountState else { return .none }
 
             return .task {
-                let subscriber = Subscriber(userId: ownAccountId, followerId: account.id, accepted: false)
+                let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
                 let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
+
+                return .subscriptionInfoChanged(.loaded(subscriptionInfo))
+            } catch: { error in
+                if let apiError = error as? APIError {
+                    return .subscriptionInfoChanged(.error(apiError))
+                } else {
+                    return .subscriptionInfoChanged(.error(.error(error)))
+                }
+            }
+
+        case .sendSubscriptionRequest:
+
+            guard let ownAccountId = state.ownAccountId,
+                  case let .loaded(account) = state.accountState else { return .none }
+
+            return .task {
+                let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
+                let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
                 return .subscriptionInfoChanged(.loaded(subscriptionInfo))
             } catch: { error in

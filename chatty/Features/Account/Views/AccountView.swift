@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import SwiftHelper
 
 struct AccountView: View {
 
@@ -134,17 +135,22 @@ struct AccountView: View {
                             .padding(.horizontal)
 
                     case .loading, .refreshing, .none:
-                        ChattyButton(text: "I want to know", action: {})
+                        ChattyButton(text: "I want to know", action: { viewStore.send(.sendSubscriptionRequest) })
                             .padding(.horizontal)
                             .onAppear {
                                 viewStore.send(.fetchSubscriptionInfo)
                             }
 
-                    case .error:
-                        ChattyButton(text: "Error", action: {})
-                            .padding(.horizontal)
-                            .disabled(true)
-                            .opacity(0.5)
+                    case let .error(apiError):
+                        if case let .unexpectedError(message) = apiError {
+                            ChattyButton(text: message, action: { viewStore.send(.sendSubscriptionRequest) })
+                                .padding(.horizontal)
+                        } else {
+                            ChattyButton(text: "Error", action: {})
+                                .padding(.horizontal)
+                                .disabled(true)
+                                .opacity(0.5)
+                        }
                     }
 
                     ChattyDivider()
@@ -152,22 +158,21 @@ struct AccountView: View {
             }
             .padding()
             .padding(.top, 24)
+            .toolbar(viewStore.isOtherAccount ? .hidden : .visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    if !viewStore.isOtherAccount {
-                        NavigationLink {
-                            SubscriptionRequestView(
-                                store: Store(
-                                    initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
-                                    reducer: SubscriptionRequestCore()
-                                )
+                    NavigationLink {
+                        SubscriptionRequestView(
+                            store: Store(
+                                initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
+                                reducer: SubscriptionRequestCore()
                             )
-                        } label: {
-                            Image(systemName: "person.fill.badge.plus")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(AppColor.primary)
-                        }
+                        )
+                    } label: {
+                        Image(systemName: "person.fill.badge.plus")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(AppColor.primary)
                     }
                 }
             }

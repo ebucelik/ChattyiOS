@@ -80,6 +80,11 @@
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
 		71C98AF0295643E30011A61D /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C98AEF295643E30011A61D /* AppCore.swift */; };
 		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
+		71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C69297F4560001C0908 /* SearchCall.swift */; };
+		71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */; };
+		71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6D297F45D6001C0908 /* SearchService.swift */; };
+		71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C71297F466D001C0908 /* SearchCore.swift */; };
+		71EE5C74297F477B001C0908 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C73297F477B001C0908 /* SearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +179,11 @@
 		71C977FF2878C3DE004A457D /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		71C978022878C444004A457D /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		71C98AEF295643E30011A61D /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
+		71EE5C69297F4560001C0908 /* SearchCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCall.swift; sourceTree = "<group>"; };
+		71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProtocol.swift; sourceTree = "<group>"; };
+		71EE5C6D297F45D6001C0908 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		71EE5C71297F466D001C0908 /* SearchCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCore.swift; sourceTree = "<group>"; };
+		71EE5C73297F477B001C0908 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,6 +489,7 @@
 		71C977F22878C0F2004A457D /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				71EE5C64297F453A001C0908 /* Search */,
 				713F7BE72979A83F003B29B3 /* UploadPost */,
 				7100563C287ACDDC00EBD93A /* Entry */,
 				713887B52975F7A400BF01DA /* Subscription */,
@@ -594,6 +605,42 @@
 				7160765429789F47009AF5E2 /* InfoView.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		71EE5C64297F453A001C0908 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				71EE5C68297F4555001C0908 /* Views */,
+				71EE5C67297F4551001C0908 /* Core */,
+				71EE5C65297F4545001C0908 /* Services */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		71EE5C65297F4545001C0908 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				71EE5C69297F4560001C0908 /* SearchCall.swift */,
+				71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */,
+				71EE5C6D297F45D6001C0908 /* SearchService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		71EE5C67297F4551001C0908 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				71EE5C71297F466D001C0908 /* SearchCore.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		71EE5C68297F4555001C0908 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				71EE5C73297F477B001C0908 /* SearchView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -741,11 +788,14 @@
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
 				714FCC872969E5B100AA3F48 /* DispatchQueue+Extensions.swift in Sources */,
+				71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */,
 				713887B42975F62300BF01DA /* SubscribeCall.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				713F7BF12979CD31003B29B3 /* SubscriptionInfo.swift in Sources */,
+				71EE5C74297F477B001C0908 /* SearchView.swift in Sources */,
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
+				71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */,
 				718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */,
 				7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */,
 				713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */,
@@ -769,6 +819,7 @@
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
+				71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */,
 				7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */,
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
@@ -785,6 +836,7 @@
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
 				718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */,
+				71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
 				713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */,
 				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,
