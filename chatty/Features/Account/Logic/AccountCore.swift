@@ -101,7 +101,12 @@ class AccountCore: ReducerProtocol {
             state.accountState = accountState
 
             if case .loaded = accountState {
-                return .task { .fetchSubscriberInfo }
+                return .merge(
+                    [
+                        .task { .fetchSubscriberInfo },
+                        .task { .fetchSubscriptionInfo }
+                    ]
+                )
             }
 
             return .none

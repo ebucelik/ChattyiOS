@@ -19,7 +19,7 @@ struct SearchView: View {
                 case let .loaded(accounts):
                     List {
                         if accounts.isEmpty {
-                            Text("No accounts found for this username.")
+                            InfoView(info: "No accounts were found 🙁")
                         } else {
                             ForEach(accounts, id: \.id) { account in
                                 NavigationLink {
@@ -66,8 +66,9 @@ struct SearchView: View {
                     ErrorView()
                 }
             }
-            .searchable(text: viewStore.binding(\.$searchQuery), prompt: "Search for your friends")
+            .searchable(text: viewStore.binding(\.$searchQuery), prompt: "Search for your friends 🤩")
             .textInputAutocapitalization(.never)
+            .autocorrectionDisabled(true)
         }
     }
 }

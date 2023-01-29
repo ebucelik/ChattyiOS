@@ -15,13 +15,16 @@ struct AccountView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            NavigationStack {
+            NavigationView {
                 switch viewStore.accountState {
                 case .loading, .refreshing, .none:
                     LoadingView()
 
                 case let .loaded(account):
                     accountBody(with: account, viewStore)
+                        .refreshable {
+                            viewStore.send(.fetchAccount)
+                        }
 
                 case let .error(error):
                     ErrorView(
@@ -29,9 +32,6 @@ struct AccountView: View {
                         action: { viewStore.send(.fetchAccount) }
                     )
                 }
-            }
-            .refreshable {
-                viewStore.send(.fetchAccount)
             }
             .onAppear {
                 if case .none = viewStore.accountState {

@@ -22,8 +22,8 @@ struct SubscriptionView: View {
                 InfoView(info: viewStore.info)
             } else {
                 ScrollView {
-                    VStack {
-                        ForEach(viewStore.accounts, id: \.id) { account in
+                    VStack(spacing: 20) {
+                        ForEach(Array(viewStore.accounts.enumerated()), id: \.offset) { index, account in
                             NavigationLink {
                                 AccountView(
                                     store: Store(
@@ -48,10 +48,14 @@ struct SubscriptionView: View {
                                     Spacer()
                                 }
                             }
+
+                            if viewStore.accounts.count - 1 != index {
+                                ChattyDivider()
+                            }
                         }
                     }
+                    .padding(24)
                 }
-                .padding(.horizontal, 24)
                 .navigationTitle(Text(viewStore.title))
                 .navigationBarTitleDisplayMode(.inline)
             }
