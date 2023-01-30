@@ -41,7 +41,6 @@ struct SubscriptionRequestView: View {
         }
         .navigationTitle("Subscription Requests")
         .navigationBarTitleDisplayMode(.inline)
-        .padding()
     }
 
     @ViewBuilder
@@ -73,6 +72,7 @@ struct SubscriptionRequestView: View {
                     }
                 }
             }
+            .padding(24)
         }
     }
 }

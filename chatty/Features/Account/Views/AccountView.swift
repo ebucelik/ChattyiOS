@@ -162,11 +162,16 @@ struct AccountView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SubscriptionRequestView(
-                            store: Store(
-                                initialState: SubscriptionRequestCore.State(ownAccountId: account.id),
-                                reducer: SubscriptionRequestCore()
-                            )
+                        IfLetStore(
+                            store.scope(
+                                state: \.subscriptionRequestCoreState,
+                                action: AccountCore.Action.subscriptionRequest
+                            ),
+                            then: { store in
+                                SubscriptionRequestView(
+                                    store: store
+                                )
+                            }
                         )
                     } label: {
                         Image(systemName: "person.fill.badge.plus")

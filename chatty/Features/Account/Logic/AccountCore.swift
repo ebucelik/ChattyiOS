@@ -19,6 +19,8 @@ class AccountCore: ReducerProtocol {
         var subscribeState: Loadable<Subscriber>
         var subscriptionInfoState: Loadable<SubscriptionInfo>
 
+        var subscriptionRequestCoreState: SubscriptionRequestCore.State?
+
         var isOtherAccount: Bool {
             ownAccountId != nil
         }
@@ -35,11 +37,16 @@ class AccountCore: ReducerProtocol {
             self.subscribeState = subscribeState
             self.subscriptionInfoState = subscriptionInfoState
 
-            if case let .loaded(account) = accountState,
+            guard case let .loaded(account) = accountState else {
+                self.ownAccountId = nil
+                return
+            }
+
+            self.subscriptionRequestCoreState = SubscriptionRequestCore.State(ownAccountId: account.id)
+
+            if let ownAccountId = ownAccountId,
                account.id != ownAccountId {
                 self.ownAccountId = ownAccountId
-            } else {
-                self.ownAccountId = nil
             }
         }
     }
@@ -59,6 +66,8 @@ class AccountCore: ReducerProtocol {
         case fetchSubscriptionInfo
         case sendSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
+
+        case subscriptionRequest(SubscriptionRequestCore.Action)
     }
 
     @Dependency(\.accountService) var service
@@ -67,138 +76,146 @@ class AccountCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    // TODO: Make Subscription API calls
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .fetchSubscriberInfo:
-            return .merge(
-                [
-                    .task { .fetchSubscriber },
-                    .task { .fetchSubscribed }
-                ]
-            )
-
-        case .fetchAccount:
-            guard case let .loaded(account) = state.accountState else { return .none }
-
-            return .task { [id = account.id] in
-                let account = try await self.service.getAccountBy(id: id)
-
-                return .accountStateChanged(.loaded(account))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .accountStateChanged(.error(apiError))
-                } else {
-                    return .accountStateChanged(.error(.error(error)))
-                }
-            }
-            .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-            .receive(on: self.mainScheduler)
-            .prepend(.accountStateChanged(.loading))
-            .eraseToEffect()
-
-        case let .accountStateChanged(accountState):
-            state.accountState = accountState
-
-            if case .loaded = accountState {
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .fetchSubscriberInfo:
                 return .merge(
                     [
-                        .task { .fetchSubscriberInfo },
-                        .task { .fetchSubscriptionInfo }
+                        .task { .fetchSubscriber },
+                        .task { .fetchSubscribed }
                     ]
                 )
-            }
 
-            return .none
+            case .fetchAccount:
+                guard case let .loaded(account) = state.accountState else { return .none }
 
-        case .fetchSubscriber:
+                return .task { [id = account.id] in
+                    let account = try await self.service.getAccountBy(id: id)
 
-            guard case let .loaded(account) = state.accountState else { return .none }
-
-            return .task { [id = account.id] in
-                let subscriberAccounts = try await self.subscriberService.getSubscriberBy(id: id)
-
-                return .subscriberStateChanged(.loaded(subscriberAccounts))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .subscriberStateChanged(.error(apiError))
-                } else {
-                    return .subscriberStateChanged(.error(.error(error)))
+                    return .accountStateChanged(.loaded(account))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .accountStateChanged(.error(apiError))
+                    } else {
+                        return .accountStateChanged(.error(.error(error)))
+                    }
                 }
-            }
-            .receive(on: self.mainScheduler)
-            .prepend(.subscriberStateChanged(.loading))
-            .eraseToEffect()
+                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .prepend(.accountStateChanged(.loading))
+                .eraseToEffect()
 
-        case let .subscriberStateChanged(subscriberState):
-            state.subscriberState = subscriberState
+            case let .accountStateChanged(accountState):
+                state.accountState = accountState
 
-            return .none
-
-        case .fetchSubscribed:
-
-            guard case let .loaded(account) = state.accountState else { return .none }
-
-            return .task { [id = account.id] in
-                let subscribedAccounts = try await self.subscriberService.getSubscribedBy(id: id)
-
-                return .subscribedStateChanged(.loaded(subscribedAccounts))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .subscribedStateChanged(.error(apiError))
-                } else {
-                    return .subscribedStateChanged(.error(.error(error)))
+                if case .loaded = accountState {
+                    return .merge(
+                        [
+                            .task { .fetchSubscriberInfo },
+                            .task { .fetchSubscriptionInfo }
+                        ]
+                    )
                 }
-            }
-            .receive(on: self.mainScheduler)
-            .prepend(.subscribedStateChanged(.loading))
-            .eraseToEffect()
 
-        case let .subscribedStateChanged(subscribedState):
-            state.subscribedState = subscribedState
+                return .none
 
-            return .none
+            case .fetchSubscriber:
 
-        case .fetchSubscriptionInfo:
+                guard case let .loaded(account) = state.accountState else { return .none }
 
-            guard let ownAccountId = state.ownAccountId,
-                  case let .loaded(account) = state.accountState else { return .none }
+                return .task { [id = account.id] in
+                    let subscriberAccounts = try await self.subscriberService.getSubscriberBy(id: id)
 
-            return .task {
-                let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
-                let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
-
-                return .subscriptionInfoChanged(.loaded(subscriptionInfo))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .subscriptionInfoChanged(.error(apiError))
-                } else {
-                    return .subscriptionInfoChanged(.error(.error(error)))
+                    return .subscriberStateChanged(.loaded(subscriberAccounts))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .subscriberStateChanged(.error(apiError))
+                    } else {
+                        return .subscriberStateChanged(.error(.error(error)))
+                    }
                 }
-            }
+                .receive(on: self.mainScheduler)
+                .prepend(.subscriberStateChanged(.loading))
+                .eraseToEffect()
 
-        case .sendSubscriptionRequest:
+            case let .subscriberStateChanged(subscriberState):
+                state.subscriberState = subscriberState
 
-            guard let ownAccountId = state.ownAccountId,
-                  case let .loaded(account) = state.accountState else { return .none }
+                return .none
 
-            return .task {
-                let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
-                let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
+            case .fetchSubscribed:
 
-                return .subscriptionInfoChanged(.loaded(subscriptionInfo))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .subscriptionInfoChanged(.error(apiError))
-                } else {
-                    return .subscriptionInfoChanged(.error(.error(error)))
+                guard case let .loaded(account) = state.accountState else { return .none }
+
+                return .task { [id = account.id] in
+                    let subscribedAccounts = try await self.subscriberService.getSubscribedBy(id: id)
+
+                    return .subscribedStateChanged(.loaded(subscribedAccounts))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .subscribedStateChanged(.error(apiError))
+                    } else {
+                        return .subscribedStateChanged(.error(.error(error)))
+                    }
                 }
+                .receive(on: self.mainScheduler)
+                .prepend(.subscribedStateChanged(.loading))
+                .eraseToEffect()
+
+            case let .subscribedStateChanged(subscribedState):
+                state.subscribedState = subscribedState
+
+                return .none
+
+            case .fetchSubscriptionInfo:
+
+                guard let ownAccountId = state.ownAccountId,
+                      case let .loaded(account) = state.accountState else { return .none }
+
+                return .task {
+                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
+                    let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
+
+                    return .subscriptionInfoChanged(.loaded(subscriptionInfo))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .subscriptionInfoChanged(.error(apiError))
+                    } else {
+                        return .subscriptionInfoChanged(.error(.error(error)))
+                    }
+                }
+
+            case .sendSubscriptionRequest:
+
+                guard let ownAccountId = state.ownAccountId,
+                      case let .loaded(account) = state.accountState else { return .none }
+
+                return .task {
+                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
+                    let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
+
+                    return .subscriptionInfoChanged(.loaded(subscriptionInfo))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .subscriptionInfoChanged(.error(apiError))
+                    } else {
+                        return .subscriptionInfoChanged(.error(.error(error)))
+                    }
+                }
+
+            case let .subscriptionInfoChanged(subscriptionInfoState):
+                state.subscriptionInfoState = subscriptionInfoState
+
+                return .none
+
+            case let .subscriptionRequest(action):
+                print(action)
+                return .none
             }
-
-        case let .subscriptionInfoChanged(subscriptionInfoState):
-            state.subscriptionInfoState = subscriptionInfoState
-
-            return .none
+        }
+        .ifLet(\.subscriptionRequestCoreState, action: /Action.subscriptionRequest) {
+            SubscriptionRequestCore()
         }
     }
 }
