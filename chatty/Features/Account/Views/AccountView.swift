@@ -28,7 +28,7 @@ struct AccountView: View {
 
                 case let .error(error):
                     ErrorView(
-                        error: error.localizedDescription,
+                        text: error.localizedDescription,
                         action: { viewStore.send(.fetchAccount) }
                     )
                 }

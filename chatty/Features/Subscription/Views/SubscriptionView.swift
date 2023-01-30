@@ -19,7 +19,7 @@ struct SubscriptionView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             if viewStore.accounts.isEmpty {
-                InfoView(info: viewStore.info)
+                InfoView(text: viewStore.info)
             } else {
                 ScrollView {
                     VStack(spacing: 20) {

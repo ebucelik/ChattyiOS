@@ -17,7 +17,7 @@ struct SubscriptionRequestView: View {
             switch viewStore.subscriptionRequestsState {
             case let .loaded(subscriptionRequestAccounts):
                 if subscriptionRequestAccounts.isEmpty {
-                    InfoView(info: "No subscription requests available.") {
+                    InfoView(text: "No subscription requests available.") {
                         viewStore.send(.fetchSubscriptionRequests)
                     }
                 } else {

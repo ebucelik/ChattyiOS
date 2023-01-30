@@ -20,6 +20,8 @@
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
 		7111696C296CB89800AAF736 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7111696B296CB89800AAF736 /* Alamofire */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
+		71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71329337298830EA00E01940 /* BaseInfoErrorView.swift */; };
+		7132933C2988316D00E01940 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132933B2988316D00E01940 /* ErrorView.swift */; };
 		71367C84297745A100D92CC0 /* SubscriberCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71367C83297745A100D92CC0 /* SubscriberCall.swift */; };
 		71367C86297745EC00D92CC0 /* SubscribedCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71367C85297745EC00D92CC0 /* SubscribedCall.swift */; };
 		7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137C83A29741A8E0077D91C /* AccountCall.swift */; };
@@ -59,7 +61,6 @@
 		716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */; };
 		716E7F44295E3590006C5513 /* AccountCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F43295E3590006C5513 /* AccountCore.swift */; };
 		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
-		716E7F48295E376C006C5513 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F47295E376C006C5513 /* ErrorView.swift */; };
 		718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */; };
 		718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */; };
 		718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */; };
@@ -116,6 +117,8 @@
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		71329337298830EA00E01940 /* BaseInfoErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInfoErrorView.swift; sourceTree = "<group>"; };
+		7132933B2988316D00E01940 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		71367C83297745A100D92CC0 /* SubscriberCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberCall.swift; sourceTree = "<group>"; };
 		71367C85297745EC00D92CC0 /* SubscribedCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribedCall.swift; sourceTree = "<group>"; };
 		7137C83A29741A8E0077D91C /* AccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCall.swift; sourceTree = "<group>"; };
@@ -155,7 +158,6 @@
 		716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		716E7F43295E3590006C5513 /* AccountCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCore.swift; sourceTree = "<group>"; };
 		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		716E7F47295E376C006C5513 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestView.swift; sourceTree = "<group>"; };
 		718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCore.swift; sourceTree = "<group>"; };
 		718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCall.swift; sourceTree = "<group>"; };
@@ -265,6 +267,17 @@
 				71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		713293392988310200E01940 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				716E7F45295E36AF006C5513 /* LoadingView.swift */,
+				7160765429789F47009AF5E2 /* InfoView.swift */,
+				71329337298830EA00E01940 /* BaseInfoErrorView.swift */,
+				7132933B2988316D00E01940 /* ErrorView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7137C83929741A800077D91C /* Services */ = {
@@ -593,6 +606,7 @@
 		71C978012878C401004A457D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				713293392988310200E01940 /* Views */,
 				714FCC8B296A0BD300AA3F48 /* Services */,
 				716DB8BC2959DEEA003BF4A9 /* Extensions */,
 				71C978022878C444004A457D /* ViewControllerRepresentable.swift */,
@@ -600,9 +614,6 @@
 				714D1773288406A50091BD10 /* AppColor.swift */,
 				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
-				716E7F45295E36AF006C5513 /* LoadingView.swift */,
-				716E7F47295E376C006C5513 /* ErrorView.swift */,
-				7160765429789F47009AF5E2 /* InfoView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -815,7 +826,6 @@
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
-				716E7F48295E376C006C5513 /* ErrorView.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
@@ -824,6 +834,7 @@
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				714FCC8E296A0C2200AA3F48 /* ImageCall.swift in Sources */,
+				7132933C2988316D00E01940 /* ErrorView.swift in Sources */,
 				714D1774288406A50091BD10 /* AppColor.swift in Sources */,
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
@@ -833,6 +844,7 @@
 				7100564D287AD3DD00EBD93A /* Account.swift in Sources */,
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethod.swift in Sources */,
+				71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */,
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
 				718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */,

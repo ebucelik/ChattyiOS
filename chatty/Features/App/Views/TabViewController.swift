@@ -100,7 +100,7 @@ class TabViewController: UITabBarController {
             case .error:
                 loadingView.view.isHidden = true
                 errorView.view.isHidden = false
-                
+
             }
         }.store(in: &cancellables)
 

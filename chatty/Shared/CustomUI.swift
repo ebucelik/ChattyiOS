@@ -65,8 +65,8 @@ public struct ChattyButton: View {
             .disabled(isLoading ?? false)
         }
         .background(AppColor.primary)
-        .cornerRadius(8)
-        .shadow(radius: 5)
+        .cornerRadius(6)
+        .shadow(radius: 4)
     }
 }
 
