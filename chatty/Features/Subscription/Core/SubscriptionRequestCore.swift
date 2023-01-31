@@ -25,6 +25,11 @@ struct SubscriptionRequestCore: ReducerProtocol {
     enum Action: Equatable {
         case fetchSubscriptionRequests
         case subscriptionRequestsStateChanged(Loadable<[Account]>)
+
+        case acceptSubscription(Int)
+        case subscriptionAccepted
+        case declineSubscription(Int)
+        case subscriptionDeclined
     }
 
     @Dependency(\.subscriberService) var service
@@ -54,6 +59,47 @@ struct SubscriptionRequestCore: ReducerProtocol {
             state.subscriptionRequestsState = subscriptionRequestsState
 
             return .none
+
+        case let .acceptSubscription(subscriberId):
+            return .task { [ownAccountId = state.ownAccountId] in
+                let subscriber = Subscriber(
+                    userId: subscriberId,
+                    subscribedUserId: ownAccountId,
+                    accepted: true
+                )
+
+                _ = try await service.acceptSubscription(subscriber: subscriber)
+
+                return .subscriptionAccepted
+            } catch: { error in
+                if let apiError = error as? APIError {
+                    return .subscriptionRequestsStateChanged(.error(apiError))
+                } else {
+                    return .subscriptionRequestsStateChanged(.error(.error(error)))
+                }
+            }
+
+        case let .declineSubscription(subscriberId):
+            return .task { [ownAccountId = state.ownAccountId] in
+                let subscriber = Subscriber(
+                    userId: subscriberId,
+                    subscribedUserId: ownAccountId,
+                    accepted: false
+                )
+
+                _ = try await service.declineSubscription(subscriber: subscriber)
+
+                return .subscriptionDeclined
+            } catch: { error in
+                if let apiError = error as? APIError {
+                    return .subscriptionRequestsStateChanged(.error(apiError))
+                } else {
+                    return .subscriptionRequestsStateChanged(.error(.error(error)))
+                }
+            }
+
+        case .subscriptionAccepted, .subscriptionDeclined:
+            return .task { .fetchSubscriptionRequests }
         }
     }
 }

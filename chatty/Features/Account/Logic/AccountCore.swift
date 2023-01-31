@@ -25,6 +25,8 @@ class AccountCore: ReducerProtocol {
             ownAccountId != nil
         }
 
+        var newUpdatesAvailable: Bool = false
+
         init(ownAccountId: Int? = nil,
              accountState: Loadable<Account> = .none,
              subscriberState: Loadable<[Account]> = .none,
@@ -68,6 +70,8 @@ class AccountCore: ReducerProtocol {
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
 
         case subscriptionRequest(SubscriptionRequestCore.Action)
+
+        case newUpdatesAvailable
     }
 
     @Dependency(\.accountService) var service
@@ -209,8 +213,16 @@ class AccountCore: ReducerProtocol {
 
                 return .none
 
-            case let .subscriptionRequest(action):
-                print(action)
+            case .newUpdatesAvailable:
+                state.newUpdatesAvailable.toggle()
+
+                return .none
+
+                // MARK: SubscriptionRequestCore
+            case .subscriptionRequest(.subscriptionAccepted):
+                return .task { .newUpdatesAvailable }
+
+            case .subscriptionRequest:
                 return .none
             }
         }

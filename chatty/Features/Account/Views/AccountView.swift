@@ -25,6 +25,12 @@ struct AccountView: View {
                         .refreshable {
                             viewStore.send(.fetchAccount)
                         }
+                        .onAppear {
+                            if viewStore.newUpdatesAvailable {
+                                viewStore.send(.newUpdatesAvailable)
+                                viewStore.send(.fetchAccount)
+                            }
+                        }
 
                 case let .error(error):
                     ErrorView(

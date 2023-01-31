@@ -17,11 +17,15 @@ struct SubscriptionRequestView: View {
             switch viewStore.subscriptionRequestsState {
             case let .loaded(subscriptionRequestAccounts):
                 if subscriptionRequestAccounts.isEmpty {
-                    InfoView(text: "No subscription requests available.") {
-                        viewStore.send(.fetchSubscriptionRequests)
-                    }
+                    InfoView(text: "No subscription requests available.")
+                        .onDisappear {
+                            viewStore.send(.subscriptionRequestsStateChanged(.none))
+                        }
                 } else {
-                    subscriptionRequestBody(with: subscriptionRequestAccounts)
+                    subscriptionRequestBody(
+                        with: subscriptionRequestAccounts,
+                        viewStore: viewStore
+                    )
                         .refreshable {
                             viewStore.send(.fetchSubscriptionRequests)
                         }
@@ -36,7 +40,9 @@ struct SubscriptionRequestView: View {
                     }
 
             case .error:
-                ErrorView()
+                ErrorView(text: "Seems like an error appeared when fetching your subscription requests...") {
+                    viewStore.send(.fetchSubscriptionRequests)
+                }
             }
         }
         .navigationTitle("Subscription Requests")
@@ -44,7 +50,8 @@ struct SubscriptionRequestView: View {
     }
 
     @ViewBuilder
-    private func subscriptionRequestBody(with subscriptionRequestAccounts: [Account]) -> some View {
+    private func subscriptionRequestBody(with subscriptionRequestAccounts: [Account],
+                                         viewStore: ViewStoreOf<SubscriptionRequestCore>) -> some View {
         ScrollView {
             VStack {
                 ForEach(subscriptionRequestAccounts, id: \.id) { subscriptionRequestAccount in
@@ -57,18 +64,24 @@ struct SubscriptionRequestView: View {
                         Text(subscriptionRequestAccount.username)
                             .font(AppFont.body)
                             .foregroundColor(AppColor.black)
-
+                        
                         Spacer()
 
                         Image(systemName: "checkmark.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(AppColor.success)
+                            .onTapGesture {
+                                viewStore.send(.acceptSubscription(subscriptionRequestAccount.id))
+                            }
 
                         Image(systemName: "xmark.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(AppColor.error)
+                            .onTapGesture {
+                                viewStore.send(.declineSubscription(subscriptionRequestAccount.id))
+                            }
                     }
                 }
             }
