@@ -18,6 +18,7 @@ class TabViewController: UITabBarController {
 
     let feedView: FeedView
     let searchView: SearchView
+    let uploadPostView: UploadPostView
     let accountView: AccountView
     let entryView: EntryView
 
@@ -29,7 +30,7 @@ class TabViewController: UITabBarController {
     }()
 
     let errorView: UIHostingController<ErrorView> = {
-        let errorView = UIHostingController(rootView: ErrorView())
+        let errorView = UIHostingController(rootView: ErrorView(text: "An error appeared while trying to fetch your data from our servers..."))
         errorView.view.translatesAutoresizingMaskIntoConstraints = false
         errorView.view.isHidden = true
         return errorView
@@ -50,6 +51,13 @@ class TabViewController: UITabBarController {
             store: store.scope(
                 state: \.search,
                 action: AppCore.Action.search
+            )
+        )
+
+        self.uploadPostView = UploadPostView(
+            store: store.scope(
+                state: \.upload,
+                action: AppCore.Action.upload
             )
         )
 
@@ -151,17 +159,25 @@ class TabViewController: UITabBarController {
         let searchViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "magnifyingglass"), tag: 1)
         searchViewController.tabBarItem = searchViewTabBarItem
 
+        let uploadPostViewController = UIHostingController(
+            rootView: uploadPostView
+                .navigationBarHidden(true)
+        )
+        let uploadPostViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "plus"), tag: 2)
+        uploadPostViewController.tabBarItem = uploadPostViewTabBarItem
+
         let accountViewController = UIHostingController(
             rootView: accountView
                 .navigationBarHidden(true)
         )
-        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 2)
+        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 3)
         accountViewController.tabBarItem = accountViewTabBarItem
 
         setViewControllers(
             [
                 viewController,
                 searchViewController,
+                uploadPostViewController,
                 accountViewController
             ],
             animated: true

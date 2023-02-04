@@ -49,6 +49,11 @@ extension DependencyValues {
         set { self[SearchService.self] = newValue }
     }
 
+    var uploadPostService: UploadPostService {
+        get { self[UploadPostService.self] }
+        set { self[UploadPostService.self] = newValue }
+    }
+
     var mainScheduler: DispatchQueue {
         get { self[DispatchQueue.self] }
         set { self[DispatchQueue.self] = newValue }

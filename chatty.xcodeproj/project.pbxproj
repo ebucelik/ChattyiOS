@@ -87,6 +87,13 @@
 		71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C71297F466D001C0908 /* SearchCore.swift */; };
 		71EE5C74297F477B001C0908 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C73297F477B001C0908 /* SearchView.swift */; };
 		71F216D0298E85F20085DB80 /* CancelSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216CF298E85F20085DB80 /* CancelSubscriptionCall.swift */; };
+		71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216D2298E9B350085DB80 /* UploadPostView.swift */; };
+		71F216D5298E9B8B0085DB80 /* UploadPostCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216D4298E9B8B0085DB80 /* UploadPostCore.swift */; };
+		71F216D7298EEA660085DB80 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216D6298EEA660085DB80 /* ImagePickerController.swift */; };
+		71F216D9298EF5FC0085DB80 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216D8298EF5FC0085DB80 /* Post.swift */; };
+		71F216DB298EFAEB0085DB80 /* UploadPostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216DA298EFAEB0085DB80 /* UploadPostCall.swift */; };
+		71F216DD298EFB3E0085DB80 /* UploadPostServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216DC298EFB3E0085DB80 /* UploadPostServiceProtocol.swift */; };
+		71F216DF298EFB650085DB80 /* UploadPostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216DE298EFB650085DB80 /* UploadPostService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,6 +195,13 @@
 		71EE5C71297F466D001C0908 /* SearchCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCore.swift; sourceTree = "<group>"; };
 		71EE5C73297F477B001C0908 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		71F216CF298E85F20085DB80 /* CancelSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubscriptionCall.swift; sourceTree = "<group>"; };
+		71F216D2298E9B350085DB80 /* UploadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostView.swift; sourceTree = "<group>"; };
+		71F216D4298E9B8B0085DB80 /* UploadPostCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostCore.swift; sourceTree = "<group>"; };
+		71F216D6298EEA660085DB80 /* ImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
+		71F216D8298EF5FC0085DB80 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		71F216DA298EFAEB0085DB80 /* UploadPostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostCall.swift; sourceTree = "<group>"; };
+		71F216DC298EFB3E0085DB80 /* UploadPostServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostServiceProtocol.swift; sourceTree = "<group>"; };
+		71F216DE298EFB650085DB80 /* UploadPostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +331,9 @@
 		713F7BE82979A8AC003B29B3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				71F216DA298EFAEB0085DB80 /* UploadPostCall.swift */,
+				71F216DC298EFB3E0085DB80 /* UploadPostServiceProtocol.swift */,
+				71F216DE298EFB650085DB80 /* UploadPostService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -324,6 +341,7 @@
 		713F7BE92979A8B4003B29B3 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				71F216D4298E9B8B0085DB80 /* UploadPostCore.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -331,6 +349,7 @@
 		713F7BEA2979A8BC003B29B3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71F216D2298E9B350085DB80 /* UploadPostView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -338,6 +357,7 @@
 		713F7BEB2979A8C9003B29B3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				71F216D8298EF5FC0085DB80 /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -610,6 +630,7 @@
 				714D1773288406A50091BD10 /* AppColor.swift */,
 				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
+				71F216D6298EEA660085DB80 /* ImagePickerController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -811,7 +832,9 @@
 				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
 				714FCC872969E5B100AA3F48 /* DispatchQueue+Extensions.swift in Sources */,
 				71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */,
+				71F216DD298EFB3E0085DB80 /* UploadPostServiceProtocol.swift in Sources */,
 				713887B42975F62300BF01DA /* SubscribeCall.swift in Sources */,
+				71F216D7298EEA660085DB80 /* ImagePickerController.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				713F7BF12979CD31003B29B3 /* SubscriptionInfo.swift in Sources */,
@@ -839,6 +862,7 @@
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
+				71F216D9298EF5FC0085DB80 /* Post.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
 				71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */,
 				7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */,
@@ -854,6 +878,7 @@
 				714D177E288434180091BD10 /* RegisterView.swift in Sources */,
 				7100564D287AD3DD00EBD93A /* Account.swift in Sources */,
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
+				71F216DF298EFB650085DB80 /* UploadPostService.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethod.swift in Sources */,
 				71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */,
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
@@ -862,6 +887,7 @@
 				71F216D0298E85F20085DB80 /* CancelSubscriptionCall.swift in Sources */,
 				71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
+				71F216D5298E9B8B0085DB80 /* UploadPostCore.swift in Sources */,
 				713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */,
 				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,
 				716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */,
@@ -873,7 +899,9 @@
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
 				713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */,
+				71F216DB298EFAEB0085DB80 /* UploadPostCall.swift in Sources */,
 				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
+				71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */,
 				71367C86297745EC00D92CC0 /* SubscribedCall.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,

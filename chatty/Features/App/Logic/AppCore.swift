@@ -16,6 +16,7 @@ class AppCore: ReducerProtocol {
 
         var feed = FeedCore.State()
         var search = SearchCore.State()
+        var upload = UploadPostCore.State()
         var account = AccountCore.State()
         var entry = EntryCore.State()
     }
@@ -27,6 +28,7 @@ class AppCore: ReducerProtocol {
 
         case feed(FeedCore.Action)
         case search(SearchCore.Action)
+        case upload(UploadPostCore.Action)
         case account(AccountCore.Action)
         case entry(EntryCore.Action)
     }
@@ -41,9 +43,11 @@ class AppCore: ReducerProtocol {
                 return EffectTask(value: .loadAccount)
 
             case .loadAccount:
-                guard let account = Account.getFromUserDefaults() else { return .task { .accountStateChanged(.loaded(nil)) } }
+                guard let account = Account.getFromUserDefaults()
+                else { return .task { .accountStateChanged(.loaded(nil)) } }
 
                 state.search.ownAccountId = account.id
+                state.upload.ownAccountId = account.id
 
                 return .task {
                     let loadedAccount = try await self.accountService.getAccountBy(id: account.id)
@@ -85,6 +89,7 @@ class AppCore: ReducerProtocol {
                 state.accountState = .loaded(account)
                 state.showFeed = true
                 state.search.ownAccountId = account.id
+                state.upload.ownAccountId = account.id
 
                 if case let .loaded(loadedAccount) = state.accountState,
                    let account = loadedAccount {
@@ -111,6 +116,12 @@ class AppCore: ReducerProtocol {
         ) {
             SearchCore()
         }
+
+        Scope(
+            state: \.upload,
+            action: /Action.upload) {
+                UploadPostCore()
+            }
 
         Scope(
             state: \.account,

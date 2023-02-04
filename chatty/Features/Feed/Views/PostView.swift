@@ -28,11 +28,3 @@ struct PostView: View {
         .padding(.all, 16)
     }
 }
-
-#if DEBUG
-struct PostView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostView()
-    }
-}
-#endif
