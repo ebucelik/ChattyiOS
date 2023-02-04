@@ -50,6 +50,12 @@ class SubscriberService: BackendClient, SubscriberServiceProtocol {
 
         return try await sendRequest(call: declineSubscriptionCall)
     }
+
+    func cancelSubscription(subscriber: Subscriber) async throws -> Message {
+        let cancelSubscriptionCall = CancelSubscriptionCall(body: subscriber)
+
+        return try await sendRequest(call: cancelSubscriptionCall)
+    }
 }
 
 extension SubscriberService: DependencyKey {

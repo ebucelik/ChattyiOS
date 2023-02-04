@@ -83,8 +83,7 @@ struct SubscriptionRequestCore: ReducerProtocol {
             return .task { [ownAccountId = state.ownAccountId] in
                 let subscriber = Subscriber(
                     userId: subscriberId,
-                    subscribedUserId: ownAccountId,
-                    accepted: false
+                    subscribedUserId: ownAccountId
                 )
 
                 _ = try await service.declineSubscription(subscriber: subscriber)

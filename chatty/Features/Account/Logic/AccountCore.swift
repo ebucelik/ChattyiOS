@@ -67,6 +67,7 @@ class AccountCore: ReducerProtocol {
 
         case fetchSubscriptionInfo
         case sendSubscriptionRequest
+        case cancelSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
 
         case subscriptionRequest(SubscriptionRequestCore.Action)
@@ -126,7 +127,9 @@ class AccountCore: ReducerProtocol {
 
             case .fetchSubscriber:
 
-                guard case let .loaded(account) = state.accountState else { return .none }
+                guard case let .loaded(account) = state.accountState,
+                      !state.isOtherAccount
+                else { return .none }
 
                 return .task { [id = account.id] in
                     let subscriberAccounts = try await self.subscriberService.getSubscriberBy(id: id)
@@ -150,7 +153,9 @@ class AccountCore: ReducerProtocol {
 
             case .fetchSubscribed:
 
-                guard case let .loaded(account) = state.accountState else { return .none }
+                guard case let .loaded(account) = state.accountState,
+                      !state.isOtherAccount
+                else { return .none }
 
                 return .task { [id = account.id] in
                     let subscribedAccounts = try await self.subscriberService.getSubscribedBy(id: id)
@@ -178,7 +183,7 @@ class AccountCore: ReducerProtocol {
                       case let .loaded(account) = state.accountState else { return .none }
 
                 return .task {
-                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
+                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
 
                     return .subscriptionInfoChanged(.loaded(subscriptionInfo))
@@ -189,14 +194,18 @@ class AccountCore: ReducerProtocol {
                         return .subscriptionInfoChanged(.error(.error(error)))
                     }
                 }
+                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .prepend(.subscriptionInfoChanged(.loading))
+                .eraseToEffect()
 
             case .sendSubscriptionRequest:
 
                 guard let ownAccountId = state.ownAccountId,
-                      case let .loaded(account) = state.accountState else { return .none }
+                      case let .loaded(account) = state.accountState
+                else { return .none }
 
                 return .task {
-                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id, accepted: false)
+                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
                     return .subscriptionInfoChanged(.loaded(subscriptionInfo))
@@ -206,6 +215,19 @@ class AccountCore: ReducerProtocol {
                     } else {
                         return .subscriptionInfoChanged(.error(.error(error)))
                     }
+                }
+
+            case .cancelSubscriptionRequest:
+
+                guard let ownAccountId = state.ownAccountId,
+                      case let .loaded(account) = state.accountState
+                else { return .none }
+
+                return .task {
+                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
+                    _ = try await self.subscriberService.cancelSubscription(subscriber: subscriber)
+
+                    return .fetchSubscriptionInfo
                 }
 
             case let .subscriptionInfoChanged(subscriptionInfoState):

@@ -137,11 +137,11 @@ struct AccountView: View {
                 if viewStore.isOtherAccount {
                     switch viewStore.subscriptionInfoState {
                     case let .loaded(subscriptionInfo):
-                        ChattyButton(text: subscriptionInfo.status, action: {})
+                        ChattyButton(text: subscriptionInfo.status, action: { viewStore.send(.cancelSubscriptionRequest) })
                             .padding(.horizontal)
 
                     case .loading, .refreshing, .none:
-                        ChattyButton(text: "I want to know", action: { viewStore.send(.sendSubscriptionRequest) })
+                        ChattyButton(text: "", isLoading: true, action: {})
                             .padding(.horizontal)
                             .onAppear {
                                 viewStore.send(.fetchSubscriptionInfo)

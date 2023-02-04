@@ -21,4 +21,6 @@ protocol SubscriberServiceProtocol {
     func acceptSubscription(subscriber: Subscriber) async throws -> Message
 
     func declineSubscription(subscriber: Subscriber) async throws -> Message
+
+    func cancelSubscription(subscriber: Subscriber) async throws -> Message
 }

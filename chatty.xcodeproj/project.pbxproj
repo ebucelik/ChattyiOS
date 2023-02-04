@@ -86,6 +86,7 @@
 		71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6D297F45D6001C0908 /* SearchService.swift */; };
 		71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C71297F466D001C0908 /* SearchCore.swift */; };
 		71EE5C74297F477B001C0908 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C73297F477B001C0908 /* SearchView.swift */; };
+		71F216D0298E85F20085DB80 /* CancelSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F216CF298E85F20085DB80 /* CancelSubscriptionCall.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +187,7 @@
 		71EE5C6D297F45D6001C0908 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		71EE5C71297F466D001C0908 /* SearchCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCore.swift; sourceTree = "<group>"; };
 		71EE5C73297F477B001C0908 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		71F216CF298E85F20085DB80 /* CancelSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubscriptionCall.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,15 +397,9 @@
 		71607650297895E3009AF5E2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				713887B32975F62300BF01DA /* SubscribeCall.swift */,
-				713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */,
-				713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */,
-				713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */,
+				71F216D1298E86430085DB80 /* Calls */,
 				713887BC2975FA5200BF01DA /* SubscriberService.swift */,
 				713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */,
-				71367C83297745A100D92CC0 /* SubscriberCall.swift */,
-				71367C85297745EC00D92CC0 /* SubscribedCall.swift */,
-				718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -654,6 +650,21 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		71F216D1298E86430085DB80 /* Calls */ = {
+			isa = PBXGroup;
+			children = (
+				71367C83297745A100D92CC0 /* SubscriberCall.swift */,
+				71367C85297745EC00D92CC0 /* SubscribedCall.swift */,
+				713887B32975F62300BF01DA /* SubscribeCall.swift */,
+				713887B62975F7C500BF01DA /* SubscriptionInfoCall.swift */,
+				713887B82975F82D00BF01DA /* AcceptSubscriptionCall.swift */,
+				713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */,
+				718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */,
+				71F216CF298E85F20085DB80 /* CancelSubscriptionCall.swift */,
+			);
+			path = Calls;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -848,6 +859,7 @@
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
 				718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */,
+				71F216D0298E85F20085DB80 /* CancelSubscriptionCall.swift in Sources */,
 				71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
 				713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */,
