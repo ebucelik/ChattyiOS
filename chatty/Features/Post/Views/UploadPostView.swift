@@ -33,7 +33,7 @@ struct UploadPostView: View {
 
                         case .none, .error:
                             Text("Upload")
-                                .foregroundColor(viewStore.isImagePicked ? AppColor.primary : .gray)
+                                .foregroundColor(viewStore.isImagePicked ? AppColor.primary : AppColor.gray)
                                 .font(viewStore.isImagePicked ? .headline.bold() : .headline)
                                 .disabled(!viewStore.isImagePicked)
                                 .onTapGesture {
@@ -66,7 +66,7 @@ struct UploadPostView: View {
         )
         .frame(width: 200, height: 200)
         .cornerRadius(12)
-        .shadow(radius: 3)
+        .shadow(radius: viewStore.isImagePicked ? 3 : 0)
         .onAppear {
             imagePickerController.onImagePicked = { pickedImage in
                 viewStore.send(.setImage(pickedImage))

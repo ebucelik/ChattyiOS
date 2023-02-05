@@ -18,6 +18,7 @@ class AccountCore: ReducerProtocol {
         var subscribedState: Loadable<[Account]>
         var subscribeState: Loadable<Subscriber>
         var subscriptionInfoState: Loadable<SubscriptionInfo>
+        var postsState: Loadable<[Post]>
 
         var subscriptionRequestCoreState: SubscriptionRequestCore.State?
 
@@ -32,12 +33,14 @@ class AccountCore: ReducerProtocol {
              subscriberState: Loadable<[Account]> = .none,
              subscribedState: Loadable<[Account]> = .none,
              subscribeState: Loadable<Subscriber> = .none,
-             subscriptionInfoState: Loadable<SubscriptionInfo> = .none) {
+             subscriptionInfoState: Loadable<SubscriptionInfo> = .none,
+             postsState: Loadable<[Post]> = .none) {
             self.accountState = accountState
             self.subscriberState = subscriberState
             self.subscribedState = subscribedState
             self.subscribeState = subscribeState
             self.subscriptionInfoState = subscriptionInfoState
+            self.postsState = postsState
 
             guard case let .loaded(account) = accountState else {
                 self.ownAccountId = nil
@@ -70,13 +73,18 @@ class AccountCore: ReducerProtocol {
         case cancelSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
 
-        case subscriptionRequest(SubscriptionRequestCore.Action)
+        case fetchPosts
+        case sendPostsRequest(Int)
+        case postsStateChanged(Loadable<[Post]>)
 
         case newUpdatesAvailable
+
+        case subscriptionRequest(SubscriptionRequestCore.Action)
     }
 
     @Dependency(\.accountService) var service
     @Dependency(\.subscriberService) var subscriberService
+    @Dependency(\.postService) var postService
     @Dependency(\.mainScheduler) var mainScheduler
 
     struct DebounceId: Hashable {}
@@ -118,7 +126,8 @@ class AccountCore: ReducerProtocol {
                     return .merge(
                         [
                             .task { .fetchSubscriberInfo },
-                            .task { .fetchSubscriptionInfo }
+                            .task { .fetchSubscriptionInfo },
+                            .task { .fetchPosts }
                         ]
                     )
                 }
@@ -232,6 +241,47 @@ class AccountCore: ReducerProtocol {
 
             case let .subscriptionInfoChanged(subscriptionInfoState):
                 state.subscriptionInfoState = subscriptionInfoState
+                
+                if case let .loaded(subscriptionInfo) = subscriptionInfoState,
+                   subscriptionInfo.accepted {
+                    return .task { .fetchPosts }
+                }
+
+                return .none
+
+            case .fetchPosts:
+
+                if state.isOtherAccount {
+                    if case let .loaded(subscriptionInfo) = state.subscriptionInfoState,
+                       subscriptionInfo.accepted,
+                       case let .loaded(account) = state.accountState {
+                        return .task { .sendPostsRequest(account.id) }
+                    } else {
+                        return .task { .postsStateChanged(.none) }
+                    }
+                } else if case let .loaded(account) = state.accountState {
+                    return .task { .sendPostsRequest(account.id) }
+                }
+
+                return .none
+
+            case let .sendPostsRequest(id):
+                return .task {
+                    let posts = try await self.postService.fetchPostsBy(id: id)
+
+                    return .postsStateChanged(.loaded(posts))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .postsStateChanged(.error(apiError))
+                    } else {
+                        return .postsStateChanged(.error(.error(error)))
+                    }
+                }
+                .receive(on: self.mainScheduler)
+                .eraseToEffect()
+
+            case let .postsStateChanged(postsState):
+                state.postsState = postsState
 
                 return .none
 

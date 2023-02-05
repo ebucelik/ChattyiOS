@@ -50,7 +50,7 @@ class UploadPostCore: ReducerProtocol {
         case resetted
     }
 
-    @Dependency(\.uploadPostService) var service
+    @Dependency(\.postService) var service
     @Dependency(\.imageService) var imageService
     @Dependency(\.mainScheduler) var mainScheduler
 

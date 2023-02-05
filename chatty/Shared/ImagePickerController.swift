@@ -14,7 +14,7 @@ class ImagePickerController: UIViewController {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(AppColor.primary)
+        imageView.tintColor = UIColor(AppColor.gray)
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.layer.masksToBounds = false

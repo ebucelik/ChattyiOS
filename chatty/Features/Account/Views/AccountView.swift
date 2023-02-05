@@ -42,152 +42,190 @@ struct AccountView: View {
             .onAppear {
                 if case .none = viewStore.accountState {
                     viewStore.send(.fetchAccount)
+                } else {
+                    viewStore.send(.fetchSubscriberInfo)
+                    viewStore.send(.fetchPosts)
                 }
-
-                viewStore.send(.fetchSubscriberInfo)
             }
         }
     }
 
     @ViewBuilder
     private func accountBody(with account: Account, _ viewStore: ViewStoreOf<AccountCore>) -> some View {
-        ScrollView(.vertical) {
-            VStack(spacing: 24) {
-                ChattyImage(
-                    picture: account.picture,
-                    frame: CGSize(width: 125, height: 125)
-                )
+        GeometryReader { reader in
+            ScrollView(.vertical) {
+                VStack(spacing: 24) {
+                    ChattyImage(
+                        picture: account.picture,
+                        frame: CGSize(width: 125, height: 125)
+                    )
 
-                Text("@\(account.username)")
-                    .font(AppFont.title3.bold())
+                    Text("@\(account.username)")
+                        .font(AppFont.title3.bold())
 
-                ChattyDivider()
+                    ChattyDivider()
 
-                HStack(spacing: 16) {
-                    NavigationLink {
-                        if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
-                            SubscriptionView(
-                                store: Store(
-                                    initialState: SubscriptionCore.State(
-                                        ownAccountId: account.id,
-                                        accounts: subscriberAccounts,
-                                        subscriptionMode: .subscriber
-                                    ),
-                                    reducer: SubscriptionCore()
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
+                                SubscriptionView(
+                                    store: Store(
+                                        initialState: SubscriptionCore.State(
+                                            ownAccountId: account.id,
+                                            accounts: subscriberAccounts,
+                                            subscriptionMode: .subscriber
+                                        ),
+                                        reducer: SubscriptionCore()
+                                    )
                                 )
-                            )
+                            }
+                        } label: {
+                            VStack(spacing: 10) {
+                                Text("Subscriber")
+                                    .font(AppFont.caption)
+
+                                Text(String(account.subscriberCount))
+                                    .font(AppFont.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.leading)
+                            .foregroundColor(AppColor.black)
                         }
-                    } label: {
+                        .disabled(viewStore.isOtherAccount)
+
+                        ChattyDivider()
+
+                        NavigationLink {
+                            if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
+                                SubscriptionView(
+                                    store: Store(
+                                        initialState: SubscriptionCore.State(
+                                            ownAccountId: account.id,
+                                            accounts: subscribedAccounts,
+                                            subscriptionMode: .subscribed
+                                        ),
+                                        reducer: SubscriptionCore()
+                                    )
+                                )
+                            }
+                        } label: {
+                            VStack(spacing: 10) {
+                                Text("Subscribed")
+                                    .font(AppFont.caption)
+
+                                Text(String(account.subscribedCount))
+                                    .font(AppFont.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(AppColor.black)
+                        }
+                        .disabled(viewStore.isOtherAccount)
+
+                        ChattyDivider()
+
                         VStack(spacing: 10) {
-                            Text("Subscriber")
+                            Text("Posts")
                                 .font(AppFont.caption)
 
-                            Text(String(account.subscriberCount))
+                            Text(String(account.postCount))
                                 .font(AppFont.caption)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.leading)
-                        .foregroundColor(AppColor.black)
+                        .padding(.trailing)
                     }
-                    .disabled(viewStore.isOtherAccount)
 
                     ChattyDivider()
 
-                    NavigationLink {
-                        if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
-                            SubscriptionView(
-                                store: Store(
-                                    initialState: SubscriptionCore.State(
-                                        ownAccountId: account.id,
-                                        accounts: subscribedAccounts,
-                                        subscriptionMode: .subscribed
-                                    ),
-                                    reducer: SubscriptionCore()
-                                )
+                    if viewStore.isOtherAccount {
+                        switch viewStore.subscriptionInfoState {
+                        case let .loaded(subscriptionInfo):
+                            ChattyButton(text: subscriptionInfo.status, action: { viewStore.send(.cancelSubscriptionRequest) })
+                                .padding(.horizontal)
+
+                        case .loading, .refreshing, .none:
+                            ChattyButton(text: "", isLoading: true, action: {})
+                                .padding(.horizontal)
+                                .onAppear {
+                                    viewStore.send(.fetchSubscriptionInfo)
+                                }
+
+                        case let .error(apiError):
+                            if case let .unexpectedError(message) = apiError {
+                                ChattyButton(text: message, action: { viewStore.send(.sendSubscriptionRequest) })
+                                    .padding(.horizontal)
+                            } else {
+                                ChattyButton(text: "Error", action: {})
+                                    .padding(.horizontal)
+                                    .disabled(true)
+                                    .opacity(0.5)
+                            }
+                        }
+
+                        ChattyDivider()
+                    }
+
+                    postBody(viewStore, reader: reader)
+                }
+                .padding()
+                .padding(.top, 24)
+                .toolbar(viewStore.isOtherAccount ? .hidden : .visible, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink {
+                            IfLetStore(
+                                store.scope(
+                                    state: \.subscriptionRequestCoreState,
+                                    action: AccountCore.Action.subscriptionRequest
+                                ),
+                                then: { store in
+                                    SubscriptionRequestView(
+                                        store: store
+                                    )
+                                }
                             )
+                        } label: {
+                            Image(systemName: "person.fill.badge.plus")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(AppColor.primary)
                         }
-                    } label: {
-                        VStack(spacing: 10) {
-                            Text("Subscribed")
-                                .font(AppFont.caption)
-
-                            Text(String(account.subscribedCount))
-                                .font(AppFont.caption)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(AppColor.black)
                     }
-                    .disabled(viewStore.isOtherAccount)
-
-                    ChattyDivider()
-
-                    VStack(spacing: 10) {
-                        Text("Posts")
-                            .font(AppFont.caption)
-
-                        Text(String(account.postCount))
-                            .font(AppFont.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.trailing)
                 }
-
-                ChattyDivider()
-
-                if viewStore.isOtherAccount {
-                    switch viewStore.subscriptionInfoState {
-                    case let .loaded(subscriptionInfo):
-                        ChattyButton(text: subscriptionInfo.status, action: { viewStore.send(.cancelSubscriptionRequest) })
-                            .padding(.horizontal)
-
-                    case .loading, .refreshing, .none:
-                        ChattyButton(text: "", isLoading: true, action: {})
-                            .padding(.horizontal)
-                            .onAppear {
-                                viewStore.send(.fetchSubscriptionInfo)
-                            }
-
-                    case let .error(apiError):
-                        if case let .unexpectedError(message) = apiError {
-                            ChattyButton(text: message, action: { viewStore.send(.sendSubscriptionRequest) })
-                                .padding(.horizontal)
-                        } else {
-                            ChattyButton(text: "Error", action: {})
-                                .padding(.horizontal)
-                                .disabled(true)
-                                .opacity(0.5)
-                        }
-                    }
-
-                    ChattyDivider()
-                }
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .padding()
-            .padding(.top, 24)
-            .toolbar(viewStore.isOtherAccount ? .hidden : .visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        IfLetStore(
-                            store.scope(
-                                state: \.subscriptionRequestCoreState,
-                                action: AccountCore.Action.subscriptionRequest
-                            ),
-                            then: { store in
-                                SubscriptionRequestView(
-                                    store: store
-                                )
-                            }
-                        )
-                    } label: {
-                        Image(systemName: "person.fill.badge.plus")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(AppColor.primary)
+        }
+    }
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
+    @ViewBuilder
+    private func postBody(_ viewStore: ViewStoreOf<AccountCore>, reader: GeometryProxy) -> some View {
+        switch viewStore.postsState {
+        case let .loaded(posts):
+                LazyVGrid(columns: columns) {
+                    ForEach(posts, id: \.id) { post in
+                        AsyncImage(url: URL(string: post.imageLink)) { image in
+                            image
+                                .resizable()
+                                .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+                        } placeholder: {
+                            AppColor.gray
+                        }
+                        .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
                     }
                 }
-            }
-            .navigationBarTitleDisplayMode(.inline)
+
+        case .loading, .refreshing:
+            LoadingView()
+
+        case .none:
+            EmptyView()
+
+        case .error:
+            ErrorView(text: "An error occured while fetching your posts...")
         }
     }
 }
