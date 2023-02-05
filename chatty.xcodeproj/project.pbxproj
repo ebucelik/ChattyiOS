@@ -48,7 +48,9 @@
 		714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */; };
 		714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC91296A0D0200AA3F48 /* ImageService.swift */; };
 		7151BE4C28D4BB61000E58EF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7151BE4B28D4BB61000E58EF /* ImagePicker.swift */; };
-		71526D48298FD21100588C7D /* FetchPostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D47298FD21100588C7D /* FetchPostsCall.swift */; };
+		71526D48298FD21100588C7D /* PostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D47298FD21100588C7D /* PostsCall.swift */; };
+		71526D4A298FF04E00588C7D /* PostCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D49298FF04E00588C7D /* PostCore.swift */; };
+		71526D4C298FF1F700588C7D /* PostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D4B298FF1F700588C7D /* PostCall.swift */; };
 		7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765229789613009AF5E2 /* SubscriptionView.swift */; };
 		7160765529789F47009AF5E2 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765429789F47009AF5E2 /* InfoView.swift */; };
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
@@ -154,7 +156,9 @@
 		714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageServiceProtocol.swift; sourceTree = "<group>"; };
 		714FCC91296A0D0200AA3F48 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		7151BE4B28D4BB61000E58EF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		71526D47298FD21100588C7D /* FetchPostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPostsCall.swift; sourceTree = "<group>"; };
+		71526D47298FD21100588C7D /* PostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCall.swift; sourceTree = "<group>"; };
+		71526D49298FF04E00588C7D /* PostCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCore.swift; sourceTree = "<group>"; };
+		71526D4B298FF1F700588C7D /* PostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCall.swift; sourceTree = "<group>"; };
 		7160765229789613009AF5E2 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		7160765429789F47009AF5E2 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
@@ -336,7 +340,8 @@
 				71F216DA298EFAEB0085DB80 /* UploadPostCall.swift */,
 				71F216DC298EFB3E0085DB80 /* PostServiceProtocol.swift */,
 				71F216DE298EFB650085DB80 /* PostService.swift */,
-				71526D47298FD21100588C7D /* FetchPostsCall.swift */,
+				71526D47298FD21100588C7D /* PostsCall.swift */,
+				71526D4B298FF1F700588C7D /* PostCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				71F216D4298E9B8B0085DB80 /* UploadPostCore.swift */,
+				71526D49298FF04E00588C7D /* PostCore.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -855,7 +861,7 @@
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
 				713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */,
-				71526D48298FD21100588C7D /* FetchPostsCall.swift in Sources */,
+				71526D48298FD21100588C7D /* PostsCall.swift in Sources */,
 				7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */,
 				716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */,
 				711A2C40290BD26600DD0684 /* PostView.swift in Sources */,
@@ -865,6 +871,7 @@
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
+				71526D4A298FF04E00588C7D /* PostCore.swift in Sources */,
 				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
 				71F216D9298EF5FC0085DB80 /* Post.swift in Sources */,
 				7100565A287B474E00EBD93A /* LoginService.swift in Sources */,
@@ -903,6 +910,7 @@
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
 				713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */,
+				71526D4C298FF1F700588C7D /* PostCall.swift in Sources */,
 				71F216DB298EFAEB0085DB80 /* UploadPostCall.swift in Sources */,
 				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
 				71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */,

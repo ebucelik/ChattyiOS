@@ -19,8 +19,6 @@ struct FeedView: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible())], spacing: 16) {
                         ForEach(0...50, id: \.self) { _ in
-                            PostView()
-
                             Divider()
                         }
                     }

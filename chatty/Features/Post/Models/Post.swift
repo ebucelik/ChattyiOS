@@ -13,16 +13,19 @@ struct Post: Codable, Identifiable, Equatable {
     let imageLink: String
     let likesCount: Int
     let caption: String
+    let timestamp: Int?
 
     init(id: Int,
          userId: Int,
          imageLink: String,
          likesCount: Int,
-         caption: String) {
+         caption: String,
+         timestamp: Int? = nil) {
         self.id = id
         self.userId = userId
         self.imageLink = imageLink
         self.likesCount = likesCount
         self.caption = caption
+        self.timestamp = timestamp
     }
 }

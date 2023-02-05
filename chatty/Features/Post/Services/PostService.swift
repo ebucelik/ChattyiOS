@@ -16,9 +16,15 @@ class PostService: BackendClient, PostServiceProtocol {
     }
 
     func fetchPostsBy(id: Int) async throws -> [Post] {
-        let fetchPostsCall = FetchPostsCall(parameters: ["id" : id])
+        let postsCall = PostsCall(parameters: ["id" : id])
 
-        return try await sendRequest(call: fetchPostsCall)
+        return try await sendRequest(call: postsCall)
+    }
+
+    func fetchPostBy(id: Int) async throws -> Post {
+        let postCall = PostCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: postCall)
     }
 }
 

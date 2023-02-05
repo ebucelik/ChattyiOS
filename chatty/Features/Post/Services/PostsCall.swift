@@ -1,5 +1,5 @@
 //
-//  FetchPostsCall.swift
+//  PostsCall.swift
 //  chatty
 //
 //  Created by Ing. Ebu Celik, BSc on 05.02.23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FetchPostsCall: Call {
+struct PostsCall: Call {
     typealias Response = [Post]
 
     var resource: String = "post"

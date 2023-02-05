@@ -6,25 +6,27 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct PostView: View {
+
+    let store: StoreOf<PostCore>
+
     var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: "person")
-                .resizable()
-                .frame(width: 200, height: 200)
+        WithViewStore(store) { viewStore in
+            switch viewStore.postState {
+            case let .loaded(post):
+                EmptyView()
+                    .refreshable {
+                        viewStore.send(.fetchPost)
+                    }
 
-            HStack(spacing: 8) {
-                Text("120")
-                    .font(.system(size: 23))
+            case .loading, .refreshing, .none:
+                LoadingView()
 
-                Image(systemName: "heart")
-                    .resizable()
-                    .frame(width: 22, height: 22)
-
-                Spacer()
+            case .error:
+                ErrorView(text: "An error occured while fetching a post...")
             }
         }
-        .padding(.all, 16)
     }
 }

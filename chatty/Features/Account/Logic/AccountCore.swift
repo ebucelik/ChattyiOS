@@ -250,7 +250,6 @@ class AccountCore: ReducerProtocol {
                 return .none
 
             case .fetchPosts:
-
                 if state.isOtherAccount {
                     if case let .loaded(subscriptionInfo) = state.subscriptionInfoState,
                        subscriptionInfo.accepted,

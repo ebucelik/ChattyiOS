@@ -11,4 +11,6 @@ protocol PostServiceProtocol {
     func uploadPost(post: Post) async throws -> Message
 
     func fetchPostsBy(id: Int) async throws -> [Post]
+
+    func fetchPostBy(id: Int) async throws -> Post
 }
