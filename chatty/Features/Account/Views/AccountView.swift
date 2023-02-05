@@ -13,9 +13,14 @@ struct AccountView: View {
 
     let store: StoreOf<AccountCore>
 
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
     var body: some View {
         WithViewStore(store) { viewStore in
-            NavigationView {
+            VStack {
                 switch viewStore.accountState {
                 case .loading, .refreshing, .none:
                     LoadingView()
@@ -47,6 +52,7 @@ struct AccountView: View {
                     viewStore.send(.fetchPosts)
                 }
             }
+            .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
         }
     }
 
@@ -168,7 +174,6 @@ struct AccountView: View {
                 }
                 .padding()
                 .padding(.top, 24)
-                .toolbar(viewStore.isOtherAccount ? .hidden : .visible, for: .navigationBar)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink {
@@ -188,7 +193,9 @@ struct AccountView: View {
                                 .resizable()
                                 .frame(width: 30, height: 30)
                                 .foregroundColor(AppColor.primary)
+                                .opacity(viewStore.isOtherAccount ? 0 : 1)
                         }
+                        .disabled(viewStore.isOtherAccount)
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -196,25 +203,30 @@ struct AccountView: View {
         }
     }
 
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
     @ViewBuilder
     private func postBody(_ viewStore: ViewStoreOf<AccountCore>, reader: GeometryProxy) -> some View {
         switch viewStore.postsState {
         case let .loaded(posts):
                 LazyVGrid(columns: columns) {
                     ForEach(posts, id: \.id) { post in
-                        AsyncImage(url: URL(string: post.imageLink)) { image in
-                            image
-                                .resizable()
-                                .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
-                        } placeholder: {
-                            AppColor.gray
+                        NavigationLink {
+                            PostView(
+                                store: Store(
+                                    initialState: PostCore.State(postState: .loaded(post)),
+                                    reducer: PostCore()
+                                )
+                            )
+                        } label: {
+                            AsyncImage(url: URL(string: post.imageLink)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+                            } placeholder: {
+                                AppColor.gray
+                            }
+                            .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
                         }
-                        .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+
                     }
                 }
 

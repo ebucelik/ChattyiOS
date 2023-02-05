@@ -40,4 +40,12 @@ extension View {
             EmptyView()
         }
     }
+
+    func handleNavigationView(isOtherAccount: Bool) -> some View {
+        self.modifier(
+            ChattyNavigationView(
+                isOtherAccount: isOtherAccount
+            )
+        )
+    }
 }
