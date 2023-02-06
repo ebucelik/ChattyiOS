@@ -114,10 +114,6 @@ class AccountCore: ReducerProtocol {
                         return .accountStateChanged(.error(.error(error)))
                     }
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.accountStateChanged(.loading))
-                .eraseToEffect()
 
             case let .accountStateChanged(accountState):
                 state.accountState = accountState

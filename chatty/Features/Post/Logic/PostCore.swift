@@ -13,15 +13,26 @@ class PostCore: ReducerProtocol {
 
     struct State: Equatable {
         var postState: Loadable<Post>
+        var deletePostState: Loadable<Message>
 
-        init(postState: Loadable<Post> = .none) {
+        @BindableState var showAlert: Bool = false
+
+        init(postState: Loadable<Post> = .none,
+             deletePostState: Loadable<Message> = .none) {
             self.postState = postState
+            self.deletePostState = deletePostState
         }
     }
 
-    enum Action {
+    enum Action: BindableAction, Equatable {
         case fetchPost
         case postStateChanged(Loadable<Post>)
+
+        case deletePost
+        case deletePostStateChanged(Loadable<Message>)
+
+        case showAlert
+        case binding(BindingAction<State>)
     }
 
     @Dependency(\.postService) var service
@@ -29,32 +40,69 @@ class PostCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .fetchPost:
+    var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
 
-            guard case let .loaded(post) = state.postState else { return .none }
+        Reduce { state, action in
+            switch action {
+            case .fetchPost:
 
-            return .task {
-                let post = try await self.service.fetchPostBy(id: post.id)
+                guard case let .loaded(post) = state.postState else { return .none }
 
-                return .postStateChanged(.loaded(post))
-            } catch: { error in
-                if let apiError = error as? APIError {
-                    return .postStateChanged(.error(apiError))
-                } else {
-                    return .postStateChanged(.error(.error(error)))
+                return .task {
+                    let post = try await self.service.fetchPostBy(id: post.id)
+
+                    return .postStateChanged(.loaded(post))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .postStateChanged(.error(apiError))
+                    } else {
+                        return .postStateChanged(.error(.error(error)))
+                    }
                 }
+                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .prepend(.postStateChanged(.loading))
+                .eraseToEffect()
+
+            case let .postStateChanged(postState):
+                state.postState = postState
+
+                return .none
+
+            case .deletePost:
+
+                guard case let .loaded(post) = state.postState else { return .none }
+
+                return .task {
+                    let message = try await self.service.deletePost(id: post.id)
+
+                    return .deletePostStateChanged(.loaded(message))
+                } catch: { error in
+                    if let apiError = error as? APIError {
+                        return .deletePostStateChanged(.error(apiError))
+                    } else {
+                        return .deletePostStateChanged(.error(.error(error)))
+                    }
+                }
+                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .prepend(.deletePostStateChanged(.loading))
+                .eraseToEffect()
+
+            case let .deletePostStateChanged(deletePostState):
+                state.deletePostState = deletePostState
+
+                return .none
+
+            case .showAlert:
+                state.showAlert.toggle()
+
+                return .none
+
+            case .binding:
+                return .none
             }
-            .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-            .receive(on: self.mainScheduler)
-            .prepend(.postStateChanged(.loading))
-            .eraseToEffect()
-
-        case let .postStateChanged(postState):
-            state.postState = postState
-
-            return .none
         }
     }
 }

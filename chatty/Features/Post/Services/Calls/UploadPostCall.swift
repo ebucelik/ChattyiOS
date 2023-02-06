@@ -10,7 +10,7 @@ import Foundation
 struct UploadPostCall: Call {
     typealias Response = Message
 
-    var resource: String = "post"
+    var resource: String = "post/upload"
     var httpMethod: HTTPMethod = .POST
     var body: Codable?
 

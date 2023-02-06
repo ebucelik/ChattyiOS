@@ -216,6 +216,9 @@ struct AccountView: View {
                                     reducer: PostCore()
                                 )
                             )
+                            .onDisappear {
+                                viewStore.send(.fetchAccount)
+                            }
                         } label: {
                             AsyncImage(url: URL(string: post.imageLink)) { image in
                                 image

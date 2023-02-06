@@ -38,8 +38,7 @@ class BackendClient {
             return
         }
 
-        if case .GET = call.httpMethod,
-           let parameters = call.parameters {
+        if let parameters = call.parameters {
             components.queryItems = parameters.compactMap { (key, value) in
                 if let valueString = value as? String {
                     return URLQueryItem(name: key, value: valueString)
@@ -102,6 +101,10 @@ class BackendClient {
                     print("ERROR: \(error)")
                     completion(.failure(error))
                 } else {
+                    if let data = data {
+                        print("DATA: \(String(decoding: data, as: UTF8.self))")
+                    }
+
                     if let response = response as? HTTPURLResponse,
                        let headerFields = response.allHeaderFields as? [String: String],
                        let url = response.url {

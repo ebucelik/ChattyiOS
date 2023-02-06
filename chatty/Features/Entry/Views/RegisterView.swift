@@ -282,7 +282,6 @@ struct RegisterView: View {
                 .frame(width: 150, height: 150, alignment: .center)
                 .foregroundColor(AppColor.gray)
                 .cornerRadius(75)
-                .shadow(radius: 10)
                 .onTapGesture {
                     viewStore.send(.showImagePicker)
                 }

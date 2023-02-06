@@ -15,6 +15,12 @@ class PostService: BackendClient, PostServiceProtocol {
         return try await sendRequest(call: uploadPostCall)
     }
 
+    func deletePost(id: Int) async throws -> Message {
+        let deletePostCall = DeletePostCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: deletePostCall)
+    }
+
     func fetchPostsBy(id: Int) async throws -> [Post] {
         let postsCall = PostsCall(parameters: ["id" : id])
 
