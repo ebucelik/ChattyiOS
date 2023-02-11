@@ -26,6 +26,14 @@ class AccountCore: ReducerProtocol {
             ownAccountId != nil
         }
 
+        var accountId: Int? {
+            if case let .loaded(account) = accountState {
+                return account.id
+            }
+
+            return nil
+        }
+
         var newUpdatesAvailable: Bool = false
 
         @BindableState
@@ -281,8 +289,21 @@ class AccountCore: ReducerProtocol {
                 return .none
 
             case let .sendPostsRequest(id):
-                return .task {
-                    let posts = try await self.postService.fetchPostsBy(id: id)
+
+                var accountId = 0
+
+                if state.isOtherAccount,
+                   let ownAccountId = state.ownAccountId {
+                    accountId = ownAccountId
+                } else if let stateAccountId = state.accountId {
+                    accountId = stateAccountId
+                }
+
+                return .task { [accountId = accountId] in
+                    let posts = try await self.postService.fetchPostsBy(
+                        id: id,
+                        userId: accountId
+                    )
 
                     return .postsStateChanged(.loaded(posts))
                 } catch: { error in

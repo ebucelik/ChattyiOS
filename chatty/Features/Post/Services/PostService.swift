@@ -21,16 +21,54 @@ class PostService: BackendClient, PostServiceProtocol {
         return try await sendRequest(call: deletePostCall)
     }
 
-    func fetchPostsBy(id: Int) async throws -> [Post] {
-        let postsCall = PostsCall(parameters: ["id" : id])
+    func fetchPostsBy(id: Int, userId: Int) async throws -> [Post] {
+        let postsCall = PostsCall(
+            parameters: [
+                "id" : id,
+                "userId": userId
+            ]
+        )
 
         return try await sendRequest(call: postsCall)
     }
 
-    func fetchPostBy(id: Int) async throws -> Post {
-        let postCall = PostCall(parameters: ["id" : id])
+    func fetchPostBy(id: Int, userId: Int) async throws -> Post {
+        let postCall = PostCall(
+            parameters: [
+                "id" : id,
+                "userId": userId
+            ]
+        )
 
         return try await sendRequest(call: postCall)
+    }
+
+    func getAccountsFromPost(id: Int) async throws -> [Account] {
+        let getAccountsFromPostCall = GetAccountsFromPostCall(parameters: ["id" : id])
+
+        return try await sendRequest(call: getAccountsFromPostCall)
+    }
+
+    func saveLikeFromAccountToPost(postId: Int, userId: Int) async throws -> Message {
+        let likePostCall = LikePostCall(
+            parameters: [
+                "postId" : postId,
+                "userId" : userId
+            ]
+        )
+
+        return try await sendRequest(call: likePostCall)
+    }
+
+    func removeLikeFromAccountToPost(postId: Int, userId: Int) async throws -> Message {
+        let removeLikePostCall = RemoveLikePostCall(
+            parameters: [
+                "postId" : postId,
+                "userId" : userId
+            ]
+        )
+
+        return try await sendRequest(call: removeLikePostCall)
     }
 }
 

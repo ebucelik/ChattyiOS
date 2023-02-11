@@ -12,18 +12,30 @@ import SwiftHelper
 class PostCore: ReducerProtocol {
 
     struct State: Equatable {
-        var isOtherAccount: Bool
+        var otherAccountId: Int?
+        var ownAccountId: Int?
         var postState: Loadable<Post>
         var deletePostState: Loadable<Message>
 
+        var postDate: String = ""
+
         @BindableState var showAlert: Bool = false
 
-        init(isOtherAccount: Bool,
+        var postLiked: Bool = false
+
+        init(otherAccountId: Int?,
+             ownAccountId: Int?,
              postState: Loadable<Post> = .none,
              deletePostState: Loadable<Message> = .none) {
-            self.isOtherAccount = isOtherAccount
+            self.otherAccountId = otherAccountId
+            self.ownAccountId = ownAccountId
             self.postState = postState
             self.deletePostState = deletePostState
+
+            if case let .loaded(post) = postState {
+                self.postDate = post.timestamp.toStringDate
+                self.postLiked = post.likedByYou ?? false
+            }
         }
     }
 
@@ -31,8 +43,16 @@ class PostCore: ReducerProtocol {
         case fetchPost
         case postStateChanged(Loadable<Post>)
 
+        case setPostDate(Double)
+
         case deletePost
         case deletePostStateChanged(Loadable<Message>)
+
+        case likePost
+        case postLiked
+
+        case removeLikeFromPost
+        case likeRemoved
 
         case showAlert
         case binding(BindingAction<State>)
@@ -50,10 +70,21 @@ class PostCore: ReducerProtocol {
             switch action {
             case .fetchPost:
 
+                var userId = 0
+
+                if let otherAccountId = state.otherAccountId {
+                    userId = otherAccountId
+                } else if let ownAccountId = state.ownAccountId {
+                    userId = ownAccountId
+                }
+
                 guard case let .loaded(post) = state.postState else { return .none }
 
-                return .task {
-                    let post = try await self.service.fetchPostBy(id: post.id)
+                return .task { [userId = userId] in
+                    let post = try await self.service.fetchPostBy(
+                        id: post.id,
+                        userId: userId
+                    )
 
                     return .postStateChanged(.loaded(post))
                 } catch: { error in
@@ -63,13 +94,20 @@ class PostCore: ReducerProtocol {
                         return .postStateChanged(.error(.error(error)))
                     }
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
                 .prepend(.postStateChanged(.loading))
                 .eraseToEffect()
 
             case let .postStateChanged(postState):
                 state.postState = postState
+
+                if case let .loaded(post) = postState {
+                    return .task { .setPostDate(post.timestamp) }
+                }
+
+                return .none
+
+            case let .setPostDate(timestamp):
+                state.postDate = timestamp.toStringDate
 
                 return .none
 
@@ -95,6 +133,62 @@ class PostCore: ReducerProtocol {
 
             case let .deletePostStateChanged(deletePostState):
                 state.deletePostState = deletePostState
+
+                return .none
+
+            case .likePost:
+
+                var userId = 0
+
+                if let otherAccountId = state.otherAccountId {
+                    userId = otherAccountId
+                } else if let ownAccountId = state.ownAccountId {
+                    userId = ownAccountId
+                }
+
+                guard case let .loaded(post) = state.postState else { return .none }
+
+                return .concatenate(
+                    [
+                        .task { [userId = userId] in
+                            _ = try await self.service.saveLikeFromAccountToPost(postId: post.id, userId: userId)
+
+                            return .fetchPost
+                        },
+                        .task { .postLiked }
+                    ]
+                )
+
+            case .postLiked:
+                state.postLiked = true
+
+                return .none
+
+            case .removeLikeFromPost:
+
+                var userId = 0
+
+                if let otherAccountId = state.otherAccountId {
+                    userId = otherAccountId
+                } else if let ownAccountId = state.ownAccountId {
+                    userId = ownAccountId
+                }
+
+                guard case let .loaded(post) = state.postState else { return .none }
+
+                return .concatenate(
+                    [
+                        .task { [userId = userId] in
+                            _ = try await self.service.removeLikeFromAccountToPost(postId: post.id, userId: userId)
+
+                            return .fetchPost
+                        },
+                        .task { .likeRemoved }
+                    ]
+                )
+
+            case .likeRemoved:
+                state.postLiked = false
 
                 return .none
 

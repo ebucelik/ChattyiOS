@@ -32,9 +32,17 @@ struct PostView: View {
 
                             VStack(spacing: 16) {
                                 HStack(alignment: .center) {
-                                    Image(systemName: "heart")
+                                    Image(systemName: viewStore.postLiked ? "heart.fill" : "heart")
                                         .resizable()
                                         .frame(width: 25, height: 25)
+                                        .foregroundColor(viewStore.postLiked ? AppColor.red : .black)
+                                        .onTapGesture {
+                                            if viewStore.postLiked {
+                                                viewStore.send(.removeLikeFromPost)
+                                            } else {
+                                                viewStore.send(.likePost)
+                                            }
+                                        }
 
                                     Text("\(post.likesCount)")
                                         .frame(alignment: .center)
@@ -43,12 +51,19 @@ struct PostView: View {
                                     Spacer()
 
                                     deletePostBody(viewStore)
-                                        .disabled(viewStore.isOtherAccount)
-                                        .opacity(viewStore.isOtherAccount ? 0 : 1)
+                                        .disabled(viewStore.otherAccountId != nil)
+                                        .opacity(viewStore.otherAccountId != nil ? 0 : 1)
                                 }
 
-                                Text(post.caption)
-                                    .fixedSize(horizontal: false, vertical: true)
+                                if !post.caption.isEmpty {
+                                    Text(post.caption)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+
+                                Text(viewStore.postDate)
+                                    .font(AppFont.footnote)
+                                    .foregroundColor(AppColor.gray)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding(.horizontal, 24)

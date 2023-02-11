@@ -106,6 +106,11 @@ class AppCore: ReducerProtocol {
 
                 // MARK: AccountCore:
             case .account(.loggedOut):
+                state.feed = FeedCore.State()
+                state.search = SearchCore.State()
+                state.upload = UploadPostCore.State()
+                state.account = AccountCore.State()
+
                 return .task { .onAppear }
 
             default:

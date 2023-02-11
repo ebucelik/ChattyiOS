@@ -243,7 +243,8 @@ struct AccountView: View {
                             PostView(
                                 store: Store(
                                     initialState: PostCore.State(
-                                        isOtherAccount: viewStore.isOtherAccount,
+                                        otherAccountId: viewStore.ownAccountId,
+                                        ownAccountId: viewStore.accountId,
                                         postState: .loaded(post)
                                     ),
                                     reducer: PostCore()

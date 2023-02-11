@@ -44,17 +44,6 @@ struct UploadPostView: View {
                             LoadingView()
                         }
                     }
-
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("Reset")
-                            .foregroundColor(viewStore.isImagePicked ? AppColor.primary : AppColor.lightgray)
-                            .font(viewStore.isImagePicked ? .headline.bold() : .headline)
-                            .disabled(!viewStore.isImagePicked)
-                            .onTapGesture {
-                                imagePickerController.resetImage()
-                                viewStore.send(.reset)
-                            }
-                    }
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .contentShape(Rectangle())
@@ -96,6 +85,7 @@ struct UploadPostView: View {
                 TextField("Write a caption...", text: viewStore.binding(\.$caption), axis: .vertical)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .padding(.trailing, 35)
 
                 Text("\(viewStore.caption.count)/\(viewStore.textMaxLength)")
                     .foregroundColor(viewStore.approachesMaxLength ? AppColor.error : AppColor.primary)
