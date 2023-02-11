@@ -65,7 +65,7 @@ class BackendClient {
         )
 
 #if DEBUG
-        print("REQUEST URL: \(String(describing: url.absoluteString))")
+        print("\nREQUEST URL: \(String(describing: url.absoluteString))")
 #endif
 
         if let imageData = call.imageData,
@@ -85,7 +85,7 @@ class BackendClient {
                 headers: request.headers
             ).responseDecodable(of: C.Response.self) { dataResponse in
                 if let error = dataResponse.error {
-                    print("ERROR: \(error)")
+                    print("\nERROR: \(error)")
                     completion(.failure(error))
                 } else {
                     self.handleResponse(with: dataResponse.response,
@@ -98,11 +98,11 @@ class BackendClient {
             // MARK: Start call
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    print("ERROR: \(error)")
+                    print("\nERROR: \(error)")
                     completion(.failure(error))
                 } else {
                     if let data = data {
-                        print("DATA: \(String(decoding: data, as: UTF8.self))")
+                        print("DATA: \(String(decoding: data, as: UTF8.self))\n")
                     }
 
                     if let response = response as? HTTPURLResponse,

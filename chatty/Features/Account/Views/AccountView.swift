@@ -45,12 +45,7 @@ struct AccountView: View {
                 }
             }
             .onAppear {
-                if case .none = viewStore.accountState {
-                    viewStore.send(.fetchAccount)
-                } else {
-                    viewStore.send(.fetchSubscriberInfo)
-                    viewStore.send(.fetchPosts)
-                }
+                viewStore.send(.fetchAccount)
             }
             .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
         }
@@ -142,33 +137,7 @@ struct AccountView: View {
 
                     ChattyDivider()
 
-                    if viewStore.isOtherAccount {
-                        switch viewStore.subscriptionInfoState {
-                        case let .loaded(subscriptionInfo):
-                            ChattyButton(text: subscriptionInfo.status, action: { viewStore.send(.cancelSubscriptionRequest) })
-                                .padding(.horizontal)
-
-                        case .loading, .refreshing, .none:
-                            ChattyButton(text: "", isLoading: true, action: {})
-                                .padding(.horizontal)
-                                .onAppear {
-                                    viewStore.send(.fetchSubscriptionInfo)
-                                }
-
-                        case let .error(apiError):
-                            if case let .unexpectedError(message) = apiError {
-                                ChattyButton(text: message, action: { viewStore.send(.sendSubscriptionRequest) })
-                                    .padding(.horizontal)
-                            } else {
-                                ChattyButton(text: "Error", action: {})
-                                    .padding(.horizontal)
-                                    .disabled(true)
-                                    .opacity(0.5)
-                            }
-                        }
-
-                        ChattyDivider()
-                    }
+                    subscriptionBody(viewStore)
 
                     postBody(viewStore, reader: reader)
                 }
@@ -204,34 +173,77 @@ struct AccountView: View {
     }
 
     @ViewBuilder
+    private func subscriptionBody(_ viewStore: ViewStoreOf<AccountCore>) -> some View {
+        if viewStore.isOtherAccount {
+            switch viewStore.subscriptionInfoState {
+            case let .loaded(subscriptionInfo):
+                ChattyButton(
+                    text: subscriptionInfo.status,
+                    action: { viewStore.send(.declineOrCancelSubscriptionRequest) }
+                )
+                .padding(.horizontal)
+
+            case .loading, .refreshing, .none:
+                ChattyButton(
+                    isLoading: true,
+                    action: {}
+                )
+                .padding(.horizontal)
+                .onAppear {
+                    viewStore.send(.fetchSubscriptionInfo)
+                }
+
+            case let .error(apiError):
+                if case let .unexpectedError(message) = apiError {
+                    ChattyButton(
+                        text: message,
+                        action: { viewStore.send(.sendSubscriptionRequest) }
+                    )
+                    .padding(.horizontal)
+                } else {
+                    ChattyButton(
+                        text: "Error",
+                        action: {}
+                    )
+                    .padding(.horizontal)
+                    .disabled(true)
+                    .opacity(0.5)
+                }
+            }
+
+            ChattyDivider()
+        }
+    }
+
+    @ViewBuilder
     private func postBody(_ viewStore: ViewStoreOf<AccountCore>, reader: GeometryProxy) -> some View {
         switch viewStore.postsState {
         case let .loaded(posts):
-                LazyVGrid(columns: columns) {
-                    ForEach(posts, id: \.id) { post in
-                        NavigationLink {
-                            PostView(
-                                store: Store(
-                                    initialState: PostCore.State(postState: .loaded(post)),
-                                    reducer: PostCore()
-                                )
+            LazyVGrid(columns: columns) {
+                ForEach(posts, id: \.id) { post in
+                    NavigationLink {
+                        PostView(
+                            store: Store(
+                                initialState: PostCore.State(
+                                    isOtherAccount: viewStore.isOtherAccount,
+                                    postState: .loaded(post)
+                                ),
+                                reducer: PostCore()
                             )
-                            .onDisappear {
-                                viewStore.send(.fetchAccount)
-                            }
-                        } label: {
-                            AsyncImage(url: URL(string: post.imageLink)) { image in
-                                image
-                                    .resizable()
-                                    .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
-                            } placeholder: {
-                                AppColor.gray
-                            }
-                            .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+                        )
+                    } label: {
+                        AsyncImage(url: URL(string: post.imageLink)) { image in
+                            image
+                                .resizable()
+                                .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+                        } placeholder: {
+                            AppColor.lightgray
                         }
-
+                        .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
                     }
+
                 }
+            }
 
         case .loading, .refreshing:
             LoadingView()

@@ -12,13 +12,16 @@ import SwiftHelper
 class PostCore: ReducerProtocol {
 
     struct State: Equatable {
+        var isOtherAccount: Bool
         var postState: Loadable<Post>
         var deletePostState: Loadable<Message>
 
         @BindableState var showAlert: Bool = false
 
-        init(postState: Loadable<Post> = .none,
+        init(isOtherAccount: Bool,
+             postState: Loadable<Post> = .none,
              deletePostState: Loadable<Message> = .none) {
+            self.isOtherAccount = isOtherAccount
             self.postState = postState
             self.deletePostState = deletePostState
         }

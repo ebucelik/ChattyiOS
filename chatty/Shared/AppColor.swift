@@ -9,7 +9,9 @@ import Foundation
 import SwiftUI
 
 struct AppColor {
-    static let gray = Color(.sRGB, red: 227/255, green: 227/255, blue: 227/255, opacity: 1)
+    static let lightgray = Color(.sRGB, red: 227/255, green: 227/255, blue: 227/255, opacity: 1)
+
+    static let gray = Color(.sRGB, red: 88/255, green: 88/255, blue: 88/255, opacity: 1)
 
     static let primary = Color(.sRGB, red: 70/255, green: 85/255, blue: 111/255, opacity: 1)
 

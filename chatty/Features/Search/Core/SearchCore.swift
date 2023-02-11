@@ -44,8 +44,13 @@ struct SearchCore: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case let .searchBy(username):
+                guard let ownAccountId = state.ownAccountId else { return .none }
+
                 return .task {
-                    let accounts = try await self.searchService.searchBy(username: username)
+                    let accounts = try await self.searchService.searchBy(
+                        id: ownAccountId,
+                        username: username
+                    )
 
                     return .searchAccountStateChanged(.loaded(accounts))
                 } catch: { error in

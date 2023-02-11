@@ -10,7 +10,6 @@ import Foundation
 protocol Call {
     associatedtype Response: Codable
 
-    var scheme: String { get }
     var domain: String { get }
     var resource: String { get }
     var path: String { get }
@@ -21,11 +20,9 @@ protocol Call {
 }
 
 extension Call {
-    var scheme: String { "http://" }
+    var domain: String { Deployment.dev.rawValue }
 
-    var domain: String { "localhost:8080/api/v1/" }
-
-    var path: String { scheme + domain + resource}
+    var path: String { domain + resource}
     
     var body: Codable? {
         get { nil }

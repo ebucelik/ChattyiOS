@@ -70,7 +70,7 @@ class AccountCore: ReducerProtocol {
 
         case fetchSubscriptionInfo
         case sendSubscriptionRequest
-        case cancelSubscriptionRequest
+        case declineOrCancelSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
 
         case fetchPosts
@@ -222,15 +222,21 @@ class AccountCore: ReducerProtocol {
                     }
                 }
 
-            case .cancelSubscriptionRequest:
+            case .declineOrCancelSubscriptionRequest:
 
                 guard let ownAccountId = state.ownAccountId,
-                      case let .loaded(account) = state.accountState
+                      case let .loaded(account) = state.accountState,
+                      case let .loaded(subscriptionInfo) = state.subscriptionInfoState
                 else { return .none }
 
                 return .task {
                     let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
-                    _ = try await self.subscriberService.cancelSubscription(subscriber: subscriber)
+
+                    if subscriptionInfo.accepted {
+                        _ = try await self.subscriberService.cancelSubscription(subscriber: subscriber)
+                    } else {
+                        _ = try await self.subscriberService.declineSubscription(subscriber: subscriber)
+                    }
 
                     return .fetchSubscriptionInfo
                 }

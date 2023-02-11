@@ -9,12 +9,12 @@ import UIKit
 
 class ImagePickerController: UIViewController {
 
+    let placeholder: String
     var onImagePicked: (UIImage) -> Void
 
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(AppColor.gray)
+        imageView.tintColor = UIColor(AppColor.lightgray)
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.layer.masksToBounds = false
@@ -23,8 +23,16 @@ class ImagePickerController: UIViewController {
         return imageView
     }()
 
-    init(onImagePicked: @escaping (UIImage) -> Void = { _ in }) {
+    init(placeholder: String,
+         onImagePicked: @escaping (UIImage) -> Void = { _ in }) {
+        self.placeholder = placeholder
         self.onImagePicked = onImagePicked
+
+        if let image = UIImage(named: placeholder)?.withRenderingMode(.alwaysTemplate) {
+            imageView.image = image
+        } else if let image = UIImage(systemName: placeholder)?.withRenderingMode(.alwaysTemplate) {
+            imageView.image = image
+        }
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -72,7 +80,7 @@ class ImagePickerController: UIViewController {
     }
 
     public func resetImage() {
-        imageView.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysTemplate)
+        imageView.image = UIImage(named: placeholder)?.withRenderingMode(.alwaysTemplate)
     }
 }
 

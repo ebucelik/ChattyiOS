@@ -18,6 +18,7 @@
 		71005656287AE55800EBD93A /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005655287AE55800EBD93A /* Call.swift */; };
 		7100565A287B474E00EBD93A /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005659287B474E00EBD93A /* LoginService.swift */; };
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
+		710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E06092997D9CC0076AD0C /* Deployment.swift */; };
 		7111696C296CB89800AAF736 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7111696B296CB89800AAF736 /* Alamofire */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
 		71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71329337298830EA00E01940 /* BaseInfoErrorView.swift */; };
@@ -47,7 +48,6 @@
 		714FCC8E296A0C2200AA3F48 /* ImageCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC8D296A0C2200AA3F48 /* ImageCall.swift */; };
 		714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */; };
 		714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FCC91296A0D0200AA3F48 /* ImageService.swift */; };
-		7151BE4C28D4BB61000E58EF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7151BE4B28D4BB61000E58EF /* ImagePicker.swift */; };
 		71526D48298FD21100588C7D /* PostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D47298FD21100588C7D /* PostsCall.swift */; };
 		71526D4A298FF04E00588C7D /* PostCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D49298FF04E00588C7D /* PostCore.swift */; };
 		71526D4C298FF1F700588C7D /* PostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D4B298FF1F700588C7D /* PostCall.swift */; };
@@ -129,6 +129,7 @@
 		71005655287AE55800EBD93A /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		710E06092997D9CC0076AD0C /* Deployment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deployment.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		71329337298830EA00E01940 /* BaseInfoErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInfoErrorView.swift; sourceTree = "<group>"; };
 		7132933B2988316D00E01940 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -157,7 +158,6 @@
 		714FCC8D296A0C2200AA3F48 /* ImageCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCall.swift; sourceTree = "<group>"; };
 		714FCC8F296A0CB800AA3F48 /* ImageServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageServiceProtocol.swift; sourceTree = "<group>"; };
 		714FCC91296A0D0200AA3F48 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
-		7151BE4B28D4BB61000E58EF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		71526D47298FD21100588C7D /* PostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCall.swift; sourceTree = "<group>"; };
 		71526D49298FF04E00588C7D /* PostCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCore.swift; sourceTree = "<group>"; };
 		71526D4B298FF1F700588C7D /* PostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCall.swift; sourceTree = "<group>"; };
@@ -535,6 +535,7 @@
 				714D1775288413680091BD10 /* Message.swift */,
 				714FCC842969E57D00AA3F48 /* DependencyValues.swift */,
 				71B5975A2973163D00EAECC2 /* FormData.swift */,
+				710E06092997D9CC0076AD0C /* Deployment.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -651,7 +652,6 @@
 				71C978022878C444004A457D /* ViewControllerRepresentable.swift */,
 				71B5975C2973452D00EAECC2 /* AppFont.swift */,
 				714D1773288406A50091BD10 /* AppColor.swift */,
-				7151BE4B28D4BB61000E58EF /* ImagePicker.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
 				71F216D6298EEA660085DB80 /* ImagePickerController.swift */,
 			);
@@ -900,7 +900,6 @@
 				7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
 				71005661287B6E1600EBD93A /* LoginView.swift in Sources */,
-				7151BE4C28D4BB61000E58EF /* ImagePicker.swift in Sources */,
 				714D177E288434180091BD10 /* RegisterView.swift in Sources */,
 				7100564D287AD3DD00EBD93A /* Account.swift in Sources */,
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
@@ -933,6 +932,7 @@
 				71367C86297745EC00D92CC0 /* SubscribedCall.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
+				710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

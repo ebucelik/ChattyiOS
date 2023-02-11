@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct UploadPostView: View {
 
     let store: StoreOf<UploadPostCore>
-    let imagePickerController = ImagePickerController()
+    let imagePickerController = ImagePickerController(placeholder: "placeholder")
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -33,7 +33,7 @@ struct UploadPostView: View {
 
                         case .none, .error:
                             Text("Upload")
-                                .foregroundColor(viewStore.isImagePicked ? AppColor.primary : AppColor.gray)
+                                .foregroundColor(viewStore.isImagePicked ? AppColor.primary : AppColor.lightgray)
                                 .font(viewStore.isImagePicked ? .headline.bold() : .headline)
                                 .disabled(!viewStore.isImagePicked)
                                 .onTapGesture {
@@ -54,6 +54,10 @@ struct UploadPostView: View {
                         from: nil,
                         for: nil
                     )
+                }
+                .onDisappear {
+                    imagePickerController.resetImage()
+                    viewStore.send(.reset)
                 }
             }
         }
@@ -90,7 +94,7 @@ struct UploadPostView: View {
         .padding()
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .strokeBorder(AppColor.gray, lineWidth: 2)
+                .strokeBorder(viewStore.caption.isEmpty ? AppColor.lightgray : AppColor.gray, lineWidth: 2)
         )
 
         Spacer()

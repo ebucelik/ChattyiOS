@@ -9,8 +9,13 @@ import Foundation
 import ComposableArchitecture
 
 class SearchService: BackendClient, SearchServiceProtocol {
-    func searchBy(username: String) async throws -> [Account] {
-        let searchCall = SearchCall(parameters: ["username" : username])
+    func searchBy(id: Int, username: String) async throws -> [Account] {
+        let searchCall = SearchCall(
+            parameters: [
+                "id" : id,
+                "username" : username
+            ]
+        )
 
         return try await sendRequest(call: searchCall)
     }

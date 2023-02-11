@@ -30,10 +30,6 @@ class RegisterCore: ReducerProtocol {
 
         var viewState: ViewState = .usernameView
 
-        @BindableState
-        var showImagePicker: Bool = false
-
-        @BindableState
         var picture: UIImage? = nil
 
         @BindableState
@@ -128,7 +124,7 @@ class RegisterCore: ReducerProtocol {
         case showEmailAndPasswordView
         case showProfilePictureView
 
-        case showImagePicker
+        case setImage(UIImage)
 
         case usernameAvailableStateChanged(Loadable<Bool>)
         case emailAvailableStateChanged(Loadable<Bool>)
@@ -317,8 +313,8 @@ class RegisterCore: ReducerProtocol {
 
                 return .none
 
-            case .showImagePicker:
-                state.showImagePicker.toggle()
+            case let .setImage(picture):
+                state.picture = picture
 
                 return .none
 

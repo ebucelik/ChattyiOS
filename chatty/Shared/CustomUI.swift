@@ -39,7 +39,7 @@ public struct ChattyButton: View {
     private let isLoading: Bool?
     private let action: () -> Void
 
-    public init(text: String, isLoading: Bool? = nil, action: @escaping () -> Void) {
+    public init(text: String = "", isLoading: Bool? = nil, action: @escaping () -> Void) {
         self.text = text
         self.isLoading = isLoading
         self.action = action

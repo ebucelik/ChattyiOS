@@ -14,6 +14,7 @@ struct RegisterView: View {
 
     typealias RegisterViewStore = ViewStore<RegisterCore.State, RegisterCore.Action>
     let store: Store<RegisterCore.State, RegisterCore.Action>
+    let imagePickerController = ImagePickerController(placeholder: "person.crop.circle.fill")
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -276,16 +277,17 @@ struct RegisterView: View {
 
             Spacer()
 
-            getImage(from: viewStore.picture)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 150, height: 150, alignment: .center)
-                .foregroundColor(AppColor.gray)
-                .cornerRadius(75)
-                .onTapGesture {
-                    viewStore.send(.showImagePicker)
+            ViewControllerRepresentable(
+                viewController: imagePickerController
+            )
+            .frame(width: 150, height: 150, alignment: .center)
+            .cornerRadius(75)
+            .onAppear {
+                imagePickerController.onImagePicked = { pickedImage in
+                    viewStore.send(.setImage(pickedImage))
                 }
-                .disabled(.loading == viewStore.registerState)
+            }
+            .disabled(.loading == viewStore.registerState)
 
             Spacer()
                 .frame(height: 50)
@@ -307,18 +309,7 @@ struct RegisterView: View {
             )
             .opacity(viewStore.picture != nil ? 1 : 0)
         }
-        .sheet(isPresented: viewStore.binding(\.$showImagePicker)) {
-            ImagePicker(image: viewStore.binding(\.$picture))
-        }
         .padding()
-    }
-
-    private func getImage(from uiImage: UIImage?) -> Image {
-        if let uiImage = uiImage {
-            return Image(uiImage: uiImage)
-        }
-
-        return Image(systemName: "person.crop.circle.fill")
     }
 }
 

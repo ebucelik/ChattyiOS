@@ -14,7 +14,7 @@ struct SearchCall: Call {
     var httpMethod: HTTPMethod = .GET
     var parameters: [String : Any]?
 
-    init(parameters: [String : String]) {
+    init(parameters: [String : Any]) {
         self.parameters = parameters
     }
 }

@@ -26,7 +26,7 @@ struct PostView: View {
                                     .resizable()
                                     .frame(width: reader.size.width, height: reader.size.width)
                             } placeholder: {
-                                AppColor.gray
+                                AppColor.lightgray
                             }
                             .frame(width: reader.size.width, height: reader.size.width)
 
@@ -43,6 +43,8 @@ struct PostView: View {
                                     Spacer()
 
                                     deletePostBody(viewStore)
+                                        .disabled(viewStore.isOtherAccount)
+                                        .opacity(viewStore.isOtherAccount ? 0 : 1)
                                 }
 
                                 Text(post.caption)

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchServiceProtocol {
-    func searchBy(username: String) async throws -> [Account]
+    func searchBy(id: Int, username: String) async throws -> [Account]
 }
