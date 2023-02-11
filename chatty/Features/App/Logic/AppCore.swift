@@ -25,6 +25,7 @@ class AppCore: ReducerProtocol {
         case onAppear
         case loadAccount
         case accountStateChanged(Loadable<Account?>)
+        case setShowFeed(Bool)
 
         case feed(FeedCore.Action)
         case search(SearchCore.Action)
@@ -85,9 +86,14 @@ class AppCore: ReducerProtocol {
 
                 return .none
 
+            case let .setShowFeed(showFeed):
+                state.showFeed = showFeed
+
+                return .none
+
+                // MARK: EntryCore
             case let .entry(.showFeed(account)):
                 state.accountState = .loaded(account)
-                state.showFeed = true
                 state.search.ownAccountId = account.id
                 state.upload.ownAccountId = account.id
 
@@ -96,7 +102,11 @@ class AppCore: ReducerProtocol {
                     state.account = AccountCore.State(accountState: Loadable<Account>.loaded(account))
                 }
 
-                return .none
+                return .task { .setShowFeed(true) }
+
+                // MARK: AccountCore:
+            case .account(.loggedOut):
+                return .task { .onAppear }
 
             default:
                 return .none

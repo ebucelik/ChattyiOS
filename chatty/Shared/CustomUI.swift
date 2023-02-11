@@ -37,11 +37,16 @@ public struct ChattyButton: View {
 
     private let text: String
     private let isLoading: Bool?
+    private let backgroundColor: Color?
     private let action: () -> Void
 
-    public init(text: String = "", isLoading: Bool? = nil, action: @escaping () -> Void) {
+    public init(text: String = "",
+                isLoading: Bool? = nil,
+                backgroundColor: Color? = nil,
+                action: @escaping () -> Void) {
         self.text = text
         self.isLoading = isLoading
+        self.backgroundColor = backgroundColor
         self.action = action
     }
 
@@ -64,7 +69,7 @@ public struct ChattyButton: View {
             .padding()
             .disabled(isLoading ?? false)
         }
-        .background(AppColor.primary)
+        .background(backgroundColor == nil ? AppColor.primary : backgroundColor)
         .cornerRadius(6)
         .shadow(radius: 4)
     }

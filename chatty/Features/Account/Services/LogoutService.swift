@@ -8,10 +8,6 @@
 import Foundation
 import ComposableArchitecture
 
-protocol LogoutServiceProtocol {
-    func logout() async throws -> String
-}
-
 class LogoutService: BackendClient, LogoutServiceProtocol, DependencyKey {
     static let liveValue = LogoutService()
 

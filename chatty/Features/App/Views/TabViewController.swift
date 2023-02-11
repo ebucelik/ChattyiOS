@@ -29,12 +29,7 @@ class TabViewController: UITabBarController {
         return loadingView
     }()
 
-    let errorView: UIHostingController<ErrorView> = {
-        let errorView = UIHostingController(rootView: ErrorView(text: "An error appeared while trying to fetch your data from our servers..."))
-        errorView.view.translatesAutoresizingMaskIntoConstraints = false
-        errorView.view.isHidden = true
-        return errorView
-    }()
+    var errorView: UIHostingController<ErrorView>?
 
     init(store: StoreOf<AppCore>) {
         self.store = store
@@ -76,6 +71,15 @@ class TabViewController: UITabBarController {
         )
 
         super.init(nibName: nil, bundle: nil)
+
+        self.errorView = UIHostingController(
+            rootView: ErrorView(
+                text: "An error appeared while trying to fetch your data from our servers...",
+                action: { self.viewStore.send(.onAppear) }
+            )
+        )
+        errorView?.view.translatesAutoresizingMaskIntoConstraints = false
+        errorView?.view.isHidden = true
     }
 
     required init?(coder: NSCoder) {
@@ -95,19 +99,21 @@ class TabViewController: UITabBarController {
             switch accountState {
             case .loading, .refreshing, .none:
                 loadingView.view.isHidden = false
-                errorView.view.isHidden = true
+                errorView?.view.isHidden = true
 
             case let .loaded(account):
                 loadingView.view.isHidden = true
-                errorView.view.isHidden = true
+                errorView?.view.isHidden = true
 
                 if account == nil {
                     pushViewController(with: entryView)
+
+                    viewStore.send(.setShowFeed(false))
                 }
 
             case .error:
                 loadingView.view.isHidden = true
-                errorView.view.isHidden = false
+                errorView?.view.isHidden = false
 
             }
         }.store(in: &cancellables)
@@ -127,10 +133,15 @@ class TabViewController: UITabBarController {
 
     private func setupView() {
         view.addSubview(loadingView.view)
+
+        guard let errorView = errorView else { return }
+
         view.addSubview(errorView.view)
     }
 
     private func setConstraints() {
+        guard let errorView = errorView else { return }
+
         NSLayoutConstraint.activate([
             loadingView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             loadingView.view.topAnchor.constraint(equalTo: view.topAnchor),

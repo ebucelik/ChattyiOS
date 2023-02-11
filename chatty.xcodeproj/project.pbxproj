@@ -19,6 +19,8 @@
 		7100565A287B474E00EBD93A /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005659287B474E00EBD93A /* LoginService.swift */; };
 		71005661287B6E1600EBD93A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71005660287B6E1600EBD93A /* LoginView.swift */; };
 		710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E06092997D9CC0076AD0C /* Deployment.swift */; };
+		710E060C29980D330076AD0C /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E060B29980D330076AD0C /* MoreView.swift */; };
+		710E060E29980DB00076AD0C /* LogoutServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E060D29980DB00076AD0C /* LogoutServiceProtocol.swift */; };
 		7111696C296CB89800AAF736 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7111696B296CB89800AAF736 /* Alamofire */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
 		71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71329337298830EA00E01940 /* BaseInfoErrorView.swift */; };
@@ -130,6 +132,8 @@
 		71005659287B474E00EBD93A /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		71005660287B6E1600EBD93A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		710E06092997D9CC0076AD0C /* Deployment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deployment.swift; sourceTree = "<group>"; };
+		710E060B29980D330076AD0C /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
+		710E060D29980DB00076AD0C /* LogoutServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutServiceProtocol.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		71329337298830EA00E01940 /* BaseInfoErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInfoErrorView.swift; sourceTree = "<group>"; };
 		7132933B2988316D00E01940 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -310,6 +314,9 @@
 		7137C83929741A800077D91C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7166BEA92882DC550061E03B /* LogoutCall.swift */,
+				7166BEAB2882DE490061E03B /* LogoutService.swift */,
+				710E060D29980DB00076AD0C /* LogoutServiceProtocol.swift */,
 				7137C83A29741A8E0077D91C /* AccountCall.swift */,
 				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
 				7137C83E29741B680077D91C /* AccountService.swift */,
@@ -449,8 +456,6 @@
 		7166BEA82882DC450061E03B /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7166BEA92882DC550061E03B /* LogoutCall.swift */,
-				7166BEAB2882DE490061E03B /* LogoutService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -623,6 +628,7 @@
 			isa = PBXGroup;
 			children = (
 				71C977FF2878C3DE004A457D /* AccountView.swift */,
+				710E060B29980D330076AD0C /* MoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -882,6 +888,7 @@
 				71005656287AE55800EBD93A /* Call.swift in Sources */,
 				7137C83F29741B680077D91C /* AccountService.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
+				710E060E29980DB00076AD0C /* LogoutServiceProtocol.swift in Sources */,
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
@@ -913,6 +920,7 @@
 				71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,
 				71840FD1299187FA00511953 /* DeletePostCall.swift in Sources */,
+				710E060C29980D330076AD0C /* MoreView.swift in Sources */,
 				71F216D5298E9B8B0085DB80 /* UploadPostCore.swift in Sources */,
 				713887B92975F82D00BF01DA /* AcceptSubscriptionCall.swift in Sources */,
 				71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */,

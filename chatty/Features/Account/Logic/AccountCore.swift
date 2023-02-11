@@ -28,6 +28,9 @@ class AccountCore: ReducerProtocol {
 
         var newUpdatesAvailable: Bool = false
 
+        @BindableState
+        var showMore: Bool = false
+
         init(ownAccountId: Int? = nil,
              accountState: Loadable<Account> = .none,
              subscriberState: Loadable<[Account]> = .none,
@@ -56,7 +59,7 @@ class AccountCore: ReducerProtocol {
         }
     }
 
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
         case fetchSubscriberInfo
 
         case fetchAccount
@@ -79,17 +82,28 @@ class AccountCore: ReducerProtocol {
 
         case newUpdatesAvailable
 
+        case showMore
+
+        case logout
+        case loggedOut
+
+        case binding(BindingAction<State>)
+
         case subscriptionRequest(SubscriptionRequestCore.Action)
+
     }
 
     @Dependency(\.accountService) var service
     @Dependency(\.subscriberService) var subscriberService
     @Dependency(\.postService) var postService
+    @Dependency(\.logoutService) var logoutService
     @Dependency(\.mainScheduler) var mainScheduler
 
     struct DebounceId: Hashable {}
 
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
+
         Reduce { state, action in
             switch action {
             case .fetchSubscriberInfo:
@@ -289,6 +303,29 @@ class AccountCore: ReducerProtocol {
             case .newUpdatesAvailable:
                 state.newUpdatesAvailable.toggle()
 
+                return .none
+
+            case .showMore:
+                state.showMore.toggle()
+
+                return .none
+
+            case .logout:
+                return .task {
+                    _ = try await self.logoutService.logout()
+
+                    return .loggedOut
+                } catch: { _ in
+                    return .loggedOut
+                }
+                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .receive(on: self.mainScheduler)
+                .eraseToEffect()
+
+            case .loggedOut:
+                return .none
+
+            case .binding:
                 return .none
 
                 // MARK: SubscriptionRequestCore

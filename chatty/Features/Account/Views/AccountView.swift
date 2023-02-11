@@ -48,6 +48,11 @@ struct AccountView: View {
                 viewStore.send(.fetchAccount)
             }
             .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
+            .sheet(isPresented: viewStore.binding(\.$showMore)) {
+                MoreView(
+                    onLogoutTap: { viewStore.send(.logout) }
+                )
+            }
         }
     }
 
@@ -159,12 +164,19 @@ struct AccountView: View {
                             )
                         } label: {
                             Image(systemName: "person.fill.badge.plus")
-                                .resizable()
-                                .frame(width: 30, height: 30)
                                 .foregroundColor(AppColor.primary)
                                 .opacity(viewStore.isOtherAccount ? 0 : 1)
                         }
                         .disabled(viewStore.isOtherAccount)
+                    }
+
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(AppColor.gray)
+                            .opacity(viewStore.isOtherAccount ? 0 : 1)
+                            .onTapGesture {
+                                viewStore.send(.showMore)
+                            }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -179,6 +191,7 @@ struct AccountView: View {
             case let .loaded(subscriptionInfo):
                 ChattyButton(
                     text: subscriptionInfo.status,
+                    backgroundColor: subscriptionInfo.accepted ? nil : AppColor.gray,
                     action: { viewStore.send(.declineOrCancelSubscriptionRequest) }
                 )
                 .padding(.horizontal)
@@ -219,29 +232,35 @@ struct AccountView: View {
     private func postBody(_ viewStore: ViewStoreOf<AccountCore>, reader: GeometryProxy) -> some View {
         switch viewStore.postsState {
         case let .loaded(posts):
-            LazyVGrid(columns: columns) {
-                ForEach(posts, id: \.id) { post in
-                    NavigationLink {
-                        PostView(
-                            store: Store(
-                                initialState: PostCore.State(
-                                    isOtherAccount: viewStore.isOtherAccount,
-                                    postState: .loaded(post)
-                                ),
-                                reducer: PostCore()
+            if posts.isEmpty {
+                InfoView(
+                    text: viewStore.isOtherAccount ? "No posts available." : "Let's upload your first post."
+                )
+            } else {
+                LazyVGrid(columns: columns) {
+                    ForEach(posts, id: \.id) { post in
+                        NavigationLink {
+                            PostView(
+                                store: Store(
+                                    initialState: PostCore.State(
+                                        isOtherAccount: viewStore.isOtherAccount,
+                                        postState: .loaded(post)
+                                    ),
+                                    reducer: PostCore()
+                                )
                             )
-                        )
-                    } label: {
-                        AsyncImage(url: URL(string: post.imageLink)) { image in
-                            image
-                                .resizable()
-                                .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
-                        } placeholder: {
-                            AppColor.lightgray
+                        } label: {
+                            AsyncImage(url: URL(string: post.imageLink)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
+                            } placeholder: {
+                                AppColor.lightgray
+                            }
+                            .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
                         }
-                        .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)
-                    }
 
+                    }
                 }
             }
 
