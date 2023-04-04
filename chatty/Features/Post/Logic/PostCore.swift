@@ -19,7 +19,8 @@ class PostCore: ReducerProtocol {
 
         var postDate: String = ""
 
-        @BindableState var showAlert: Bool = false
+        @BindingState
+        var showAlert: Bool = false
 
         var postLiked: Bool = false
 

@@ -16,7 +16,7 @@ class LoginCore: ReducerProtocol {
     struct State: Equatable {
         var loginState: Loadable<Account>
 
-        @BindableState
+        @BindingState
         var login: Login
 
         var showPassword = false
@@ -65,7 +65,9 @@ class LoginCore: ReducerProtocol {
                 struct Debounce: Hashable { }
 
                 if state.login.email.isEmpty || state.login.password.isEmpty {
-                    return Effect(value: .loginStateChanged(.error(APIError.notFound)))
+                    return .task {
+                        .loginStateChanged(.error(APIError.notFound))
+                    }
                 }
 
                 return .task { [login = state.login] in
@@ -91,7 +93,9 @@ class LoginCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return Effect(value: .showFeed(account))
+                    return .task {
+                        .showFeed(account)
+                    }
                 }
 
                 if case let .error(error) = changedState {

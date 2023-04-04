@@ -15,7 +15,7 @@ struct SubscriptionCore: ReducerProtocol {
     }
 
     struct State: Equatable {
-        @BindableState
+        @BindingState
         var showAccountDetails: Bool = false
 
         let ownAccountId: Int

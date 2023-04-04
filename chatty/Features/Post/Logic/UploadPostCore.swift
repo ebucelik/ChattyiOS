@@ -25,7 +25,8 @@ class UploadPostCore: ReducerProtocol {
             return pickedImage != nil
         }
 
-        @BindableState var caption: String
+        @BindingState
+        var caption: String
 
         init(ownAccountId: Int? = nil,
              postState: Loadable<Message> = .none,

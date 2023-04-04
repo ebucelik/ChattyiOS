@@ -36,7 +36,7 @@ class AccountCore: ReducerProtocol {
 
         var newUpdatesAvailable: Bool = false
 
-        @BindableState
+        @BindingState
         var showMore: Bool = false
 
         init(ownAccountId: Int? = nil,

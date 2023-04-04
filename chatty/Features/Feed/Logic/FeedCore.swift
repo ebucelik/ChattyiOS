@@ -45,7 +45,9 @@ class FeedCore: ReducerProtocol {
 
                 if case let .error(apiError) = logoutStateDidChanged {
                     if case .unauthorized = apiError {
-                        return Effect(value: .showLoginView)
+                        return .task {
+                            .showLoginView
+                        }
                     }
                 }
 

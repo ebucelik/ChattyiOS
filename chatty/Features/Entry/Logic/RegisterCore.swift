@@ -32,7 +32,7 @@ class RegisterCore: ReducerProtocol {
 
         var picture: UIImage? = nil
 
-        @BindableState
+        @BindingState
         var register: Register
 
         var error: String {
@@ -190,7 +190,9 @@ class RegisterCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return Effect(value: .showFeed(account))
+                    return .task {
+                        .showFeed(account)
+                    }
                 }
 
                 return .none
@@ -245,19 +247,21 @@ class RegisterCore: ReducerProtocol {
                 let email = state.register.email
 
                 if email.checkEmailValidation() {
-                    return Effect(value: .checkEmail)
-                        .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                        .prepend(.emailAvailableStateChanged(.loading))
-                        .eraseToEffect()
+                    return .task {
+                        .checkEmail
+                    }
+                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                    .prepend(.emailAvailableStateChanged(.loading))
+                    .eraseToEffect()
                 }
 
-                return Effect(
-                    value: .emailAvailableStateChanged(
+                return .task {
+                    .emailAvailableStateChanged(
                         .error(
                             APIError.unexpectedError("Please provide a valid e-mail.")
                         )
                     )
-                )
+                }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                 .prepend(.emailAvailableStateChanged(.loading))
                 .eraseToEffect()
@@ -288,10 +292,12 @@ class RegisterCore: ReducerProtocol {
 
                 let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
 
-                return Effect(value: .passwordValidStateChanged(loadable))
-                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                    .prepend(.passwordValidStateChanged(.loading))
-                    .eraseToEffect()
+                return .task {
+                    .passwordValidStateChanged(loadable)
+                }
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .prepend(.passwordValidStateChanged(.loading))
+                .eraseToEffect()
 
             case .showPassword:
                 state.showPassword.toggle()
@@ -321,8 +327,10 @@ class RegisterCore: ReducerProtocol {
             case .showFeed:
                 struct Debounce: Hashable { }
 
-                return Effect(value: .reset)
-                    .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
+                return .task {
+                    .reset
+                }
+                .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
 
             case .showLoginView:
                 return .none

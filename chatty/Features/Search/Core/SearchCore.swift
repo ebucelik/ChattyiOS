@@ -12,7 +12,7 @@ import ComposableArchitecture
 struct SearchCore: ReducerProtocol {
 
     struct State: Equatable {
-        @BindableState
+        @BindingState
         var searchQuery: String
         var searchAccountState: Loadable<[Account]>
 
