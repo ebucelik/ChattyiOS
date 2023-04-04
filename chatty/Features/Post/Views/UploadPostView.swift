@@ -24,7 +24,7 @@ struct UploadPostView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         switch viewStore.postState {
                         case .loaded:
-                            Image(systemName: "checkmark.circle.fill")
+                            Image(systemSymbol: .checkmarkCircleFill)
                                 .foregroundColor(AppColor.success)
                                 .onAppear {
                                     imagePickerController.resetImage()
@@ -78,7 +78,7 @@ struct UploadPostView: View {
         }
 
         HStack(spacing: 16) {
-            Image(systemName: "doc.text.below.ecg.fill.rtl")
+            Image(systemSymbol: .docTextBelowEcgFill)
                 .foregroundColor(AppColor.primary)
 
             ZStack(alignment: .bottomTrailing) {

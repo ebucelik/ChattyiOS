@@ -163,7 +163,7 @@ struct AccountView: View {
                                 }
                             )
                         } label: {
-                            Image(systemName: "person.fill.badge.plus")
+                            Image(systemSymbol: .personFillBadgePlus)
                                 .foregroundColor(AppColor.primary)
                                 .opacity(viewStore.isOtherAccount ? 0 : 1)
                         }
@@ -171,7 +171,7 @@ struct AccountView: View {
                     }
 
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Image(systemName: "ellipsis")
+                        Image(systemSymbol: .ellipsis)
                             .foregroundColor(AppColor.gray)
                             .opacity(viewStore.isOtherAccount ? 0 : 1)
                             .onTapGesture {

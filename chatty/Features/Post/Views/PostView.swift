@@ -32,7 +32,7 @@ struct PostView: View {
 
                             VStack(spacing: 16) {
                                 HStack(alignment: .center) {
-                                    Image(systemName: viewStore.postLiked ? "heart.fill" : "heart")
+                                    Image(systemSymbol: viewStore.postLiked ? .heartFill : .heart)
                                         .resizable()
                                         .frame(width: 25, height: 25)
                                         .foregroundColor(viewStore.postLiked ? AppColor.red : .black)
@@ -123,7 +123,7 @@ struct PostView: View {
 
     @ViewBuilder
     private func trashImage() -> some View {
-        Image(systemName: "trash")
+        Image(systemSymbol: .trash)
             .resizable()
             .renderingMode(.template)
             .foregroundColor(AppColor.error)

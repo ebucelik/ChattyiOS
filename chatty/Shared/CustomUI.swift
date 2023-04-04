@@ -25,7 +25,7 @@ public struct ChattyIcon: View {
     }
 
     public var body: some View {
-        Image(systemName: "message.circle")
+        Image(systemSymbol: .messageCircle)
             .resizable(resizingMode: .stretch)
             .frame(width: width, height: height)
             .padding()
@@ -86,7 +86,7 @@ public struct ChattyImage: View {
 
     public var body: some View {
         if picture.isEmpty {
-            Image(systemName: "person.circle")
+            Image(systemSymbol: .personCircle)
                 .renderingMode(.template)
                 .resizable()
                 .frame(width: frame.width, height: frame.height)
@@ -97,7 +97,10 @@ public struct ChattyImage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } placeholder: {
-                LoadingView()
+                Image(systemSymbol: .personCircle)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .redacted(reason: .placeholder)
             }
             .frame(width: frame.width, height: frame.height)
             .cornerRadius(frame.width / 2)

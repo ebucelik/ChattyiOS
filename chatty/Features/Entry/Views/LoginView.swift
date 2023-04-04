@@ -48,7 +48,7 @@ struct LoginView: View {
 
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
-                    Image(systemName: "person.fill")
+                    Image(systemSymbol: .personFill)
                         .foregroundColor(AppColor.gray)
                     TextField("Email", text: viewStore.binding(\.$login.email))
                         .textContentType(.emailAddress)
@@ -62,7 +62,7 @@ struct LoginView: View {
                 )
 
                 HStack(spacing: 16) {
-                    Image(systemName: "lock.fill")
+                    Image(systemSymbol: .lockFill)
                         .foregroundColor(AppColor.gray)
 
                     if viewStore.state.showPassword {
@@ -82,7 +82,7 @@ struct LoginView: View {
                         action: {
                             viewStore.send(.showPassword)
                         }, label: {
-                            Image(systemName: viewStore.state.showPassword ? "eye.fill" : "eye.slash.fill")
+                            Image(systemSymbol: viewStore.state.showPassword ? .eyeFill : .eyeSlashFill)
                                 .foregroundColor(AppColor.gray)
                         }
                     )
@@ -116,7 +116,7 @@ struct LoginView: View {
                 ChattyDivider()
 
                 HStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.circle.fill")
+                    Image(systemSymbol: .exclamationmarkCircleFill)
                         .foregroundColor(.gray)
                     Text(viewStore.error)
                         .font(AppFont.footnote)

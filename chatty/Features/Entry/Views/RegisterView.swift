@@ -62,7 +62,7 @@ struct RegisterView: View {
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
-                        Image(systemName: "person.fill")
+                        Image(systemSymbol: .personFill)
                             .foregroundColor(AppColor.gray)
 
                         TextField("Username", text: viewStore.binding(\.$register.username))
@@ -112,7 +112,7 @@ struct RegisterView: View {
                 ChattyDivider()
 
                 HStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.circle.fill")
+                    Image(systemSymbol: .exclamationmarkCircleFill)
                         .foregroundColor(.gray)
                     Text(viewStore.error)
                         .font(AppFont.footnote)
@@ -157,7 +157,7 @@ struct RegisterView: View {
             Group {
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
-                        Image(systemName: "envelope.fill")
+                        Image(systemSymbol: .envelopeFill)
                             .foregroundColor(AppColor.gray)
 
                         TextField("E-Mail", text: viewStore.binding(\.$register.email))
@@ -181,7 +181,7 @@ struct RegisterView: View {
 
                 HStack(spacing: 16) {
                     HStack(spacing: 16) {
-                        Image(systemName: "lock.fill")
+                        Image(systemSymbol: .lockFill)
                             .foregroundColor(AppColor.gray)
 
                         if viewStore.state.showPassword {
@@ -207,7 +207,7 @@ struct RegisterView: View {
                             action: {
                                 viewStore.send(.showPassword)
                             }, label: {
-                                Image(systemName: viewStore.state.showPassword ? "eye.fill" : "eye.slash.fill")
+                                Image(systemSymbol: viewStore.state.showPassword ? .eyeFill : .eyeSlashFill)
                                     .foregroundColor(AppColor.gray)
                             }
                         )
@@ -227,7 +227,7 @@ struct RegisterView: View {
                 ChattyDivider()
 
                 HStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.circle.fill")
+                    Image(systemSymbol: .exclamationmarkCircleFill)
                         .foregroundColor(.gray)
                     Text(viewStore.error)
                         .font(AppFont.footnote)

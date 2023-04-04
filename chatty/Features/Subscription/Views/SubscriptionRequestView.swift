@@ -67,7 +67,7 @@ struct SubscriptionRequestView: View {
                         
                         Spacer()
 
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemSymbol: .checkmarkCircleFill)
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(AppColor.success)
@@ -75,7 +75,7 @@ struct SubscriptionRequestView: View {
                                 viewStore.send(.acceptSubscription(subscriptionRequestAccount.id))
                             }
 
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemSymbol: .xmarkCircleFill)
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(AppColor.error)

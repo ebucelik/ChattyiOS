@@ -77,6 +77,7 @@
 		718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */; };
 		71B5975B2973163D00EAECC2 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975A2973163D00EAECC2 /* FormData.swift */; };
 		71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975C2973452D00EAECC2 /* AppFont.swift */; };
+		71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
@@ -233,6 +234,7 @@
 			files = (
 				7111696C296CB89800AAF736 /* Alamofire in Frameworks */,
 				71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */,
+				71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -747,6 +749,7 @@
 				71005641287ACE8600EBD93A /* ComposableArchitecture */,
 				71D7D6F2295EF94D00484831 /* SwiftHelper */,
 				7111696B296CB89800AAF736 /* Alamofire */,
+				71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */,
 			);
 			productName = chatty;
 			productReference = 71C977B92878AA8C004A457D /* chatty.app */;
@@ -824,6 +827,7 @@
 				71005640287ACE8600EBD93A /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */,
 				7111696A296CB89800AAF736 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = 71C977BA2878AA8C004A457D /* Products */;
 			projectDirPath = "";
@@ -1318,6 +1322,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ebucelik/SwiftHelper.git";
@@ -1338,6 +1350,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7111696A296CB89800AAF736 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
 		};
 		71D7D6F2295EF94D00484831 /* SwiftHelper */ = {
 			isa = XCSwiftPackageProductDependency;

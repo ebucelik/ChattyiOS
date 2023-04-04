@@ -160,28 +160,28 @@ class TabViewController: UITabBarController {
             rootView: feedView
                 .navigationBarHidden(true)
         )
-        let feedViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "house.fill"), tag: 0)
+        let feedViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .houseFill), tag: 0)
         viewController.tabBarItem = feedViewTabBarItem
 
         let searchViewController = UIHostingController(
             rootView: searchView
                 .navigationBarHidden(true)
         )
-        let searchViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "magnifyingglass"), tag: 1)
+        let searchViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .magnifyingglass), tag: 1)
         searchViewController.tabBarItem = searchViewTabBarItem
 
         let uploadPostViewController = UIHostingController(
             rootView: uploadPostView
                 .navigationBarHidden(true)
         )
-        let uploadPostViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "plus"), tag: 2)
+        let uploadPostViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .plus), tag: 2)
         uploadPostViewController.tabBarItem = uploadPostViewTabBarItem
 
         let accountViewController = UIHostingController(
             rootView: accountView
                 .navigationBarHidden(true)
         )
-        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person.fill"), tag: 3)
+        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .personFill), tag: 3)
         accountViewController.tabBarItem = accountViewTabBarItem
 
         setViewControllers(

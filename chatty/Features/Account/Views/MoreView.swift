@@ -21,7 +21,7 @@ struct MoreView: View {
         NavigationView {
             VStack(spacing: 16) {
                 HStack {
-                    Image(systemName: "info.circle")
+                    Image(systemSymbol: .infoCircle)
                         .resizable()
                         .frame(width: 20, height: 20)
 
@@ -34,7 +34,7 @@ struct MoreView: View {
                 .cornerRadius(6)
 
                 HStack {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                    Image(systemSymbol: .rectanglePortraitAndArrowRight)
                         .resizable()
                         .frame(width: 20, height: 20)
 
