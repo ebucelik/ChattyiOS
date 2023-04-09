@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct UploadPostView: View {
 
     let store: StoreOf<UploadPostCore>
-    let imagePickerController = ImagePickerController(placeholder: "placeholder")
+    let imagePickerController = ImagePickerController(placeholder: "imageUpload")
 
     var body: some View {
         WithViewStore(store) { viewStore in

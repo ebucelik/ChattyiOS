@@ -10,7 +10,7 @@ import Foundation
 class FeedPostsCall: Call {
     typealias Response = [Post]
 
-    var resource: String = "post/posts"
+    var resource: String = "post/feedPosts"
     var httpMethod: HTTPMethod = .GET
     var parameters: [String : Any]?
 
