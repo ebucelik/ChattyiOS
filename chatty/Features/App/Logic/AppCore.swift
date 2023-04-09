@@ -47,7 +47,7 @@ class AppCore: ReducerProtocol {
                 guard let account = Account.getFromUserDefaults()
                 else { return .task { .accountStateChanged(.loaded(nil)) } }
 
-                state.feed.ownAccountId = account.id
+                state.feed.account = account
                 state.search.ownAccountId = account.id
                 state.upload.ownAccountId = account.id
 
@@ -95,7 +95,7 @@ class AppCore: ReducerProtocol {
                 // MARK: EntryCore
             case let .entry(.showFeed(account)):
                 state.accountState = .loaded(account)
-                state.feed.ownAccountId = account.id
+                state.feed.account = account
                 state.search.ownAccountId = account.id
                 state.upload.ownAccountId = account.id
 

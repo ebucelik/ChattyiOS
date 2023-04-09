@@ -13,16 +13,22 @@ import Combine
 
 class FeedCore: ReducerProtocol {
     struct State: Equatable {
-        var ownAccountId: Int?
+        var account: Account?
         var limit: Int
         var postsState: Loadable<[Post]>
         var posts: [Post] = [.mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock]
         var postsComplete: Bool = false
 
-        init(ownAccountId: Int? = nil,
+        var username: String {
+            guard let account = account else { return "" }
+
+            return account.username
+        }
+
+        init(account: Account? = nil,
              limit: Int = 0,
              postsState: Loadable<[Post]> = .none) {
-            self.ownAccountId = ownAccountId
+            self.account = account
             self.limit = limit
             self.postsState = postsState
         }
@@ -60,13 +66,13 @@ class FeedCore: ReducerProtocol {
 
             case .loadPosts:
 
-                guard let ownAccountId = state.ownAccountId else {
+                guard let account = state.account else {
                     return .send(.postsStateChanged(.error(.notFound)))
                 }
 
                 return .task { [limit = state.limit] in
                     let posts = try await self.service.getFeedPosts(
-                        for: ownAccountId,
+                        for: account.id,
                         limit: limit
                     )
 
