@@ -32,7 +32,7 @@ struct AccountView: View {
                         }
                         .onAppear {
                             if viewStore.newUpdatesAvailable {
-                                viewStore.send(.newUpdatesAvailable)
+                                viewStore.send(.toggleNewUpdatesAvailable)
                                 viewStore.send(.fetchAccount)
                             }
                         }
@@ -240,16 +240,21 @@ struct AccountView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(posts, id: \.id) { post in
                         NavigationLink {
-                            PostView(
-                                store: Store(
-                                    initialState: PostCore.State(
-                                        otherAccountId: viewStore.ownAccountId,
-                                        ownAccountId: viewStore.accountId,
-                                        postState: .loaded(post)
-                                    ),
-                                    reducer: PostCore()
-                                )
-                            )
+                            GeometryReader { reader in
+                                ScrollView {
+                                    PostView(
+                                        store: Store(
+                                            initialState: PostCore.State(
+                                                otherAccountId: viewStore.ownAccountId,
+                                                ownAccountId: viewStore.accountId,
+                                                postState: .loaded(post)
+                                            ),
+                                            reducer: PostCore()
+                                        ),
+                                        size: reader.size
+                                    )
+                                }
+                            }
                         } label: {
                             AsyncImage(url: URL(string: post.imageLink)) { image in
                                 image

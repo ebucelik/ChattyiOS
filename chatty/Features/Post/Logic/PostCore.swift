@@ -21,17 +21,27 @@ class PostCore: ReducerProtocol {
 
         @BindingState
         var showAlert: Bool = false
+        @BindingState
+        var showDeleteAlert: Bool = false
 
         var postLiked: Bool = false
+
+        var isFeedView: Bool
+
+        var isOtherAccount: Bool {
+            otherAccountId != nil
+        }
 
         init(otherAccountId: Int?,
              ownAccountId: Int?,
              postState: Loadable<Post> = .none,
-             deletePostState: Loadable<Message> = .none) {
+             deletePostState: Loadable<Message> = .none,
+             isFeedView: Bool = false) {
             self.otherAccountId = otherAccountId
             self.ownAccountId = ownAccountId
             self.postState = postState
             self.deletePostState = deletePostState
+            self.isFeedView = isFeedView
 
             if case let .loaded(post) = postState {
                 self.postDate = post.timestamp.toStringDate
@@ -46,6 +56,7 @@ class PostCore: ReducerProtocol {
 
         case setPostDate(Double)
 
+        case showDeleteAlert
         case deletePost
         case deletePostStateChanged(Loadable<Message>)
 
@@ -102,13 +113,18 @@ class PostCore: ReducerProtocol {
                 state.postState = postState
 
                 if case let .loaded(post) = postState {
-                    return .task { .setPostDate(post.timestamp) }
+                    return .send(.setPostDate(post.timestamp))
                 }
 
                 return .none
 
             case let .setPostDate(timestamp):
                 state.postDate = timestamp.toStringDate
+
+                return .none
+
+            case .showDeleteAlert:
+                state.showDeleteAlert.toggle()
 
                 return .none
 
@@ -139,6 +155,8 @@ class PostCore: ReducerProtocol {
 
             case .likePost:
 
+                if state.postLiked { return .none }
+
                 var userId = 0
 
                 if let otherAccountId = state.otherAccountId {
@@ -156,7 +174,7 @@ class PostCore: ReducerProtocol {
 
                             return .fetchPost
                         },
-                        .task { .postLiked }
+                        .send(.postLiked)
                     ]
                 )
 
@@ -184,7 +202,7 @@ class PostCore: ReducerProtocol {
 
                             return .fetchPost
                         },
-                        .task { .likeRemoved }
+                        .send(.likeRemoved)
                     ]
                 )
 

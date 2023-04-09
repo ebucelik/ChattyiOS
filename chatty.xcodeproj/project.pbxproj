@@ -75,6 +75,9 @@
 		718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */; };
 		718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */; };
 		718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */; };
+		7192749D29E0D4190029E547 /* FeedPostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749C29E0D4190029E547 /* FeedPostsCall.swift */; };
+		7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */; };
+		719274A129E0D5150029E547 /* FeedPostsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719274A029E0D5150029E547 /* FeedPostsService.swift */; };
 		71B5975B2973163D00EAECC2 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975A2973163D00EAECC2 /* FormData.swift */; };
 		71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975C2973452D00EAECC2 /* AppFont.swift */; };
 		71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */; };
@@ -92,6 +95,7 @@
 		71C978002878C3DE004A457D /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977FF2878C3DE004A457D /* AccountView.swift */; };
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
 		71C98AF0295643E30011A61D /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C98AEF295643E30011A61D /* AppCore.swift */; };
+		71D322E429E31F9F00E78240 /* ListSeparatorSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */; };
 		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
 		71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C69297F4560001C0908 /* SearchCall.swift */; };
 		71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */; };
@@ -192,6 +196,9 @@
 		718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestView.swift; sourceTree = "<group>"; };
 		718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCore.swift; sourceTree = "<group>"; };
 		718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCall.swift; sourceTree = "<group>"; };
+		7192749C29E0D4190029E547 /* FeedPostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsCall.swift; sourceTree = "<group>"; };
+		7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsServiceProtocol.swift; sourceTree = "<group>"; };
+		719274A029E0D5150029E547 /* FeedPostsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsService.swift; sourceTree = "<group>"; };
 		71B5975A2973163D00EAECC2 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
 		71B5975C2973452D00EAECC2 /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
@@ -212,6 +219,7 @@
 		71C977FF2878C3DE004A457D /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		71C978022878C444004A457D /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		71C98AEF295643E30011A61D /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
+		71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSeparatorSetting.swift; sourceTree = "<group>"; };
 		71EE5C69297F4560001C0908 /* SearchCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCall.swift; sourceTree = "<group>"; };
 		71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProtocol.swift; sourceTree = "<group>"; };
 		71EE5C6D297F45D6001C0908 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
@@ -466,6 +474,9 @@
 		7166BEA82882DC450061E03B /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7192749C29E0D4190029E547 /* FeedPostsCall.swift */,
+				7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */,
+				719274A029E0D5150029E547 /* FeedPostsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -666,6 +677,7 @@
 		71C978012878C401004A457D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				71D322E229E31F9200E78240 /* ViewModifier */,
 				713293392988310200E01940 /* Views */,
 				714FCC8B296A0BD300AA3F48 /* Services */,
 				716DB8BC2959DEEA003BF4A9 /* Extensions */,
@@ -676,6 +688,14 @@
 				71F216D6298EEA660085DB80 /* ImagePickerController.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		71D322E229E31F9200E78240 /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */,
+			);
+			path = ViewModifier;
 			sourceTree = "<group>";
 		};
 		71EE5C64297F453A001C0908 /* Search */ = {
@@ -872,6 +892,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71367C84297745A100D92CC0 /* SubscriberCall.swift in Sources */,
+				7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */,
 				714FCC852969E57D00AA3F48 /* DependencyValues.swift in Sources */,
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
@@ -906,10 +927,13 @@
 				71005656287AE55800EBD93A /* Call.swift in Sources */,
 				7137C83F29741B680077D91C /* AccountService.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
+				7192749D29E0D4190029E547 /* FeedPostsCall.swift in Sources */,
 				710E060E29980DB00076AD0C /* LogoutServiceProtocol.swift in Sources */,
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
+				719274A129E0D5150029E547 /* FeedPostsService.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
+				71D322E429E31F9F00E78240 /* ListSeparatorSetting.swift in Sources */,
 				71526D4A298FF04E00588C7D /* PostCore.swift in Sources */,
 				7160765529789F47009AF5E2 /* InfoView.swift in Sources */,
 				71F216D9298EF5FC0085DB80 /* Post.swift in Sources */,

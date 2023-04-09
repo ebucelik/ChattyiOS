@@ -88,7 +88,7 @@ class AccountCore: ReducerProtocol {
         case sendPostsRequest(Int)
         case postsStateChanged(Loadable<[Post]>)
 
-        case newUpdatesAvailable
+        case toggleNewUpdatesAvailable
 
         case showMore
 
@@ -221,7 +221,7 @@ class AccountCore: ReducerProtocol {
                         return .subscriptionInfoChanged(.error(.error(error)))
                     }
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: DebounceId(), for: 0.3, scheduler: self.mainScheduler)
                 .prepend(.subscriptionInfoChanged(.loading))
                 .eraseToEffect()
 
@@ -321,7 +321,7 @@ class AccountCore: ReducerProtocol {
 
                 return .none
 
-            case .newUpdatesAvailable:
+            case .toggleNewUpdatesAvailable:
                 state.newUpdatesAvailable.toggle()
 
                 return .none
@@ -351,7 +351,7 @@ class AccountCore: ReducerProtocol {
 
                 // MARK: SubscriptionRequestCore
             case .subscriptionRequest(.subscriptionAccepted):
-                return .task { .newUpdatesAvailable }
+                return .task { .toggleNewUpdatesAvailable }
 
             case .subscriptionRequest:
                 return .none

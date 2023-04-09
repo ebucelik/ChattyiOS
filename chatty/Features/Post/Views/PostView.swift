@@ -13,67 +13,73 @@ struct PostView: View {
     @Environment(\.dismiss) var dismiss
 
     let store: StoreOf<PostCore>
+    let size: CGSize
 
     var body: some View {
         WithViewStore(store) { viewStore in
             switch viewStore.postState {
             case let .loaded(post):
-                GeometryReader { reader in
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            AsyncImage(url: URL(string: post.imageLink)) { image in
-                                image
-                                    .resizable()
-                                    .frame(width: reader.size.width, height: reader.size.width)
-                            } placeholder: {
-                                AppColor.lightgray
-                            }
-                            .frame(width: reader.size.width, height: reader.size.width)
+                VStack(spacing: 16) {
+                    AsyncImage(url: URL(string: post.imageLink)) { image in
+                        image
+                            .resizable()
+                            .frame(width: size.width, height: size.width)
+                    } placeholder: {
+                        AppColor.lightgray
+                    }
+                    .frame(width: size.width, height: size.width)
 
-                            VStack(spacing: 16) {
-                                HStack(alignment: .center) {
-                                    Image(systemSymbol: viewStore.postLiked ? .heartFill : .heart)
-                                        .resizable()
-                                        .frame(width: 25, height: 25)
-                                        .foregroundColor(viewStore.postLiked ? AppColor.red : .black)
-                                        .onTapGesture {
-                                            if viewStore.postLiked {
-                                                viewStore.send(.removeLikeFromPost)
-                                            } else {
-                                                viewStore.send(.likePost)
-                                            }
-                                        }
-
-                                    Text("\(post.likesCount)")
-                                        .frame(alignment: .center)
-                                        .font(AppFont.headline)
-
-                                    Spacer()
-
-                                    deletePostBody(viewStore)
-                                        .disabled(viewStore.otherAccountId != nil)
-                                        .opacity(viewStore.otherAccountId != nil ? 0 : 1)
+                    VStack(spacing: 16) {
+                        HStack(alignment: .center) {
+                            Image(systemSymbol: viewStore.postLiked ? .heartFill : .heart)
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(viewStore.postLiked ? AppColor.red : .black)
+                                .onTapGesture {
+                                    if viewStore.postLiked {
+                                        viewStore.send(.removeLikeFromPost)
+                                    } else {
+                                        viewStore.send(.likePost)
+                                    }
                                 }
 
-                                if !post.caption.isEmpty {
-                                    Text(post.caption)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
+                            Text("\(post.likesCount)")
+                                .frame(alignment: .center)
+                                .font(AppFont.headline)
 
-                                Text(viewStore.postDate)
-                                    .font(AppFont.footnote)
-                                    .foregroundColor(AppColor.gray)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer()
+
+                            if !viewStore.isFeedView {
+                                deletePostBody(viewStore)
+                                    .disabled(viewStore.isOtherAccount)
+                                    .opacity(viewStore.isOtherAccount ? 0 : 1)
+                                    .alert(isPresented: viewStore.binding(\.$showDeleteAlert)) {
+                                        Alert(
+                                            title: Text("Post deletion"),
+                                            message: Text("Are you sure you want to delete your post?"),
+                                            primaryButton: .destructive(Text("Delete")) {
+                                                viewStore.send(.deletePost)
+                                            },
+                                            secondaryButton: .cancel()
+                                        )
+                                    }
                             }
-                            .padding(.horizontal, 24)
                         }
-                        .padding(.top, 24)
+
+                        if !post.caption.isEmpty {
+                            Text(post.caption)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+
+                        Text(viewStore.postDate)
+                            .font(AppFont.footnote)
+                            .foregroundColor(AppColor.gray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .refreshable {
-                        viewStore.send(.fetchPost)
-                    }
+                    .padding(.horizontal, 24)
                 }
+                .padding(.top, 24)
                 .alert(
                     "Post deletion",
                     isPresented: viewStore.binding(\.$showAlert),
@@ -82,6 +88,9 @@ struct PostView: View {
                         Text("An error occured while trying to delete your post...")
                     }
                 )
+                .onTapGesture(count: 2) {
+                    viewStore.send(.likePost)
+                }
 
             case .loading, .refreshing, .none:
                 LoadingView()
@@ -104,7 +113,7 @@ struct PostView: View {
         case .none:
             trashImage()
                 .onTapGesture {
-                    viewStore.send(.deletePost)
+                    viewStore.send(.showDeleteAlert)
                 }
 
         case .loading, .refreshing:

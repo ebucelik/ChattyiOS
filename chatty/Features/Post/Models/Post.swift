@@ -32,3 +32,17 @@ struct Post: Codable, Identifiable, Equatable {
         self.likedByYou = likedByYou
     }
 }
+
+extension Post {
+    static var mock: Post {
+        Post(
+            id: 0,
+            userId: 0,
+            imageLink: "https://www.google.at/url?sa=i&url=https%3A%2F%2Fwww.veryicon.com%2Ficons%2Finternet--web%2F55-common-web-icons%2Fperson-4.html&psig=AOvVaw3VIapzYUQB0vUzOr9yR5jy&ust=1680995440431000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOiQzZLymP4CFQAAAAAdAAAAABAE",
+            likesCount: 10,
+            caption: "",
+            timestamp: 0,
+            likedByYou: false
+        )
+    }
+}

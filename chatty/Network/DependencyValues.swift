@@ -54,6 +54,11 @@ extension DependencyValues {
         set { self[PostService.self] = newValue }
     }
 
+    var feedPostsService: FeedPostsService {
+        get { self[FeedPostsService.self] }
+        set { self[FeedPostsService.self] = newValue }
+    }
+
     var mainScheduler: DispatchQueue {
         get { self[DispatchQueue.self] }
         set { self[DispatchQueue.self] = newValue }
