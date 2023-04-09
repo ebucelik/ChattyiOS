@@ -48,4 +48,14 @@ extension View {
             )
         )
     }
+
+    func banner(data: Banner, show: Binding<Bool>) -> some View {
+        self.modifier(
+            BannerViewModifier(
+                banner: data,
+                show: show
+            )
+        )
+        .animation(.easeInOut, value: show.wrappedValue)
+    }
 }

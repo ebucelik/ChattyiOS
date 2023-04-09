@@ -28,14 +28,24 @@ class UploadPostCore: ReducerProtocol {
         @BindingState
         var caption: String
 
+        @BindingState
+        var showBanner: Bool
+
+        var banner = Banner(
+            title: "Upload sucessful",
+            type: .success
+        )
+
         init(ownAccountId: Int? = nil,
              postState: Loadable<Message> = .none,
              pickedImage: UIImage? = nil,
-             caption: String = "") {
+             caption: String = "",
+             showBanner: Bool = false) {
             self.ownAccountId = ownAccountId
             self.postState = postState
             self.pickedImage = pickedImage
             self.caption = caption
+            self.showBanner = showBanner
         }
     }
 
@@ -44,6 +54,8 @@ class UploadPostCore: ReducerProtocol {
         case postStateChanged(Loadable<Message>)
 
         case setImage(UIImage)
+
+        case showBanner
 
         case binding(BindingAction<State>)
 
@@ -108,10 +120,41 @@ class UploadPostCore: ReducerProtocol {
             case let .postStateChanged(postState):
                 state.postState = postState
 
+                if case .loaded = postState {
+                    state.banner = Banner(
+                        title: "Upload successful",
+                        type: .success
+                    )
+
+                    return .concatenate(
+                        [
+                            .send(.showBanner),
+                            .send(.reset)
+                        ]
+                    )
+                } else if case .error = postState {
+                    state.banner = Banner(
+                        title: "Upload failed",
+                        type: .error
+                    )
+
+                    return .concatenate(
+                        [
+                            .send(.showBanner),
+                            .send(.reset)
+                        ]
+                    )
+                }
+
                 return .none
 
             case let .setImage(pickedImage):
                 state.pickedImage = pickedImage
+
+                return .none
+
+            case .showBanner:
+                state.showBanner = true
 
                 return .none
 
@@ -126,13 +169,12 @@ class UploadPostCore: ReducerProtocol {
                 state.pickedImage = nil
                 state.caption = ""
 
-                return .task {
-                    return .resetted
-                }
+                return .send(.resetted)
                 .debounce(id: DebounceId(), for: 3, scheduler: self.mainScheduler)
 
             case .resetted:
                 state.postState = .none
+                state.showBanner = false
 
                 return .none
             }

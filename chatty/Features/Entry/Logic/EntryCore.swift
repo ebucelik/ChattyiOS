@@ -31,7 +31,9 @@ class EntryCore: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case let .login(.showFeed(account)), let .register(.showFeed(account)):
-                return EffectTask(value: .showFeed(account))
+                state.entryViewState = .login
+
+                return .send(.showFeed(account))
 
             case .login(.showRegisterView):
                 state.entryViewState = .register

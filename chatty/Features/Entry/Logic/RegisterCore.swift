@@ -190,9 +190,7 @@ class RegisterCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return .task {
-                        .showFeed(account)
-                    }
+                    return .send(.showFeed(account))
                 }
 
                 return .none
@@ -203,7 +201,9 @@ class RegisterCore: ReducerProtocol {
                 let username = state.register.username
 
                 return .task {
-                    return .usernameAvailableStateChanged(.loaded(try await self.accountAvailabilityService.checkUsername(username: username)))
+                    let checkUsername = try await self.accountAvailabilityService.checkUsername(username: username)
+
+                    return .usernameAvailableStateChanged(.loaded(checkUsername))
                 } catch: { error in
                     if let apiError = error as? APIError {
                         return .usernameAvailableStateChanged(.error(apiError))
@@ -247,21 +247,19 @@ class RegisterCore: ReducerProtocol {
                 let email = state.register.email
 
                 if email.checkEmailValidation() {
-                    return .task {
-                        .checkEmail
-                    }
+                    return .send(.checkEmail)
                     .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                     .prepend(.emailAvailableStateChanged(.loading))
                     .eraseToEffect()
                 }
 
-                return .task {
+                return .send(
                     .emailAvailableStateChanged(
                         .error(
                             APIError.unexpectedError("Please provide a valid e-mail.")
                         )
                     )
-                }
+                )
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                 .prepend(.emailAvailableStateChanged(.loading))
                 .eraseToEffect()
@@ -292,9 +290,7 @@ class RegisterCore: ReducerProtocol {
 
                 let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
 
-                return .task {
-                    .passwordValidStateChanged(loadable)
-                }
+                return .send(.passwordValidStateChanged(loadable))
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
                 .prepend(.passwordValidStateChanged(.loading))
                 .eraseToEffect()
@@ -327,9 +323,7 @@ class RegisterCore: ReducerProtocol {
             case .showFeed:
                 struct Debounce: Hashable { }
 
-                return .task {
-                    .reset
-                }
+                return .send(.reset)
                 .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
 
             case .showLoginView:
@@ -341,6 +335,7 @@ class RegisterCore: ReducerProtocol {
                 state.usernameAvailableState = .none
                 state.emailAvailableState = .none
                 state.passwordValidState = .none
+                state.viewState = .usernameView
                 state.picture = nil
 
                 return .none

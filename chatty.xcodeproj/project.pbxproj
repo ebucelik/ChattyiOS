@@ -96,6 +96,9 @@
 		71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C978022878C444004A457D /* ViewControllerRepresentable.swift */; };
 		71C98AF0295643E30011A61D /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C98AEF295643E30011A61D /* AppCore.swift */; };
 		71D322E429E31F9F00E78240 /* ListSeparatorSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */; };
+		71D322E629E32A7600E78240 /* UniversalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E529E32A7600E78240 /* UniversalHelper.swift */; };
+		71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E729E32B1600E78240 /* BannerViewModifier.swift */; };
+		71D322EB29E32B8D00E78240 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322EA29E32B8D00E78240 /* Banner.swift */; };
 		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
 		71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C69297F4560001C0908 /* SearchCall.swift */; };
 		71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */; };
@@ -220,6 +223,9 @@
 		71C978022878C444004A457D /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		71C98AEF295643E30011A61D /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
 		71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSeparatorSetting.swift; sourceTree = "<group>"; };
+		71D322E529E32A7600E78240 /* UniversalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalHelper.swift; sourceTree = "<group>"; };
+		71D322E729E32B1600E78240 /* BannerViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModifier.swift; sourceTree = "<group>"; };
+		71D322EA29E32B8D00E78240 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		71EE5C69297F4560001C0908 /* SearchCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCall.swift; sourceTree = "<group>"; };
 		71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProtocol.swift; sourceTree = "<group>"; };
 		71EE5C6D297F45D6001C0908 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
@@ -677,6 +683,7 @@
 		71C978012878C401004A457D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				71D322E929E32B8500E78240 /* Models */,
 				71D322E229E31F9200E78240 /* ViewModifier */,
 				713293392988310200E01940 /* Views */,
 				714FCC8B296A0BD300AA3F48 /* Services */,
@@ -686,6 +693,7 @@
 				714D1773288406A50091BD10 /* AppColor.swift */,
 				71692CCE28EB598E0025673A /* CustomUI.swift */,
 				71F216D6298EEA660085DB80 /* ImagePickerController.swift */,
+				71D322E529E32A7600E78240 /* UniversalHelper.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -694,8 +702,17 @@
 			isa = PBXGroup;
 			children = (
 				71D322E329E31F9F00E78240 /* ListSeparatorSetting.swift */,
+				71D322E729E32B1600E78240 /* BannerViewModifier.swift */,
 			);
 			path = ViewModifier;
+			sourceTree = "<group>";
+		};
+		71D322E929E32B8500E78240 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				71D322EA29E32B8D00E78240 /* Banner.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		71EE5C64297F453A001C0908 /* Search */ = {
@@ -947,6 +964,7 @@
 				7132933C2988316D00E01940 /* ErrorView.swift in Sources */,
 				714D1774288406A50091BD10 /* AppColor.swift in Sources */,
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
+				71D322E629E32A7600E78240 /* UniversalHelper.swift in Sources */,
 				7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
 				71005661287B6E1600EBD93A /* LoginView.swift in Sources */,
@@ -954,6 +972,7 @@
 				7100564D287AD3DD00EBD93A /* Account.swift in Sources */,
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
 				71F216DF298EFB650085DB80 /* PostService.swift in Sources */,
+				71D322EB29E32B8D00E78240 /* Banner.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethod.swift in Sources */,
 				71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */,
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
@@ -982,6 +1001,7 @@
 				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
 				71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */,
 				71367C86297745EC00D92CC0 /* SubscribedCall.swift in Sources */,
+				71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
 				710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */,

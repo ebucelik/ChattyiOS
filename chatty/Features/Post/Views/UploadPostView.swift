@@ -38,6 +38,13 @@ struct UploadPostView: View {
                                 .disabled(!viewStore.isImagePicked)
                                 .onTapGesture {
                                     viewStore.send(.uploadPost)
+
+                                    UniversalHelper.resignFirstResponder()
+                                }
+                                .onAppear {
+                                    if case .error = viewStore.postState {
+                                        imagePickerController.resetImage()
+                                    }
                                 }
 
                         case .loading, .refreshing:
@@ -48,17 +55,16 @@ struct UploadPostView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    UIApplication.shared.sendAction(
-                        #selector(UIResponder.resignFirstResponder),
-                        to: nil,
-                        from: nil,
-                        for: nil
-                    )
+                    UniversalHelper.resignFirstResponder()
                 }
                 .onDisappear {
                     imagePickerController.resetImage()
                     viewStore.send(.reset)
                 }
+                .banner(
+                    data: viewStore.banner,
+                    show: viewStore.binding(\.$showBanner)
+                )
             }
         }
     }

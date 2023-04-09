@@ -140,7 +140,7 @@ struct LoginView: View {
         .padding()
         .contentShape(Rectangle())
         .onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            UniversalHelper.resignFirstResponder()
         }
     }
 }
