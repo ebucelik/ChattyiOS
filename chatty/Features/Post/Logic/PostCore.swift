@@ -45,7 +45,7 @@ class PostCore: ReducerProtocol {
 
             if case let .loaded(post) = postState {
                 self.postDate = post.timestamp.toStringDate
-                self.postLiked = post.likedByYou ?? false
+                self.postLiked = post.likedByYou
             }
         }
     }

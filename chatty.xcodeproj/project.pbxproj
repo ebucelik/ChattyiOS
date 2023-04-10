@@ -75,6 +75,20 @@
 		718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */; };
 		718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */; };
 		718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */; };
+		7192063A29E43AC300B52109 /* ChatSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192063929E43AC300B52109 /* ChatSession.swift */; };
+		7192063C29E43B0C00B52109 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192063B29E43B0C00B52109 /* Chat.swift */; };
+		7192063E29E43BC700B52109 /* ChatSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192063D29E43BC700B52109 /* ChatSessionView.swift */; };
+		7192064029E43BD500B52109 /* ChatSessionCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192063F29E43BD500B52109 /* ChatSessionCore.swift */; };
+		7192064229E43C9200B52109 /* ChatSessionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064129E43C9200B52109 /* ChatSessionCall.swift */; };
+		7192064429E43CE100B52109 /* ChatSessionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064329E43CE100B52109 /* ChatSessionServiceProtocol.swift */; };
+		7192064629E43D1400B52109 /* ChatSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064529E43D1400B52109 /* ChatSessionService.swift */; };
+		7192064829E44C0800B52109 /* AvailableChatAccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064729E44C0800B52109 /* AvailableChatAccountsView.swift */; };
+		7192064A29E4524200B52109 /* AvailableChatAccountsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064929E4524200B52109 /* AvailableChatAccountsCall.swift */; };
+		7192064C29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064B29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift */; };
+		7192064E29E4534100B52109 /* AvailableChatAccountsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064D29E4534100B52109 /* AvailableChatAccountsService.swift */; };
+		7192065029E453CD00B52109 /* AvailableChatAccountsCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192064F29E453CD00B52109 /* AvailableChatAccountsCore.swift */; };
+		7192065629E4634000B52109 /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192065529E4634000B52109 /* SocketIOClient.swift */; };
+		7192065929E470B400B52109 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7192065829E470B400B52109 /* SocketIO */; };
 		7192749D29E0D4190029E547 /* FeedPostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749C29E0D4190029E547 /* FeedPostsCall.swift */; };
 		7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */; };
 		719274A129E0D5150029E547 /* FeedPostsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719274A029E0D5150029E547 /* FeedPostsService.swift */; };
@@ -199,6 +213,19 @@
 		718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestView.swift; sourceTree = "<group>"; };
 		718BF4B2297AA7EC0049297F /* SubscriptionRequestCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCore.swift; sourceTree = "<group>"; };
 		718BF4B4297AA8880049297F /* SubscriptionRequestCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestCall.swift; sourceTree = "<group>"; };
+		7192063929E43AC300B52109 /* ChatSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSession.swift; sourceTree = "<group>"; };
+		7192063B29E43B0C00B52109 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		7192063D29E43BC700B52109 /* ChatSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionView.swift; sourceTree = "<group>"; };
+		7192063F29E43BD500B52109 /* ChatSessionCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionCore.swift; sourceTree = "<group>"; };
+		7192064129E43C9200B52109 /* ChatSessionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionCall.swift; sourceTree = "<group>"; };
+		7192064329E43CE100B52109 /* ChatSessionServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionServiceProtocol.swift; sourceTree = "<group>"; };
+		7192064529E43D1400B52109 /* ChatSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionService.swift; sourceTree = "<group>"; };
+		7192064729E44C0800B52109 /* AvailableChatAccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableChatAccountsView.swift; sourceTree = "<group>"; };
+		7192064929E4524200B52109 /* AvailableChatAccountsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableChatAccountsCall.swift; sourceTree = "<group>"; };
+		7192064B29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableChatAccountsServiceProtocol.swift; sourceTree = "<group>"; };
+		7192064D29E4534100B52109 /* AvailableChatAccountsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableChatAccountsService.swift; sourceTree = "<group>"; };
+		7192064F29E453CD00B52109 /* AvailableChatAccountsCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableChatAccountsCore.swift; sourceTree = "<group>"; };
+		7192065529E4634000B52109 /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
 		7192749C29E0D4190029E547 /* FeedPostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsCall.swift; sourceTree = "<group>"; };
 		7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsServiceProtocol.swift; sourceTree = "<group>"; };
 		719274A029E0D5150029E547 /* FeedPostsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsService.swift; sourceTree = "<group>"; };
@@ -249,6 +276,7 @@
 				7111696C296CB89800AAF736 /* Alamofire in Frameworks */,
 				71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */,
 				71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */,
+				7192065929E470B400B52109 /* SocketIO in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +541,21 @@
 			path = Calls;
 			sourceTree = "<group>";
 		};
+		7192065429E4632F00B52109 /* SocketIO */ = {
+			isa = PBXGroup;
+			children = (
+				7192065529E4634000B52109 /* SocketIOClient.swift */,
+			);
+			path = SocketIO;
+			sourceTree = "<group>";
+		};
+		7192065729E470B400B52109 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		71C977B02878AA8C004A457D = {
 			isa = PBXGroup;
 			children = (
@@ -520,6 +563,7 @@
 				71C977D22878AA8D004A457D /* chattyTests */,
 				71C977DC2878AA8D004A457D /* chattyUITests */,
 				71C977BA2878AA8C004A457D /* Products */,
+				7192065729E470B400B52109 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -579,7 +623,7 @@
 		71C977F22878C0F2004A457D /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				71D322EC29E36EC200E78240 /* Message */,
+				71D322EC29E36EC200E78240 /* Chat */,
 				71EE5C64297F453A001C0908 /* Search */,
 				713F7BE72979A83F003B29B3 /* Post */,
 				7100563C287ACDDC00EBD93A /* Entry */,
@@ -716,20 +760,23 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		71D322EC29E36EC200E78240 /* Message */ = {
+		71D322EC29E36EC200E78240 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				7192065429E4632F00B52109 /* SocketIO */,
 				71D322F029E36EDC00E78240 /* Service */,
 				71D322EF29E36ED700E78240 /* Model */,
 				71D322EE29E36ED100E78240 /* View */,
 				71D322ED29E36ECB00E78240 /* Core */,
 			);
-			path = Message;
+			path = Chat;
 			sourceTree = "<group>";
 		};
 		71D322ED29E36ECB00E78240 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				7192063F29E43BD500B52109 /* ChatSessionCore.swift */,
+				7192064F29E453CD00B52109 /* AvailableChatAccountsCore.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -737,6 +784,8 @@
 		71D322EE29E36ED100E78240 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7192063D29E43BC700B52109 /* ChatSessionView.swift */,
+				7192064729E44C0800B52109 /* AvailableChatAccountsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -744,6 +793,8 @@
 		71D322EF29E36ED700E78240 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7192063929E43AC300B52109 /* ChatSession.swift */,
+				7192063B29E43B0C00B52109 /* Chat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -751,6 +802,12 @@
 		71D322F029E36EDC00E78240 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				7192064129E43C9200B52109 /* ChatSessionCall.swift */,
+				7192064329E43CE100B52109 /* ChatSessionServiceProtocol.swift */,
+				7192064529E43D1400B52109 /* ChatSessionService.swift */,
+				7192064929E4524200B52109 /* AvailableChatAccountsCall.swift */,
+				7192064B29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift */,
+				7192064D29E4534100B52109 /* AvailableChatAccountsService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -827,6 +884,7 @@
 				71D7D6F2295EF94D00484831 /* SwiftHelper */,
 				7111696B296CB89800AAF736 /* Alamofire */,
 				71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */,
+				7192065829E470B400B52109 /* SocketIO */,
 			);
 			productName = chatty;
 			productReference = 71C977B92878AA8C004A457D /* chatty.app */;
@@ -905,6 +963,7 @@
 				71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */,
 				7111696A296CB89800AAF736 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				7192065129E4625F00B52109 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 			);
 			productRefGroup = 71C977BA2878AA8C004A457D /* Products */;
 			projectDirPath = "";
@@ -948,10 +1007,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7192064229E43C9200B52109 /* ChatSessionCall.swift in Sources */,
 				71367C84297745A100D92CC0 /* SubscriberCall.swift in Sources */,
 				7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */,
 				714FCC852969E57D00AA3F48 /* DependencyValues.swift in Sources */,
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
+				7192065629E4634000B52109 /* SocketIOClient.swift in Sources */,
+				7192064C29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift in Sources */,
 				71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */,
 				714FCC872969E5B100AA3F48 /* DispatchQueue+Extensions.swift in Sources */,
 				71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */,
@@ -959,7 +1021,9 @@
 				710E06142998310F0076AD0C /* LikePostCall.swift in Sources */,
 				713887B42975F62300BF01DA /* SubscribeCall.swift in Sources */,
 				71F216D7298EEA660085DB80 /* ImagePickerController.swift in Sources */,
+				7192063E29E43BC700B52109 /* ChatSessionView.swift in Sources */,
 				71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */,
+				7192064E29E4534100B52109 /* AvailableChatAccountsService.swift in Sources */,
 				71C977ED2878AC5D004A457D /* TabViewController.swift in Sources */,
 				713F7BF12979CD31003B29B3 /* SubscriptionInfo.swift in Sources */,
 				71EE5C74297F477B001C0908 /* SearchView.swift in Sources */,
@@ -1000,10 +1064,12 @@
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				710E061029981EEA0076AD0C /* Double+Extensions.swift in Sources */,
+				7192063A29E43AC300B52109 /* ChatSession.swift in Sources */,
 				714FCC8E296A0C2200AA3F48 /* ImageCall.swift in Sources */,
 				7132933C2988316D00E01940 /* ErrorView.swift in Sources */,
 				714D1774288406A50091BD10 /* AppColor.swift in Sources */,
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
+				7192065029E453CD00B52109 /* AvailableChatAccountsCore.swift in Sources */,
 				71D322E629E32A7600E78240 /* UniversalHelper.swift in Sources */,
 				7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,
@@ -1011,9 +1077,11 @@
 				714D177E288434180091BD10 /* RegisterView.swift in Sources */,
 				7100564D287AD3DD00EBD93A /* Account.swift in Sources */,
 				71C978032878C444004A457D /* ViewControllerRepresentable.swift in Sources */,
+				7192064429E43CE100B52109 /* ChatSessionServiceProtocol.swift in Sources */,
 				71F216DF298EFB650085DB80 /* PostService.swift in Sources */,
 				71D322EB29E32B8D00E78240 /* Banner.swift in Sources */,
 				71005652287AE3FC00EBD93A /* HTTPMethod.swift in Sources */,
+				7192064829E44C0800B52109 /* AvailableChatAccountsView.swift in Sources */,
 				71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */,
 				718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */,
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
@@ -1032,6 +1100,7 @@
 				71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */,
 				71C978002878C3DE004A457D /* AccountView.swift in Sources */,
 				7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */,
+				7192064629E43D1400B52109 /* ChatSessionService.swift in Sources */,
 				716DB8B929585534003BF4A9 /* EntryView.swift in Sources */,
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
@@ -1040,9 +1109,12 @@
 				71F216DB298EFAEB0085DB80 /* UploadPostCall.swift in Sources */,
 				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
 				71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */,
+				7192064029E43BD500B52109 /* ChatSessionCore.swift in Sources */,
 				71367C86297745EC00D92CC0 /* SubscribedCall.swift in Sources */,
+				7192063C29E43B0C00B52109 /* Chat.swift in Sources */,
 				71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
+				7192064A29E4524200B52109 /* AvailableChatAccountsCall.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
 				710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */,
 			);
@@ -1406,6 +1478,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		7192065129E4625F00B52109 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 13.0.0;
+			};
+		};
 		71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols.git";
@@ -1434,6 +1514,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7111696A296CB89800AAF736 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		7192065829E470B400B52109 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7192065129E4625F00B52109 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
 		};
 		71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -58,4 +58,8 @@ extension View {
         )
         .animation(.easeInOut, value: show.wrappedValue)
     }
+
+    func listSeparatorSetting() -> some View {
+        self.modifier(ListSeparatorSetting())
+    }
 }

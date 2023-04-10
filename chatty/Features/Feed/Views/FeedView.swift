@@ -52,7 +52,7 @@ struct FeedView: View {
                             Come back later again 🫡
                             """)
             .frame(maxWidth: .infinity)
-            .modifier(ListSeparatorSetting())
+            .listSeparatorSetting()
         } else {
             ForEach(viewStore.posts) { post in
                 PostView(
@@ -69,7 +69,7 @@ struct FeedView: View {
                 )
                 .redacted(reason: viewStore.posts.first == .mock ? .placeholder : .privacy)
             }
-            .modifier(ListSeparatorSetting())
+            .listSeparatorSetting()
 
             if viewStore.postsComplete {
                 Text("""
@@ -78,7 +78,7 @@ struct FeedView: View {
                             """)
                 .font(AppFont.caption)
                 .frame(maxWidth: .infinity)
-                .modifier(ListSeparatorSetting())
+                .listSeparatorSetting()
                 .onAppear {
                     viewStore.send(.onScroll)
                 }
@@ -87,7 +87,7 @@ struct FeedView: View {
             } else {
                 LoadingView()
                     .frame(maxWidth: .infinity)
-                    .modifier(ListSeparatorSetting())
+                    .listSeparatorSetting()
                     .onAppear {
                         viewStore.send(.onScroll)
                     }

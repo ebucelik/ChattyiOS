@@ -17,6 +17,7 @@ class AppCore: ReducerProtocol {
         var feed = FeedCore.State()
         var search = SearchCore.State()
         var upload = UploadPostCore.State()
+        var chat = ChatSessionCore.State()
         var account = AccountCore.State()
         var entry = EntryCore.State()
     }
@@ -30,6 +31,7 @@ class AppCore: ReducerProtocol {
         case feed(FeedCore.Action)
         case search(SearchCore.Action)
         case upload(UploadPostCore.Action)
+        case chat(ChatSessionCore.Action)
         case account(AccountCore.Action)
         case entry(EntryCore.Action)
     }
@@ -50,6 +52,7 @@ class AppCore: ReducerProtocol {
                 state.feed.account = account
                 state.search.ownAccountId = account.id
                 state.upload.ownAccountId = account.id
+                state.chat.account = account
 
                 return .task {
                     let loadedAccount = try await self.accountService.getAccountBy(id: account.id)
@@ -97,6 +100,7 @@ class AppCore: ReducerProtocol {
                 state.accountState = .loaded(account)
                 state.feed.account = account
                 state.search.ownAccountId = account.id
+                state.chat.account = account
                 state.upload.ownAccountId = account.id
 
                 if case let .loaded(loadedAccount) = state.accountState,
@@ -111,6 +115,7 @@ class AppCore: ReducerProtocol {
                 state.feed = FeedCore.State()
                 state.search = SearchCore.State()
                 state.upload = UploadPostCore.State()
+                state.chat = ChatSessionCore.State()
                 state.account = AccountCore.State()
 
                 return .task { .onAppear }
@@ -136,9 +141,17 @@ class AppCore: ReducerProtocol {
 
         Scope(
             state: \.upload,
-            action: /Action.upload) {
-                UploadPostCore()
-            }
+            action: /Action.upload
+        ) {
+            UploadPostCore()
+        }
+
+        Scope(
+            state: \.chat,
+            action: /Action.chat
+        ) {
+            ChatSessionCore()
+        }
 
         Scope(
             state: \.account,

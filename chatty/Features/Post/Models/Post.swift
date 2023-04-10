@@ -14,7 +14,7 @@ struct Post: Codable, Identifiable, Equatable {
     let likesCount: Int
     let caption: String
     let timestamp: Double
-    let likedByYou: Bool?
+    let likedByYou: Bool
 
     init(id: Int,
          userId: Int,
@@ -22,7 +22,7 @@ struct Post: Codable, Identifiable, Equatable {
          likesCount: Int,
          caption: String,
          timestamp: Double,
-         likedByYou: Bool?) {
+         likedByYou: Bool) {
         self.id = id
         self.userId = userId
         self.imageLink = imageLink

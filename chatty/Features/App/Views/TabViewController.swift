@@ -19,6 +19,7 @@ class TabViewController: UITabBarController {
     let feedView: FeedView
     let searchView: SearchView
     let uploadPostView: UploadPostView
+    let chatSessionView: ChatSessionView
     let accountView: AccountView
     let entryView: EntryView
 
@@ -53,6 +54,13 @@ class TabViewController: UITabBarController {
             store: store.scope(
                 state: \.upload,
                 action: AppCore.Action.upload
+            )
+        )
+
+        self.chatSessionView = ChatSessionView(
+            store: store.scope(
+                state: \.chat,
+                action: AppCore.Action.chat
             )
         )
 
@@ -177,11 +185,18 @@ class TabViewController: UITabBarController {
         let uploadPostViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .plus), tag: 2)
         uploadPostViewController.tabBarItem = uploadPostViewTabBarItem
 
+        let chatSessionViewController = UIHostingController(
+            rootView: chatSessionView
+                .navigationBarHidden(true)
+        )
+        let chatSessionViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .messageFill), tag: 3)
+        chatSessionViewController.tabBarItem = chatSessionViewTabBarItem
+
         let accountViewController = UIHostingController(
             rootView: accountView
                 .navigationBarHidden(true)
         )
-        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .personFill), tag: 3)
+        let accountViewTabBarItem = UITabBarItem(title: nil, image: UIImage(systemSymbol: .personFill), tag: 4)
         accountViewController.tabBarItem = accountViewTabBarItem
 
         setViewControllers(
@@ -189,6 +204,7 @@ class TabViewController: UITabBarController {
                 viewController,
                 searchViewController,
                 uploadPostViewController,
+                chatSessionViewController,
                 accountViewController
             ],
             animated: true

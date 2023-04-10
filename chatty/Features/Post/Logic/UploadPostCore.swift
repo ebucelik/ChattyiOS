@@ -99,7 +99,7 @@ class UploadPostCore: ReducerProtocol {
                         likesCount: 0,
                         caption: caption,
                         timestamp: Date.now.timeIntervalSinceReferenceDate,
-                        likedByYou: nil
+                        likedByYou: false
                     )
 
                     let message = try await self.service.uploadPost(post: post)
