@@ -19,6 +19,10 @@ class SocketIOClient: NSObject {
         self.socket = manager.defaultSocket
 
         super.init()
+
+        socket.on(clientEvent: .connect) { data, ack in
+            print(data)
+        }
     }
 
     deinit {

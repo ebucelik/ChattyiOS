@@ -71,14 +71,10 @@ struct SearchCore: ReducerProtocol {
 
             case .binding(\.$searchQuery):
                 if state.searchQuery.isEmpty {
-                    return .task {
-                        .searchAccountStateChanged(.none)
-                    }
+                    return .send(.searchAccountStateChanged(.none))
                 }
 
-                return .task { [username = state.searchQuery] in
-                    return .searchBy(username)
-                }
+                return .send(.searchBy(state.searchQuery))
 
             case .binding:
                 return .none

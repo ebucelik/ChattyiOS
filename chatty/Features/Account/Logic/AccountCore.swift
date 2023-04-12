@@ -117,8 +117,8 @@ class AccountCore: ReducerProtocol {
             case .fetchSubscriberInfo:
                 return .merge(
                     [
-                        .task { .fetchSubscriber },
-                        .task { .fetchSubscribed }
+                        .send(.fetchSubscriber),
+                        .send(.fetchSubscribed)
                     ]
                 )
 
@@ -143,9 +143,9 @@ class AccountCore: ReducerProtocol {
                 if case .loaded = accountState {
                     return .merge(
                         [
-                            .task { .fetchSubscriberInfo },
-                            .task { .fetchSubscriptionInfo },
-                            .task { .fetchPosts }
+                            .send(.fetchSubscriberInfo),
+                            .send(.fetchSubscriptionInfo),
+                            .send(.fetchPosts)
                         ]
                     )
                 }
@@ -268,7 +268,7 @@ class AccountCore: ReducerProtocol {
                 
                 if case let .loaded(subscriptionInfo) = subscriptionInfoState,
                    subscriptionInfo.accepted {
-                    return .task { .fetchPosts }
+                    return .send(.fetchPosts)
                 }
 
                 return .none
@@ -278,12 +278,12 @@ class AccountCore: ReducerProtocol {
                     if case let .loaded(subscriptionInfo) = state.subscriptionInfoState,
                        subscriptionInfo.accepted,
                        case let .loaded(account) = state.accountState {
-                        return .task { .sendPostsRequest(account.id) }
+                        return .send(.sendPostsRequest(account.id))
                     } else {
-                        return .task { .postsStateChanged(.none) }
+                        return .send(.postsStateChanged(.none))
                     }
                 } else if case let .loaded(account) = state.accountState {
-                    return .task { .sendPostsRequest(account.id) }
+                    return .send(.sendPostsRequest(account.id))
                 }
 
                 return .none
@@ -351,7 +351,7 @@ class AccountCore: ReducerProtocol {
 
                 // MARK: SubscriptionRequestCore
             case .subscriptionRequest(.subscriptionAccepted):
-                return .task { .toggleNewUpdatesAvailable }
+                return .send(.toggleNewUpdatesAvailable)
 
             case .subscriptionRequest:
                 return .none

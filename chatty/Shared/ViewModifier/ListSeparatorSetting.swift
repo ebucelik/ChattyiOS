@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct ListSeparatorSetting: ViewModifier {
+
+    let edgeInsets: EdgeInsets?
+
+    init(edgeInsets: EdgeInsets? = nil) {
+        self.edgeInsets = edgeInsets
+    }
+
     func body(content: Content) -> some View {
         content
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
+            .listRowInsets(edgeInsets)
             .listRowBackground(Color.clear)
     }
 }

@@ -12,6 +12,7 @@ import ComposableArchitecture
 class AvailableChatAccountsCore: ReducerProtocol {
     struct State: Equatable {
         var accountId: Int?
+        var selectedAccount: Account? = nil
         var availableChatAccountsState: Loadable<[Account]>
 
         init(accountId: Int? = nil,
@@ -65,6 +66,8 @@ class AvailableChatAccountsCore: ReducerProtocol {
             return .none
 
         case let .accountSelected(selectedAccount):
+            state.selectedAccount = selectedAccount
+
             guard let accountId = state.accountId else { return .none }
 
             SocketIOClient.shared.createChatSession(

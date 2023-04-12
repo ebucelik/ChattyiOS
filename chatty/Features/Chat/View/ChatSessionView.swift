@@ -5,6 +5,7 @@
 //  Created by Ing. Ebu Celik, BSc on 10.04.23.
 //
 
+import UIKit
 import SwiftUI
 import ComposableArchitecture
 
@@ -22,7 +23,10 @@ struct ChatSessionView: View {
                 VStack {
                     switch viewStore.chatSessionState {
                     case let .loaded(chatSessions):
-                        chatSessionBody(viewStore, chatSessions: chatSessions)
+                        chatSessionBody(
+                            viewStore,
+                            chatSessions: chatSessions
+                        )
 
                     case .none, .loading, .refreshing:
                         LoadingView()
@@ -64,7 +68,7 @@ struct ChatSessionView: View {
 
     @ViewBuilder
     private func chatSessionBody(_ viewStore: ViewStoreOf<ChatSessionCore>, chatSessions: [ChatSession]) -> some View {
-        if chatSessions.isEmpty {
+        if chatSessions.isEmpty || viewStore.isChatSessionNotAvailable {
             InfoView(
                 text: """
                             There are currently no chats available.
@@ -89,12 +93,13 @@ struct ChatSessionView: View {
                         Text(chatSession.username)
                             .font(AppFont.headline)
                     }
-                        .listSeparatorSetting()
-                        .padding()
+                    .listSeparatorSetting()
+                    .padding()
                 }
             }
             .frame(maxWidth: .infinity)
-            .listStyle(.grouped)
+            .listStyle(.plain)
+            .background(Color.white)
             .refreshable {
                 viewStore.send(.onAppear)
             }

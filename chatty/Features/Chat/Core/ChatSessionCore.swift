@@ -19,6 +19,22 @@ class ChatSessionCore: ReducerProtocol {
         @BindingState
         var showSubscribedAccountsView: Bool = false
 
+        var isChatSessionNotAvailable: Bool {
+            guard let account = account,
+                  case let .loaded(chatSessions) = chatSessionState
+            else { return true }
+
+            if chatSessions.first(where: { $0.fromUserId == account.id }) != nil {
+                return false
+            }
+
+            if chatSessions.first(where: { $0.available }) != nil {
+                return false
+            }
+
+            return true
+        }
+
         init(account: Account? = nil,
              chatSessionState: Loadable<[ChatSession]> = .none) {
             self.account = account

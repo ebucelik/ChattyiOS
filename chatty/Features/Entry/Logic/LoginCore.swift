@@ -65,9 +65,7 @@ class LoginCore: ReducerProtocol {
                 struct Debounce: Hashable { }
 
                 if state.login.email.isEmpty || state.login.password.isEmpty {
-                    return .task {
-                        .loginStateChanged(.error(APIError.notFound))
-                    }
+                    return .send(.loginStateChanged(.error(APIError.notFound)))
                 }
 
                 return .task { [login = state.login] in
@@ -93,9 +91,7 @@ class LoginCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return .task {
-                        .showFeed(account)
-                    }
+                    return .send(.showFeed(account))
                 }
 
                 if case let .error(error) = changedState {

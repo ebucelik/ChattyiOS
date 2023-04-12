@@ -50,10 +50,10 @@ class FeedCore: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onScroll:
-                return .merge(
+                return .concatenate(
                     [
-                        .task { .increaseLimit },
-                        .task { .loadPosts }
+                        .send(.increaseLimit),
+                        .send(.loadPosts)
                     ]
                 )
                 

@@ -79,7 +79,6 @@ struct PostView: View {
                     }
                     .padding(.horizontal, 24)
                 }
-                .padding(.top, 24)
                 .alert(
                     "Post deletion",
                     isPresented: viewStore.binding(\.$showAlert),

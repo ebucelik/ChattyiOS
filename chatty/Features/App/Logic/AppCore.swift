@@ -47,7 +47,7 @@ class AppCore: ReducerProtocol {
 
             case .loadAccount:
                 guard let account = Account.getFromUserDefaults()
-                else { return .task { .accountStateChanged(.loaded(nil)) } }
+                else { return .send(.accountStateChanged(.loaded(nil))) }
 
                 state.feed.account = account
                 state.search.ownAccountId = account.id
@@ -108,7 +108,7 @@ class AppCore: ReducerProtocol {
                     state.account = AccountCore.State(accountState: Loadable<Account>.loaded(account))
                 }
 
-                return .task { .setShowFeed(true) }
+                return .send(.setShowFeed(true))
 
                 // MARK: AccountCore:
             case .account(.loggedOut):
@@ -118,7 +118,7 @@ class AppCore: ReducerProtocol {
                 state.chat = ChatSessionCore.State()
                 state.account = AccountCore.State()
 
-                return .task { .onAppear }
+                return .send(.onAppear)
 
             default:
                 return .none

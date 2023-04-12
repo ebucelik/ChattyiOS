@@ -98,7 +98,7 @@ struct SubscriptionRequestCore: ReducerProtocol {
             }
 
         case .subscriptionAccepted, .subscriptionDeclined:
-            return .task { .fetchSubscriptionRequests }
+            return .send(.fetchSubscriptionRequests)
         }
     }
 }

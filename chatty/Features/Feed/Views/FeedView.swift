@@ -24,7 +24,8 @@ struct FeedView: View {
                             )
                         }
                         .frame(maxWidth: .infinity)
-                        .listStyle(.grouped)
+                        .listStyle(.plain)
+                        .background(Color.white)
                         .refreshable {
                             viewStore.send(.loadPosts)
                         }
@@ -54,7 +55,7 @@ struct FeedView: View {
             .frame(maxWidth: .infinity)
             .listSeparatorSetting()
         } else {
-            ForEach(viewStore.posts) { post in
+            ForEach(Array(viewStore.posts.enumerated()), id: \.offset) { index, post in
                 PostView(
                     store: Store(
                         initialState: PostCore.State(
@@ -68,8 +69,15 @@ struct FeedView: View {
                     size: reader.size
                 )
                 .redacted(reason: viewStore.posts.first == .mock ? .placeholder : .privacy)
+                .listSeparatorSetting(
+                    edgeInsets: EdgeInsets(
+                        top: index == 0 ? 0 : 16,
+                        leading: 0,
+                        bottom: 16,
+                        trailing: 0
+                    )
+                )
             }
-            .listSeparatorSetting()
 
             if viewStore.postsComplete {
                 Text("""
@@ -78,16 +86,16 @@ struct FeedView: View {
                             """)
                 .font(AppFont.caption)
                 .frame(maxWidth: .infinity)
-                .listSeparatorSetting()
+                .listSectionSeparator(.hidden)
+                .fixedSize(horizontal: false, vertical: true)
                 .onAppear {
                     viewStore.send(.onScroll)
                 }
                 .padding(.vertical, 25)
-                .padding()
             } else {
                 LoadingView()
                     .frame(maxWidth: .infinity)
-                    .listSeparatorSetting()
+                    .listSectionSeparator(.hidden)
                     .onAppear {
                         viewStore.send(.onScroll)
                     }
