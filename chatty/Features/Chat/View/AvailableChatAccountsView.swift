@@ -86,7 +86,6 @@ struct AvailableChatAccountsView: View {
             .onAppear {
                 UITableView.appearance().backgroundColor = UIColor.clear
             }
-            //.listStyle(.grouped)
         }
     }
 }

@@ -20,7 +20,7 @@ protocol Call {
 }
 
 extension Call {
-    var domain: String { Deployment.dev.rawValue }
+    var domain: String { Deployment.prod.rawValue }
 
     var path: String { domain + resource}
     

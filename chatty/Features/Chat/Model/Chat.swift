@@ -14,3 +14,15 @@ struct Chat: Equatable, Identifiable, Codable {
     let message: String
     let timestamp: Double
 }
+
+extension Chat {
+    static var empty: Chat {
+        Chat(
+            id: 0,
+            session: 0,
+            toUserId: 0,
+            message: "",
+            timestamp: 0.0
+        )
+    }
+}
