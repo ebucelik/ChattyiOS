@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Chat: Equatable, Identifiable, Codable {
+struct Chat: Equatable, Identifiable, Codable, Hashable {
     let id: Int
     var session: Int
     var toUserId: Int
     var message: String
-    let timestamp: Double
+    var timestamp: Double
 }
 
 extension Chat {

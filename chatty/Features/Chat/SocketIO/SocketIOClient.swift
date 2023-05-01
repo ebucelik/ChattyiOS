@@ -21,7 +21,7 @@ class SocketIOClient: NSObject {
 
     override init() {
         self.manager = SocketManager(
-            socketURL: URL(string: "http://\(dev):8085")!,
+            socketURL: URL(string: "http://\(prod):8085")!,
             config: [.log(true), .compress]
         )
         self.socket = manager.defaultSocket
@@ -55,7 +55,7 @@ class SocketIOClient: NSObject {
             "session": chat.session,
             "toUserId": chat.toUserId,
             "message": chat.message,
-            "timestamp": Date.now.timeIntervalSinceReferenceDate
+            "timestamp": chat.timestamp
         ]
 
         socket.emit(event, chatJson)

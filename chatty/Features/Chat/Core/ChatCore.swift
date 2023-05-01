@@ -7,6 +7,7 @@
 
 import SwiftHelper
 import ComposableArchitecture
+import Foundation
 
 class ChatCore: ReducerProtocol {
     struct State: Equatable {
@@ -61,6 +62,7 @@ class ChatCore: ReducerProtocol {
             case .onSend:
                 state.chat.session = state.chatSession.id
                 state.chat.toUserId = state.chatSession.toUserId
+                state.chat.timestamp = Date.now.timeIntervalSinceReferenceDate
 
                 SocketIOClient.shared.send(
                     chat: state.chat
@@ -89,6 +91,8 @@ class ChatCore: ReducerProtocol {
 
             case let .chatsStateChanged(chatsState):
                 state.chatsState = chatsState
+
+                state.chat = .empty
 
                 return .none
 

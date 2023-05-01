@@ -26,7 +26,7 @@ struct ChatView: View {
             VStack {
                 switch viewStore.chatsState {
                 case let .loaded(chats):
-                    ForEach(chats, id: \.id) { chat in
+                    ForEach(chats, id: \.self) { chat in
                         Text(chat.message)
                     }
 
