@@ -61,6 +61,10 @@
 		71526D4C298FF1F700588C7D /* PostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71526D4B298FF1F700588C7D /* PostCall.swift */; };
 		7160765329789613009AF5E2 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765229789613009AF5E2 /* SubscriptionView.swift */; };
 		7160765529789F47009AF5E2 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160765429789F47009AF5E2 /* InfoView.swift */; };
+		71619CF32A0051B200CBFF7D /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71619CF22A0051B200CBFF7D /* Notification+Extensions.swift */; };
+		71619CF52A0075C000CBFF7D /* ChatCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71619CF42A0075C000CBFF7D /* ChatCall.swift */; };
+		71619CF72A00761C00CBFF7D /* ChatServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71619CF62A00761C00CBFF7D /* ChatServiceProtocol.swift */; };
+		71619CF92A00764500CBFF7D /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71619CF82A00764500CBFF7D /* ChatService.swift */; };
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
 		7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA92882DC550061E03B /* LogoutCall.swift */; };
 		7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEAB2882DE490061E03B /* LogoutService.swift */; };
@@ -201,6 +205,10 @@
 		71526D4B298FF1F700588C7D /* PostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCall.swift; sourceTree = "<group>"; };
 		7160765229789613009AF5E2 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		7160765429789F47009AF5E2 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		71619CF22A0051B200CBFF7D /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		71619CF42A0075C000CBFF7D /* ChatCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCall.swift; sourceTree = "<group>"; };
+		71619CF62A00761C00CBFF7D /* ChatServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatServiceProtocol.swift; sourceTree = "<group>"; };
+		71619CF82A00764500CBFF7D /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
 		7166BEA92882DC550061E03B /* LogoutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutCall.swift; sourceTree = "<group>"; };
 		7166BEAB2882DE490061E03B /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
@@ -527,6 +535,7 @@
 				716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */,
 				714FCC862969E5B100AA3F48 /* DispatchQueue+Extensions.swift */,
 				710E060F29981EEA0076AD0C /* Double+Extensions.swift */,
+				71619CF22A0051B200CBFF7D /* Notification+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -814,6 +823,9 @@
 				7192064929E4524200B52109 /* AvailableChatAccountsCall.swift */,
 				7192064B29E452CC00B52109 /* AvailableChatAccountsServiceProtocol.swift */,
 				7192064D29E4534100B52109 /* AvailableChatAccountsService.swift */,
+				71619CF42A0075C000CBFF7D /* ChatCall.swift */,
+				71619CF62A00761C00CBFF7D /* ChatServiceProtocol.swift */,
+				71619CF82A00764500CBFF7D /* ChatService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1014,8 +1026,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7192064229E43C9200B52109 /* ChatSessionCall.swift in Sources */,
+				71619CF52A0075C000CBFF7D /* ChatCall.swift in Sources */,
 				71367C84297745A100D92CC0 /* SubscriberCall.swift in Sources */,
 				7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */,
+				71619CF32A0051B200CBFF7D /* Notification+Extensions.swift in Sources */,
 				714FCC852969E57D00AA3F48 /* DependencyValues.swift in Sources */,
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				7192065629E4634000B52109 /* SocketIOClient.swift in Sources */,
@@ -1071,6 +1085,7 @@
 				71005644287ACF8A00EBD93A /* LoginCore.swift in Sources */,
 				714D177828841FB60091BD10 /* RegisterCore.swift in Sources */,
 				710E061029981EEA0076AD0C /* Double+Extensions.swift in Sources */,
+				71619CF72A00761C00CBFF7D /* ChatServiceProtocol.swift in Sources */,
 				7192063A29E43AC300B52109 /* ChatSession.swift in Sources */,
 				714FCC8E296A0C2200AA3F48 /* ImageCall.swift in Sources */,
 				7132933C2988316D00E01940 /* ErrorView.swift in Sources */,
@@ -1095,6 +1110,7 @@
 				7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */,
 				718BF4B3297AA7EC0049297F /* SubscriptionRequestCore.swift in Sources */,
 				710E0612299830C40076AD0C /* GetAccountsFromPostCall.swift in Sources */,
+				71619CF92A00764500CBFF7D /* ChatService.swift in Sources */,
 				71F216D0298E85F20085DB80 /* CancelSubscriptionCall.swift in Sources */,
 				71EE5C72297F466D001C0908 /* SearchCore.swift in Sources */,
 				71C98AF0295643E30011A61D /* AppCore.swift in Sources */,

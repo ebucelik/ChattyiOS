@@ -69,6 +69,11 @@ extension DependencyValues {
         set { self[AvailableChatAccountsService.self] = newValue }
     }
 
+    var chatService: ChatService {
+        get { self[ChatService.self] }
+        set { self[ChatService.self] = newValue }
+    }
+
     var mainScheduler: DispatchQueue {
         get { self[DispatchQueue.self] }
         set { self[DispatchQueue.self] = newValue }

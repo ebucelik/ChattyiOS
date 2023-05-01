@@ -79,22 +79,38 @@ struct ChatSessionView: View {
         } else {
             List {
                 ForEach(chatSessions, id: \.id) { chatSession in
-                    HStack(spacing: 20) {
-                        AsyncImage(url: URL(string: chatSession.picture)) { image in
-                            image
-                                .resizable()
-                                .frame(width: 80, height: 80)
-                        } placeholder: {
-                            AppColor.lightgray
-                        }
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(40)
+                    NavigationLink(
+                        destination: IfLetStore(
+                            store.scope(
+                                state: \.chatState,
+                                action: ChatSessionCore.Action.chat
+                            )
+                        ) { chatStore in
+                            ChatView(store: chatStore)
+                        },
+                        tag: chatSession,
+                        selection: viewStore.binding(
+                            get: \.chatState?.chatSession,
+                            send: ChatSessionCore.Action.navigateToChatView(chatSession)
+                        )
+                    ) {
+                        HStack(spacing: 20) {
+                            AsyncImage(url: URL(string: chatSession.picture)) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                            } placeholder: {
+                                AppColor.lightgray
+                            }
+                            .frame(width: 80, height: 80)
+                            .cornerRadius(40)
 
-                        Text(chatSession.username)
-                            .font(AppFont.headline)
+                            Text(chatSession.username)
+                                .font(AppFont.headline)
+                        }
+                        .listSeparatorSetting()
+                        .padding()
                     }
-                    .listSeparatorSetting()
-                    .padding()
                 }
             }
             .frame(maxWidth: .infinity)

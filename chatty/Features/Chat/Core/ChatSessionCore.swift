@@ -15,6 +15,7 @@ class ChatSessionCore: ReducerProtocol {
         var chatSessionState: Loadable<[ChatSession]>
 
         var availableChatAccountsState = AvailableChatAccountsCore.State()
+        var chatState: ChatCore.State? = nil
 
         @BindingState
         var showSubscribedAccountsView: Bool = false
@@ -49,7 +50,11 @@ class ChatSessionCore: ReducerProtocol {
 
         case showSubscribedAccountsView
 
+        case navigateToChatView(ChatSession)
+
         case availableChatAccounts(AvailableChatAccountsCore.Action)
+
+        case chat(ChatCore.Action)
 
         case binding(BindingAction<State>)
     }
@@ -97,7 +102,17 @@ class ChatSessionCore: ReducerProtocol {
 
                 return .none
 
-            case .availableChatAccounts(.onAppear), .availableChatAccounts(.availableChatAccountsStateChanged), .availableChatAccounts(.accountSelected):
+            case let .navigateToChatView(chatSession):
+
+                state.chatState = ChatCore.State(
+                    chatSession: chatSession
+                )
+
+                return .none
+
+            case .availableChatAccounts(.onAppear),
+                    .availableChatAccounts(.availableChatAccountsStateChanged),
+                    .availableChatAccounts(.accountSelected):
                 return .none
                 
             case .availableChatAccounts(.chatSessionCreated):
@@ -105,9 +120,20 @@ class ChatSessionCore: ReducerProtocol {
 
                 return .send(.onAppear)
 
+            case .chat(.onDismissView):
+                state.chatState = nil
+
+                return .none
+
+            case .chat:
+                return .none
+
             case .binding:
                 return .none
             }
+        }
+        .ifLet(\.chatState, action: /Action.chat) {
+            ChatCore()
         }
 
         Scope(

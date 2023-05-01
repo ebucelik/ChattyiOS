@@ -9,9 +9,9 @@ import Foundation
 
 struct Chat: Equatable, Identifiable, Codable {
     let id: Int
-    let session: Int
-    let toUserId: Int
-    let message: String
+    var session: Int
+    var toUserId: Int
+    var message: String
     let timestamp: Double
 }
 

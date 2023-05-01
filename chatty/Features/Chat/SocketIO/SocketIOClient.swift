@@ -12,28 +12,33 @@ import SwiftHelper
 class SocketIOClient: NSObject {
 
     static let shared = SocketIOClient()
-    let manager = SocketManager(
-        socketURL: URL(string: "http://ec2-52-59-224-51.eu-central-1.compute.amazonaws.com:8085")!,
-        config: [.log(true), .compress]
-    )
-    let socket: SocketIO.SocketIOClient
-    let event = "chat"
-    var onChatReceive: (Chat) -> Void = { _ in }
+
+    private let dev = "localhost"
+    private let prod = "ec2-18-196-195-255.eu-central-1.compute.amazonaws.com"
+    private let manager: SocketManager
+    private let socket: SocketIO.SocketIOClient
+    private let event = "chat"
 
     override init() {
+        self.manager = SocketManager(
+            socketURL: URL(string: "http://\(dev):8085")!,
+            config: [.log(true), .compress]
+        )
         self.socket = manager.defaultSocket
 
         super.init()
-
-        receive()
     }
 
     deinit {
-        self.socket.disconnect()
+        disconnect()
     }
 
     public func connect() {
         self.socket.connect()
+    }
+
+    public func disconnect() {
+        self.socket.disconnect()
     }
 
     public func createChatSession(chatSession: ChatSession) {
@@ -56,11 +61,26 @@ class SocketIOClient: NSObject {
         socket.emit(event, chatJson)
     }
 
-    public func receive() {
-        socket.on(event) { data, _ in
-            guard let chat = data[0] as? Chat else { return }
+    public func receive(_ toUserId: Int) {
+        socket.on("\(toUserId)") { data, _ in
+            do {
+                let jsonData = try JSONSerialization.data(
+                    withJSONObject: data[0],
+                    options: .prettyPrinted
+                )
 
-            self.onChatReceive(chat)
+                let chat = try JSONDecoder().decode(
+                    Chat.self,
+                    from: jsonData
+                )
+
+                NotificationCenter.default.post(
+                    name: .chat,
+                    object: chat
+                )
+            } catch {
+                print("Could not deserialize chat response.")
+            }
         }
     }
 }
