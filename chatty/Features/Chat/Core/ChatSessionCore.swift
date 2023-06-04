@@ -104,7 +104,10 @@ class ChatSessionCore: ReducerProtocol {
 
             case let .navigateToChatView(chatSession):
 
+                guard let account = state.account else { return .none }
+
                 state.chatState = ChatCore.State(
+                    account: account,
                     chatSession: chatSession
                 )
 

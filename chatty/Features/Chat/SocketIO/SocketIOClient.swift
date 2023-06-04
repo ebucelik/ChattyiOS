@@ -21,7 +21,7 @@ class SocketIOClient: NSObject {
 
     override init() {
         self.manager = SocketManager(
-            socketURL: URL(string: "http://\(prod):8085")!,
+            socketURL: URL(string: "http://\(dev):8085")!,
             config: [.log(true), .compress]
         )
         self.socket = manager.defaultSocket
