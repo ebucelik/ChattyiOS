@@ -37,7 +37,7 @@ struct ChatView: View {
                                                     .padding(.horizontal)
                                                     .padding(.vertical, 4)
                                             }
-                                            .background(AppColor.primary.opacity(0.5))
+                                            .background(AppColor.primary.opacity(0.7))
                                             .cornerRadius(8)
 
                                             AsyncImage(url: URL(string: viewStore.account.picture)) { image in
@@ -67,7 +67,7 @@ struct ChatView: View {
                                                     .padding(.horizontal)
                                                     .padding(.vertical, 4)
                                             }
-                                            .background(AppColor.primary.opacity(0.8))
+                                            .background(AppColor.primary.opacity(0.4))
                                             .cornerRadius(8)
 
                                             Spacer()

@@ -35,7 +35,10 @@ class ChatCore: ReducerProtocol {
             self.chatSession = chatSession
             self.chat = chat
 
-            SocketIOClient.shared.receive(chatSession.toUserId)
+            SocketIOClient.shared.receive(
+                fromUserId: chatSession.fromUserId,
+                toUserId: chatSession.toUserId
+            )
         }
     }
 
@@ -80,7 +83,9 @@ class ChatCore: ReducerProtocol {
 
             case .onSend:
                 state.chat.session = state.chatSession.id
-                state.chat.toUserId = state.chatSession.toUserId
+                state.chat.toUserId = state.account.id == state.chatSession.fromUserId
+                ? state.chatSession.toUserId
+                : state.chatSession.fromUserId
                 state.chat.timestamp = Date.now.timeIntervalSinceReferenceDate
 
                 SocketIOClient.shared.send(

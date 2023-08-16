@@ -14,7 +14,7 @@ class SocketIOClient: NSObject {
     static let shared = SocketIOClient()
 
     private let dev = "localhost"
-    private let prod = "ec2-18-196-195-255.eu-central-1.compute.amazonaws.com"
+    private let prod = "194.37.80.229"
     private let manager: SocketManager
     private let socket: SocketIO.SocketIOClient
     private let event = "chat"
@@ -61,7 +61,28 @@ class SocketIOClient: NSObject {
         socket.emit(event, chatJson)
     }
 
-    public func receive(_ toUserId: Int) {
+    public func receive(fromUserId: Int, toUserId: Int) {
+        socket.on("\(fromUserId)") { data, _ in
+            do {
+                let jsonData = try JSONSerialization.data(
+                    withJSONObject: data[0],
+                    options: .prettyPrinted
+                )
+
+                let chat = try JSONDecoder().decode(
+                    Chat.self,
+                    from: jsonData
+                )
+
+                NotificationCenter.default.post(
+                    name: .chat,
+                    object: chat
+                )
+            } catch {
+                print("Could not deserialize chat response.")
+            }
+        }
+
         socket.on("\(toUserId)") { data, _ in
             do {
                 let jsonData = try JSONSerialization.data(
