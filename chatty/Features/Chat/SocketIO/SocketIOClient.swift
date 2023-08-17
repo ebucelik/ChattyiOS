@@ -104,4 +104,9 @@ class SocketIOClient: NSObject {
             }
         }
     }
+
+    public func cancelListeners(fromUserId: Int, toUserId: Int) {
+        socket.off("\(fromUserId)")
+        socket.off("\(toUserId)")
+    }
 }

@@ -22,6 +22,11 @@ class ChatCore: ReducerProtocol {
         var receiverAccountState: Loadable<Account> = .none
         var chatsState: Loadable<[Chat]>
         var chatSession: ChatSession
+        var messageMaxLength = 150
+
+        var approachesMaxLength: Bool {
+            return chat.message.count >= messageMaxLength - 10
+        }
 
         @BindingState
         var chat: Chat
@@ -121,6 +126,11 @@ class ChatCore: ReducerProtocol {
                 return .none
 
             case .onDismissView:
+                SocketIOClient.shared.cancelListeners(
+                    fromUserId: state.chatSession.fromUserId,
+                    toUserId: state.chatSession.toUserId
+                )
+                
                 return .none
 
             case .loadReceiverAccount:
@@ -141,6 +151,13 @@ class ChatCore: ReducerProtocol {
 
             case let .receiverAccountStateChanged(receiverAccountState):
                 state.receiverAccountState = receiverAccountState
+
+                return .none
+
+            case .binding(\.$chat.message):
+                if state.chat.message.count >= state.messageMaxLength {
+                    state.chat.message = String(state.chat.message.prefix(state.messageMaxLength))
+                }
 
                 return .none
 
