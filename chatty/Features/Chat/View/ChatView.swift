@@ -46,9 +46,6 @@ struct ChatView: View {
                 .onAppear {
                     viewStore.send(.onViewAppear)
                 }
-                .onDisappear {
-                    viewStore.send(.onDismissView)
-                }
                 .onReceive(chatPublisher) { publisher in
                     if let chat = publisher.object as? Chat {
                         viewStore.send(.onReceive(chat))

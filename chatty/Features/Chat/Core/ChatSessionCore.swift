@@ -15,10 +15,11 @@ class ChatSessionCore: ReducerProtocol {
         var chatSessionState: Loadable<[ChatSession]>
 
         var availableChatAccountsState = AvailableChatAccountsCore.State()
-        var chatState: ChatCore.State? = nil
 
         @BindingState
         var showSubscribedAccountsView: Bool = false
+
+        var chatStates = IdentifiedArrayOf<ChatCore.State>()
 
         var isChatSessionNotAvailable: Bool {
             guard let account = account,
@@ -50,11 +51,11 @@ class ChatSessionCore: ReducerProtocol {
 
         case showSubscribedAccountsView
 
-        case navigateToChatView(ChatSession)
-
         case availableChatAccounts(AvailableChatAccountsCore.Action)
 
-        case chat(ChatCore.Action)
+        case chat(id: ChatCore.State.ID, action: ChatCore.Action)
+
+        case cancelListeners(ChatSession)
 
         case binding(BindingAction<State>)
     }
@@ -87,29 +88,28 @@ class ChatSessionCore: ReducerProtocol {
                         return .chatSessionStateChanged(.error(.error(error)))
                     }
                 }
-                .debounce(id: DebounceID(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
                 .prepend(.chatSessionStateChanged(.loading))
                 .eraseToEffect()
 
             case let .chatSessionStateChanged(chatSessionState):
                 state.chatSessionState = chatSessionState
 
+                if case let .loaded(chatSessions) = chatSessionState,
+                   let account = state.account {
+                    state.chatStates = IdentifiedArray(
+                        uniqueElements: chatSessions.compactMap {
+                            ChatCore.State(
+                                account: account,
+                                chatSession: $0
+                            )
+                        }
+                    )
+                }
+
                 return .none
 
             case .showSubscribedAccountsView:
                 state.showSubscribedAccountsView.toggle()
-
-                return .none
-
-            case let .navigateToChatView(chatSession):
-
-                guard let account = state.account else { return .none }
-
-                state.chatState = ChatCore.State(
-                    account: account,
-                    chatSession: chatSession
-                )
 
                 return .none
 
@@ -123,19 +123,22 @@ class ChatSessionCore: ReducerProtocol {
 
                 return .send(.onAppear)
 
-            case .chat(.onDismissView):
-                state.chatState = nil
-
+            case .chat:
                 return .none
 
-            case .chat:
+            case let .cancelListeners(chatSession):
+                SocketIOClient.shared.cancelListeners(
+                    fromUserId: chatSession.fromUserId,
+                    toUserId: chatSession.toUserId
+                )
+
                 return .none
 
             case .binding:
                 return .none
             }
         }
-        .ifLet(\.chatState, action: /Action.chat) {
+        .forEach(\.chatStates, action: /Action.chat) {
             ChatCore()
         }
 

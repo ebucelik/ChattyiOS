@@ -10,7 +10,8 @@ import ComposableArchitecture
 import Foundation
 
 class ChatCore: ReducerProtocol {
-    struct State: Equatable {
+    struct State: Equatable, Identifiable {
+        var id: UUID = UUID()
         var account: Account
         var receiverAccount: Account? {
             if case let .loaded(receiver) = receiverAccountState {
@@ -39,11 +40,6 @@ class ChatCore: ReducerProtocol {
             self.chatsState = chatsState
             self.chatSession = chatSession
             self.chat = chat
-
-            SocketIOClient.shared.receive(
-                fromUserId: chatSession.fromUserId,
-                toUserId: chatSession.toUserId
-            )
         }
     }
 
@@ -52,7 +48,6 @@ class ChatCore: ReducerProtocol {
         case onSend
         case onReceive(Chat)
         case chatsStateChanged(Loadable<[Chat]>)
-        case onDismissView
         case loadReceiverAccount
         case receiverAccountStateChanged(Loadable<Account>)
         case binding(BindingAction<State>)
@@ -67,6 +62,11 @@ class ChatCore: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .onViewAppear:
+                SocketIOClient.shared.receive(
+                    fromUserId: state.chatSession.fromUserId,
+                    toUserId: state.chatSession.toUserId
+                )
+
                 return .concatenate(
                     [
                         .send(.loadReceiverAccount),
@@ -123,14 +123,6 @@ class ChatCore: ReducerProtocol {
 
                 state.chat = .empty
 
-                return .none
-
-            case .onDismissView:
-                SocketIOClient.shared.cancelListeners(
-                    fromUserId: state.chatSession.fromUserId,
-                    toUserId: state.chatSession.toUserId
-                )
-                
                 return .none
 
             case .loadReceiverAccount:
