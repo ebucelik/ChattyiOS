@@ -344,7 +344,7 @@ class AccountCore: Reducer {
                 } catch: { _, send in
                     await send(.view(.loggedOut))
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.loggedOut):
                 return .none

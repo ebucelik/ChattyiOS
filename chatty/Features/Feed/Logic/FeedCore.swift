@@ -86,7 +86,7 @@ class FeedCore: Reducer {
                         await send(.postsStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: DebounceID(), for: 2, scheduler: self.mainScheduler)
+                .debounce(id: DebounceID(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .postsStateChanged(postsState):
                 state.postsState = postsState

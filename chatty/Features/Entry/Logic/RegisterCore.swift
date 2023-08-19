@@ -217,7 +217,7 @@ class RegisterCore: Reducer {
                         await send(.usernameAvailableStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
                 state.usernameAvailableState = usernameAvailabilityStateDidChanged
@@ -254,7 +254,7 @@ class RegisterCore: Reducer {
                         .send(.emailAvailableStateChanged(.loading)),
                         .send(.view(.checkEmail))
                     )
-                    .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                    .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
                 }
 
                 return .concatenate(
@@ -267,7 +267,7 @@ class RegisterCore: Reducer {
                         )
                     )
                 )
-                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.checkEmail):
                 struct Debounce: Hashable { }
@@ -287,7 +287,7 @@ class RegisterCore: Reducer {
                         await send(.emailAvailableStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.checkPassword):
                 struct Debounce: Hashable { }
@@ -300,7 +300,7 @@ class RegisterCore: Reducer {
                     .send(.passwordValidStateChanged(.loading)),
                     .send(.passwordValidStateChanged(loadable))
                 )
-                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.showPassword):
                 state.showPassword.toggle()

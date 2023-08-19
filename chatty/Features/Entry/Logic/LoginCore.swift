@@ -82,7 +82,7 @@ class LoginCore: Reducer {
                         await send(.loginStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: Debounce(), for: .seconds(2), scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
 
             case let .loginStateChanged(changedState):
                 state.loginState = changedState

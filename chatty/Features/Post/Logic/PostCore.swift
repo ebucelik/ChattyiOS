@@ -149,7 +149,7 @@ class PostCore: Reducer {
                         await send(.deletePostStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .deletePostStateChanged(deletePostState):
                 state.deletePostState = deletePostState

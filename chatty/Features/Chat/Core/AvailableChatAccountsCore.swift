@@ -80,7 +80,7 @@ class AvailableChatAccountsCore: Reducer {
             )
 
             return .send(.chatSessionCreated)
-                .debounce(id: DebounceID(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: DebounceID(), for: 0.4, scheduler: self.mainScheduler)
 
         case .chatSessionCreated:
             return .none
