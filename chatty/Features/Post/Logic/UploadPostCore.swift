@@ -109,7 +109,8 @@ class UploadPostCore: Reducer {
                         likesCount: 0,
                         caption: caption,
                         timestamp: Date.now.timeIntervalSinceReferenceDate,
-                        likedByYou: false
+                        likedByYou: false,
+                        account: .empty
                     )
 
                     let message = try await self.service.uploadPost(post: post)

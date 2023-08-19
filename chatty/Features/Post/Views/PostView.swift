@@ -51,6 +51,25 @@ struct PostView: View {
             switch viewStore.postState {
             case let .loaded(post):
                 VStack(spacing: 16) {
+                    HStack {
+                        AsyncImage(url: URL(string: post.account.picture)) { image in
+                            image
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                        } placeholder: {
+                            AppColor.lightgray
+                        }
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(17.5)
+
+                        Text("\(post.account.username)")
+                            .frame(alignment: .center)
+                            .font(AppFont.title3)
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 24)
+
                     AsyncImage(url: URL(string: post.imageLink)) { image in
                         image
                             .resizable()
