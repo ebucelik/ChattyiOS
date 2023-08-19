@@ -19,6 +19,8 @@ class FeedCore: Reducer {
         var posts: [Post] = [.mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock]
         var postsComplete: Bool = false
 
+        var postsStates = IdentifiedArrayOf<PostCore.State>()
+
         var username: String {
             guard let account = account else { return "" }
 
@@ -39,6 +41,7 @@ class FeedCore: Reducer {
         case increaseLimit
         case loadPosts
         case postsStateChanged(Loadable<[Post]>)
+        case post(id: PostCore.State.ID, action: PostCore.Action)
     }
 
     @Dependency(\.feedPostsService) var service
@@ -94,10 +97,26 @@ class FeedCore: Reducer {
                 if case let .loaded(posts) = postsState {
                     state.postsComplete = state.posts.count == posts.count
                     state.posts = posts
+                    state.postsStates = IdentifiedArray(
+                        uniqueElements: posts.compactMap {
+                            PostCore.State(
+                                otherAccountId: nil,
+                                ownAccountId: state.account?.id,
+                                postState: .loaded($0),
+                                isFeedView: true
+                            )
+                        }
+                    )
                 }
 
                 return .none
+
+            case .post:
+                return .none
             }
+        }
+        .forEach(\.postsStates, action: /Action.post(id:action:)) {
+            PostCore()
         }
     }
 }

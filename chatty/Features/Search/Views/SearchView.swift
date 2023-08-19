@@ -38,7 +38,7 @@ struct SearchView: View {
                 case let .loaded(accounts):
                     List {
                         if accounts.isEmpty {
-                            InfoView(text: "No accounts were found 🙁")
+                            InfoView(text: "No profiles found.")
                         } else {
                             ForEachStore(
                                 store.scope(

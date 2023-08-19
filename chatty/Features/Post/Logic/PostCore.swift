@@ -11,7 +11,8 @@ import SwiftHelper
 
 class PostCore: Reducer {
 
-    struct State: Equatable {
+    struct State: Equatable, Identifiable {
+        var id: Int = 0
         var otherAccountId: Int?
         var ownAccountId: Int?
         var postState: Loadable<Post>
@@ -46,6 +47,7 @@ class PostCore: Reducer {
             if case let .loaded(post) = postState {
                 self.postDate = post.timestamp.toStringDate
                 self.postLiked = post.likedByYou
+                self.id = post.id
             }
         }
     }
@@ -117,6 +119,8 @@ class PostCore: Reducer {
                 state.postState = postState
 
                 if case let .loaded(post) = postState {
+                    state.id = post.id
+
                     return .send(.view(.setPostDate(post.timestamp)))
                 }
 

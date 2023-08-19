@@ -154,7 +154,6 @@ class AccountCore: Reducer {
                     return .merge(
                         [
                             .send(.fetchSubscriberInfo),
-                            .send(.view(.fetchSubscriptionInfo)),
                             .send(.fetchPosts)
                         ]
                     )
@@ -213,7 +212,6 @@ class AccountCore: Reducer {
                 return .none
 
             case .view(.fetchSubscriptionInfo):
-
                 guard let ownAccountId = state.ownAccountId,
                       case let .loaded(account) = state.accountState else { return .none }
 

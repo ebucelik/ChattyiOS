@@ -34,6 +34,7 @@ struct BaseInfoErrorView: View {
 
             Text(text)
                 .font(AppFont.title3.bold())
+                .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .center)
 

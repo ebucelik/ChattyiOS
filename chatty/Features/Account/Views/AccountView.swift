@@ -235,7 +235,14 @@ struct AccountView: View {
                 )
                 .padding(.horizontal)
 
-            case .loading, .refreshing, .none:
+            case .loading, .refreshing:
+                ChattyButton(
+                    isLoading: true,
+                    action: {}
+                )
+                .padding(.horizontal)
+
+            case .none:
                 ChattyButton(
                     isLoading: true,
                     action: {}

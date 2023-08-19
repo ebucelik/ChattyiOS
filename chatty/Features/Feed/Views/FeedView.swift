@@ -39,7 +39,7 @@ struct FeedView: View {
 
                     viewStore.send(.onScroll)
                 }
-                .navigationTitle("Welcome \(viewStore.username) 🤘🏼")
+                .navigationTitle("Welcome \(viewStore.username)")
             }
         }
     }
@@ -50,30 +50,25 @@ struct FeedView: View {
             InfoView(
                 text: """
                             There are currently no posts available.
-                            Come back later again 🫡
+                            Come back later again.
                             """)
             .frame(maxWidth: .infinity)
             .listSeparatorSetting()
         } else {
-            ForEach(Array(viewStore.posts.enumerated()), id: \.offset) { index, post in
+            ForEachStore(
+                store.scope(
+                    state: \.postsStates,
+                    action: FeedCore.Action.post(id:action:)
+                )
+            ) { postStore in
                 PostView(
-                    store: Store(
-                        initialState: PostCore.State(
-                            otherAccountId: nil,
-                            ownAccountId: viewStore.account?.id,
-                            postState: .loaded(post),
-                            isFeedView: true
-                        ),
-                        reducer: {
-                            PostCore()
-                        }
-                    ),
+                    store: postStore,
                     size: reader.size
                 )
                 .redacted(reason: viewStore.posts.first == .mock ? .placeholder : .privacy)
                 .listSeparatorSetting(
                     edgeInsets: EdgeInsets(
-                        top: index == 0 ? 0 : 16,
+                        top: 16,
                         leading: 0,
                         bottom: 16,
                         trailing: 0
@@ -83,10 +78,11 @@ struct FeedView: View {
 
             if viewStore.postsComplete {
                 Text("""
-                            You have all shared posts from your friends 😊
+                            You have all shared posts from your friends.
                             Come back later again.
                             """)
                 .font(AppFont.caption)
+                .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .listSectionSeparator(.hidden)
                 .fixedSize(horizontal: false, vertical: true)
