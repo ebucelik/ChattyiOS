@@ -21,6 +21,7 @@ extension BindingViewStore<AccountCore.State> {
             postsState: self.postsState,
             subscriptionRequestCoreState: self.subscriptionRequestCoreState,
             isOtherAccount: self.isOtherAccount,
+            accountId: self.accountId,
             newUpdatesAvailable: self.newUpdatesAvailable,
             showMore: self.$showMore
         )
