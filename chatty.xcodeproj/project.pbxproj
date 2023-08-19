@@ -28,6 +28,7 @@
 		710E06142998310F0076AD0C /* LikePostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E06132998310F0076AD0C /* LikePostCall.swift */; };
 		710E0616299831530076AD0C /* RemoveLikePostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710E0615299831530076AD0C /* RemoveLikePostCall.swift */; };
 		7111696C296CB89800AAF736 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7111696B296CB89800AAF736 /* Alamofire */; };
+		7115E8102A90BEAA00B4D8D6 /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7115E80F2A90BEAA00B4D8D6 /* KeyboardReadable.swift */; };
 		711A2C40290BD26600DD0684 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A2C3F290BD26600DD0684 /* PostView.swift */; };
 		71329338298830EA00E01940 /* BaseInfoErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71329337298830EA00E01940 /* BaseInfoErrorView.swift */; };
 		7132933C2988316D00E01940 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7132933B2988316D00E01940 /* ErrorView.swift */; };
@@ -172,6 +173,7 @@
 		710E0611299830C40076AD0C /* GetAccountsFromPostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAccountsFromPostCall.swift; sourceTree = "<group>"; };
 		710E06132998310F0076AD0C /* LikePostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePostCall.swift; sourceTree = "<group>"; };
 		710E0615299831530076AD0C /* RemoveLikePostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLikePostCall.swift; sourceTree = "<group>"; };
+		7115E80F2A90BEAA00B4D8D6 /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
 		711A2C3F290BD26600DD0684 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		71329337298830EA00E01940 /* BaseInfoErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInfoErrorView.swift; sourceTree = "<group>"; };
 		7132933B2988316D00E01940 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				714FCC862969E5B100AA3F48 /* DispatchQueue+Extensions.swift */,
 				710E060F29981EEA0076AD0C /* Double+Extensions.swift */,
 				71619CF22A0051B200CBFF7D /* Notification+Extensions.swift */,
+				7115E80F2A90BEAA00B4D8D6 /* KeyboardReadable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1093,6 +1096,7 @@
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				7192065029E453CD00B52109 /* AvailableChatAccountsCore.swift in Sources */,
 				71D322E629E32A7600E78240 /* UniversalHelper.swift in Sources */,
+				7115E8102A90BEAA00B4D8D6 /* KeyboardReadable.swift in Sources */,
 				7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */,
 				710CBFDF2A002EEB00AE98BB /* ChatCore.swift in Sources */,
 				71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */,

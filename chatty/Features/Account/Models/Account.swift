@@ -57,4 +57,16 @@ extension Account {
 
         return nil
     }
+
+    static var empty: Account {
+        Account(
+            id: 0,
+            username: "",
+            email: "",
+            picture: "",
+            subscriberCount: 0,
+            subscribedCount: 0,
+            postCount: 0
+        )
+    }
 }

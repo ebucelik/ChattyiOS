@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 import ComposableArchitecture
 
-struct ChatView: View {
+struct ChatView: View, KeyboardReadable {
     private let store: StoreOf<ChatCore>
     private let chatPublisher = NotificationCenter
         .default
@@ -51,10 +51,23 @@ struct ChatView: View {
                         viewStore.send(.onReceive(chat))
                     }
                 }
-                .navigationTitle(Text(viewStore.account.username))
+                .navigationTitle(Text(viewStore.receiverAccount.username))
             }
             .onTapGesture {
                 UniversalHelper.resignFirstResponder()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    AsyncImage(url: URL(string: viewStore.receiverAccount.picture)) { image in
+                        image
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                    } placeholder: {
+                        AppColor.lightgray
+                    }
+                    .frame(width: 30, height: 30)
+                    .cornerRadius(15)
+                }
             }
         }
     }
@@ -77,29 +90,7 @@ struct ChatView: View {
                     }
                     .background(AppColor.primary.opacity(0.7))
                     .cornerRadius(8)
-
-                    AsyncImage(url: URL(string: viewStore.account.picture)) { image in
-                        image
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                    } placeholder: {
-                        AppColor.lightgray
-                    }
-                    .frame(width: 25, height: 25)
-                    .cornerRadius(12.5)
                 } else {
-                    if let receiverAccount = viewStore.receiverAccount {
-                        AsyncImage(url: URL(string: receiverAccount.picture)) { image in
-                            image
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        } placeholder: {
-                            AppColor.lightgray
-                        }
-                        .frame(width: 25, height: 25)
-                        .cornerRadius(12.5)
-                    }
-
                     HStack {
                         Text(chat.message)
                             .padding(.horizontal)
@@ -111,7 +102,8 @@ struct ChatView: View {
                     Spacer()
                 }
             }
-            .padding(4)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 16)
         }
         .onAppear {
             if let last = chats.last {
@@ -120,6 +112,12 @@ struct ChatView: View {
         }
         .onChange(of: chats) { chatsValue in
             if let last = chatsValue.last {
+                reader.scrollTo(last)
+            }
+        }
+        .onReceive(keyboardPublisher) { isKeyboardVisible in
+            if isKeyboardVisible,
+               let last = chats.last {
                 reader.scrollTo(last)
             }
         }
@@ -157,7 +155,8 @@ struct ChatView: View {
             .disabled(viewStore.chat.message.isEmpty)
             .opacity(viewStore.chat.message.isEmpty ? 0.8 : 1.0)
         }
-        .padding()
+        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
         .background(AppColor.primary.opacity(0.2))
     }
 }

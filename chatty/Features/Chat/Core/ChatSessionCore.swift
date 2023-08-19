@@ -77,19 +77,19 @@ class ChatSessionCore: ReducerProtocol {
 
                 state.availableChatAccountsState.accountId = account.id
 
-                return .task {
+                return .run { send in
+                    await send(.chatSessionStateChanged(.loading))
+
                     let chatSessions = try await self.service.getChatSessions(fromUserId: account.id)
 
-                    return .chatSessionStateChanged(.loaded(chatSessions))
-                } catch: { error in
+                    await send(.chatSessionStateChanged(.loaded(chatSessions)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .chatSessionStateChanged(.error(apiError))
+                        await send(.chatSessionStateChanged(.error(apiError)))
                     } else {
-                        return .chatSessionStateChanged(.error(.error(error)))
+                        await send(.chatSessionStateChanged(.error(.error(error))))
                     }
                 }
-                .prepend(.chatSessionStateChanged(.loading))
-                .eraseToEffect()
 
             case let .chatSessionStateChanged(chatSessionState):
                 state.chatSessionState = chatSessionState

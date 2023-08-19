@@ -13,14 +13,7 @@ class ChatCore: ReducerProtocol {
     struct State: Equatable, Identifiable {
         var id: UUID = UUID()
         var account: Account
-        var receiverAccount: Account? {
-            if case let .loaded(receiver) = receiverAccountState {
-                return receiver
-            }
-
-            return nil
-        }
-        var receiverAccountState: Loadable<Account> = .none
+        var receiverAccount: Account
         var chatsState: Loadable<[Chat]>
         var chatSession: ChatSession
         var messageMaxLength = 150
@@ -37,6 +30,7 @@ class ChatCore: ReducerProtocol {
              chatSession: ChatSession = .empty,
              chat: Chat = .empty) {
             self.account = account
+            self.receiverAccount = chatSession.receiverAccount
             self.chatsState = chatsState
             self.chatSession = chatSession
             self.chat = chat
@@ -48,8 +42,6 @@ class ChatCore: ReducerProtocol {
         case onSend
         case onReceive(Chat)
         case chatsStateChanged(Loadable<[Chat]>)
-        case loadReceiverAccount
-        case receiverAccountStateChanged(Loadable<Account>)
         case binding(BindingAction<State>)
     }
 
@@ -67,24 +59,19 @@ class ChatCore: ReducerProtocol {
                     toUserId: state.chatSession.toUserId
                 )
 
-                return .concatenate(
-                    [
-                        .send(.loadReceiverAccount),
-                        .run { [chatSessionId = state.chatSession.id] send in
-                            await send(.chatsStateChanged(.loading))
+                return .run { [chatSessionId = state.chatSession.id] send in
+                    await send(.chatsStateChanged(.loading))
 
-                            let chats = try await self.service.getChat(for: chatSessionId)
+                    let chats = try await self.service.getChat(for: chatSessionId)
 
-                            await send(.chatsStateChanged(.loaded(chats)))
-                        } catch: { error, send in
-                            if let apiError = error as? APIError {
-                                await send(.chatsStateChanged(.error(apiError)))
-                            } else {
-                                await send(.chatsStateChanged(.error(.error(error))))
-                            }
-                        }
-                    ]
-                )
+                    await send(.chatsStateChanged(.loaded(chats)))
+                } catch: { error, send in
+                    if let apiError = error as? APIError {
+                        await send(.chatsStateChanged(.error(apiError)))
+                    } else {
+                        await send(.chatsStateChanged(.error(.error(error))))
+                    }
+                }
 
             case .onSend:
                 state.chat.session = state.chatSession.id
@@ -122,27 +109,6 @@ class ChatCore: ReducerProtocol {
                 state.chatsState = chatsState
 
                 state.chat = .empty
-
-                return .none
-
-            case .loadReceiverAccount:
-                let receiverAccountId = state.account.id == state.chatSession.toUserId ? state.chatSession.fromUserId
-                : state.chatSession.toUserId
-
-                return .run { send in
-                    let receiverAccount = try await self.accountService.getAccountBy(id: receiverAccountId)
-
-                    await send(.receiverAccountStateChanged(.loaded(receiverAccount)))
-                } catch: { error, send in
-                    if let apiError = error as? APIError {
-                        await send(.receiverAccountStateChanged(.error(apiError)))
-                    } else {
-                        await send(.receiverAccountStateChanged(.error(.error(error))))
-                    }
-                }
-
-            case let .receiverAccountStateChanged(receiverAccountState):
-                state.receiverAccountState = receiverAccountState
 
                 return .none
 

@@ -86,7 +86,7 @@ struct ChatSessionView: View {
                     } label: {
                         WithViewStore(chatStore, observe: \.chatSession) { chatSession in
                             HStack(spacing: 20) {
-                                AsyncImage(url: URL(string: chatSession.picture)) { image in
+                                AsyncImage(url: URL(string: chatSession.receiverAccount.picture)) { image in
                                     image
                                         .resizable()
                                         .frame(width: 80, height: 80)
@@ -96,7 +96,7 @@ struct ChatSessionView: View {
                                 .frame(width: 80, height: 80)
                                 .cornerRadius(40)
 
-                                Text(chatSession.username)
+                                Text(chatSession.receiverAccount.username)
                                     .font(AppFont.headline)
                             }
                             .listSeparatorSetting()
@@ -112,7 +112,9 @@ struct ChatSessionView: View {
             .listStyle(.plain)
             .background(Color.white)
             .refreshable {
-                viewStore.send(.onAppear)
+                DispatchQueue.main.async {
+                    viewStore.send(.onAppear)
+                }
             }
         }
     }

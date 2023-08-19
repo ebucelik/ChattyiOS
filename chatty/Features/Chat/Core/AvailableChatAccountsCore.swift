@@ -75,8 +75,7 @@ class AvailableChatAccountsCore: ReducerProtocol {
                     id: 0,
                     fromUserId: accountId,
                     toUserId: selectedAccount.id,
-                    username: selectedAccount.username,
-                    picture: selectedAccount.picture,
+                    receiverAccount: .empty,
                     available: false
                 )
             )
