@@ -7,9 +7,35 @@
 
 import Combine
 import SwiftUI
+import SwiftHelper
 import ComposableArchitecture
 
+extension BindingViewStore<ChatCore.State> {
+    var view: ChatView.ViewState {
+        ChatView.ViewState(
+            account: self.account,
+            receiverAccount: self.receiverAccount,
+            chatsState: self.chatsState,
+            chatSession: self.chatSession,
+            messageMaxLength: self.messageMaxLength,
+            approachesMaxLength: self.approachesMaxLength,
+            chat: self.$chat
+        )
+    }
+}
+
 struct ChatView: View, KeyboardReadable {
+    struct ViewState: Equatable {
+        var account: Account
+        var receiverAccount: Account
+        var chatsState: Loadable<[Chat]>
+        var chatSession: ChatSession
+        var messageMaxLength: Int
+        var approachesMaxLength: Bool
+        @BindingViewState var chat: Chat
+    }
+
+    typealias ChatViewStore = ViewStore<ChatView.ViewState, ChatCore.Action.View>
     private let store: StoreOf<ChatCore>
     private let chatPublisher = NotificationCenter
         .default
@@ -20,7 +46,7 @@ struct ChatView: View, KeyboardReadable {
     }
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             ZStack {
                 VStack {
                     ScrollView {
@@ -75,7 +101,7 @@ struct ChatView: View, KeyboardReadable {
     @ViewBuilder
     private func chatBody(
         _ chats: [Chat],
-        _ viewStore: ViewStoreOf<ChatCore>,
+        _ viewStore: ChatViewStore,
         _ reader: ScrollViewProxy
     ) -> some View {
         ForEach(chats, id: \.self) { chat in
@@ -124,12 +150,12 @@ struct ChatView: View, KeyboardReadable {
     }
 
     @ViewBuilder
-    private func messageBody(_ viewStore: ViewStoreOf<ChatCore>) -> some View {
+    private func messageBody(_ viewStore: ChatViewStore) -> some View {
         HStack {
             HStack {
                 TextField(
                     "Send a message ...",
-                    text: viewStore.binding(\.$chat.message),
+                    text: viewStore.$chat.message,
                     axis: .vertical
                 )
                 .multilineTextAlignment(.leading)

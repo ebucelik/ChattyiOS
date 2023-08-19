@@ -5,18 +5,49 @@
 //  Created by Ing. Ebu Celik, BSc on 28.10.22.
 //
 
+import SwiftHelper
 import SwiftUI
 import ComposableArchitecture
 
+extension BindingViewStore<PostCore.State> {
+    var view: PostView.ViewState {
+        PostView.ViewState(
+            otherAccountId: self.otherAccountId,
+            ownAccountId: self.ownAccountId,
+            postState: self.postState,
+            deletePostState: self.deletePostState,
+            postDate: self.postDate,
+            showAlert: self.$showAlert,
+            showDeleteAlert: self.$showDeleteAlert,
+            postLiked: self.postLiked,
+            isFeedView: self.isFeedView,
+            isOtherAccount: self.isOtherAccount
+        )
+    }
+}
+
 struct PostView: View {
+    struct ViewState: Equatable {
+        var otherAccountId: Int?
+        var ownAccountId: Int?
+        var postState: Loadable<Post>
+        var deletePostState: Loadable<Message>
+        var postDate: String
+        @BindingViewState var showAlert: Bool
+        @BindingViewState var showDeleteAlert: Bool
+        var postLiked: Bool
+        var isFeedView: Bool
+        var isOtherAccount: Bool
+    }
 
     @Environment(\.dismiss) var dismiss
 
+    typealias PostViewStore = ViewStore<PostView.ViewState, PostCore.Action.View>
     let store: StoreOf<PostCore>
     let size: CGSize
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             switch viewStore.postState {
             case let .loaded(post):
                 VStack(spacing: 16) {
@@ -53,7 +84,7 @@ struct PostView: View {
                                 deletePostBody(viewStore)
                                     .disabled(viewStore.isOtherAccount)
                                     .opacity(viewStore.isOtherAccount ? 0 : 1)
-                                    .alert(isPresented: viewStore.binding(\.$showDeleteAlert)) {
+                                    .alert(isPresented: viewStore.$showDeleteAlert) {
                                         Alert(
                                             title: Text("Post deletion"),
                                             message: Text("Are you sure you want to delete your post?"),
@@ -81,7 +112,7 @@ struct PostView: View {
                 }
                 .alert(
                     "Post deletion",
-                    isPresented: viewStore.binding(\.$showAlert),
+                    isPresented: viewStore.$showAlert,
                     actions: {},
                     message: {
                         Text("An error occured while trying to delete your post...")
@@ -101,7 +132,7 @@ struct PostView: View {
     }
 
     @ViewBuilder
-    private func deletePostBody(_ viewStore: ViewStoreOf<PostCore>) -> some View {
+    private func deletePostBody(_ viewStore: PostViewStore) -> some View {
         switch viewStore.deletePostState {
         case .loaded:
             trashImage()

@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 
-struct SubscriptionCore: ReducerProtocol {
+struct SubscriptionCore: Reducer {
 
     enum SubscriptionMode {
         case subscriber
@@ -15,13 +15,10 @@ struct SubscriptionCore: ReducerProtocol {
     }
 
     struct State: Equatable {
-        @BindingState
-        var showAccountDetails: Bool = false
-
-        let ownAccountId: Int
-        let accounts: [Account]
-        let title: String
-        let info: String
+        var ownAccountId: Int
+        var accounts: [Account]
+        var title: String
+        var info: String
 
         public init(ownAccountId: Int, accounts: [Account], subscriptionMode: SubscriptionMode) {
             self.ownAccountId = ownAccountId
@@ -39,21 +36,7 @@ struct SubscriptionCore: ReducerProtocol {
         }
     }
 
-    enum Action: Equatable, BindableAction {
-        case showAccountDetails
+    enum Action {}
 
-        case binding(BindingAction<State>)
-    }
-
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .showAccountDetails:
-            state.showAccountDetails.toggle()
-
-            return .none
-
-        case .binding:
-            return .none
-        }
-    }
+    func reduce(into state: inout State, action: Action) -> Effect<Action> {}
 }

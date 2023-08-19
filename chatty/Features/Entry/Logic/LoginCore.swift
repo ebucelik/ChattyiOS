@@ -11,13 +11,12 @@ import Combine
 import SwiftHelper
 import ComposableArchitecture
 
-class LoginCore: ReducerProtocol {
+class LoginCore: Reducer {
 
     struct State: Equatable {
         var loginState: Loadable<Account>
 
-        @BindingState
-        var login: Login
+        @BindingState var login: Login
 
         var showPassword = false
 
@@ -40,49 +39,50 @@ class LoginCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case login
+    enum Action: Equatable {
         case loginStateChanged(Loadable<Account>)
 
-        case showRegisterView
-        case showFeed(Account)
-        case showPassword
+        case view(View)
 
-        case reset
-
-        case binding(BindingAction<State>)
+        public enum View: BindableAction, Equatable {
+            case login
+            case showRegisterView
+            case showFeed(Account)
+            case showPassword
+            case reset
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.loginService) var service
     @Dependency(\.mainScheduler) var mainScheduler
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .login:
+            case .view(.login):
                 struct Debounce: Hashable { }
 
                 if state.login.email.isEmpty || state.login.password.isEmpty {
                     return .send(.loginStateChanged(.error(APIError.notFound)))
                 }
 
-                return .task { [login = state.login] in
+                return .run { [login = state.login] send in
+                    await send(.loginStateChanged(.loading))
+                    
                     let account = try await self.service.login(login: login)
 
-                    return .loginStateChanged(.loaded(account))
-                } catch: { error in
+                    await send(.loginStateChanged(.loaded(account)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .loginStateChanged(.error(apiError))
+                        await send(.loginStateChanged(.error(apiError)))
                     } else {
-                        return .loginStateChanged(.error(.error(error)))
+                        await send(.loginStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: Debounce(), for: .seconds(2), scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.loginStateChanged(.loading))
-                .eraseToEffect()
 
             case let .loginStateChanged(changedState):
                 state.loginState = changedState
@@ -91,7 +91,7 @@ class LoginCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return .send(.showFeed(account))
+                    return .send(.view(.showFeed(account)))
                 }
 
                 if case let .error(error) = changedState {
@@ -104,22 +104,22 @@ class LoginCore: ReducerProtocol {
 
                 return .none
 
-            case .showFeed, .showRegisterView:
+            case .view(.showFeed), .view(.showRegisterView):
                 return .none
 
-            case .showPassword:
+            case .view(.showPassword):
                 state.showPassword.toggle()
 
                 return .none
 
-            case .reset:
+            case .view(.reset):
                 state.loginState = .none
                 state.login = .empty
                 state.error = ""
 
                 return .none
 
-            case .binding:
+            case .view:
                 return .none
 
             }

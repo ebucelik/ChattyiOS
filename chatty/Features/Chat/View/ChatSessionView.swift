@@ -5,12 +5,34 @@
 //  Created by Ing. Ebu Celik, BSc on 10.04.23.
 //
 
+import SwiftHelper
 import UIKit
 import SwiftUI
 import ComposableArchitecture
 
+extension BindingViewStore<ChatSessionCore.State> {
+    var view: ChatSessionView.ViewState {
+        ChatSessionView.ViewState(
+            account: self.account,
+            chatSessionState: self.chatSessionState,
+            showSubscribedAccountsView: self.$showSubscribedAccountsView,
+            chatStates: self.chatStates,
+            isChatSessionNotAvailable: self.isChatSessionNotAvailable
+        )
+    }
+}
+
 struct ChatSessionView: View {
 
+    struct ViewState: Equatable {
+        var account: Account?
+        var chatSessionState: Loadable<[ChatSession]>
+        @BindingViewState var showSubscribedAccountsView: Bool
+        var chatStates: IdentifiedArrayOf<ChatCore.State>
+        var isChatSessionNotAvailable: Bool
+    }
+
+    typealias ChatSessionViewStore = ViewStore<ChatSessionView.ViewState, ChatSessionCore.Action.View>
     let store: StoreOf<ChatSessionCore>
 
     init(store: StoreOf<ChatSessionCore>) {
@@ -19,7 +41,7 @@ struct ChatSessionView: View {
 
     var body: some View {
         NavigationStack {
-            WithViewStore(store) { viewStore in
+            WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
                 VStack {
                     switch viewStore.chatSessionState {
                     case let .loaded(chatSessions):
@@ -52,7 +74,7 @@ struct ChatSessionView: View {
                             }
                     }
                 }
-                .sheet(isPresented: viewStore.binding(\.$showSubscribedAccountsView)) {
+                .sheet(isPresented: viewStore.$showSubscribedAccountsView) {
                     AvailableChatAccountsView(
                         store: store.scope(
                             state: \.availableChatAccountsState,
@@ -67,7 +89,7 @@ struct ChatSessionView: View {
     }
 
     @ViewBuilder
-    private func chatSessionBody(_ viewStore: ViewStoreOf<ChatSessionCore>, chatSessions: [ChatSession]) -> some View {
+    private func chatSessionBody(_ viewStore: ChatSessionViewStore, chatSessions: [ChatSession]) -> some View {
         if chatSessions.isEmpty || viewStore.isChatSessionNotAvailable {
             InfoView(
                 text: """

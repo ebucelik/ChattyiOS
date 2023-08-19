@@ -13,8 +13,8 @@ struct AvailableChatAccountsView: View {
     let store: StoreOf<AvailableChatAccountsCore>
 
     var body: some View {
-        NavigationView {
-            WithViewStore(store) { viewStore in
+        NavigationStack {
+            WithViewStore(store, observe: { $0 }) { viewStore in
                 VStack {
                     switch viewStore.availableChatAccountsState {
                     case let .loaded(accounts):

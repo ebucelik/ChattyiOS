@@ -9,7 +9,7 @@ import Foundation
 import SwiftHelper
 import ComposableArchitecture
 
-struct SubscriptionRequestCore: ReducerProtocol {
+struct SubscriptionRequestCore: Reducer {
 
     struct State: Equatable {
         var ownAccountId: Int
@@ -37,23 +37,23 @@ struct SubscriptionRequestCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+    func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .fetchSubscriptionRequests:
-            return .task { [ownAccountId = state.ownAccountId] in
+            return .run { [ownAccountId = state.ownAccountId] send in
+                await send(.subscriptionRequestsStateChanged(.loading))
+
                 let subscriptionRequestAccounts = try await service.getSubscriptionRequestsBy(id: ownAccountId)
 
-                return .subscriptionRequestsStateChanged(.loaded(subscriptionRequestAccounts))
-            } catch: { error in
+                await send(.subscriptionRequestsStateChanged(.loaded(subscriptionRequestAccounts)))
+            } catch: { error, send in
                 if let apiError = error as? APIError {
-                    return .subscriptionRequestsStateChanged(.error(apiError))
+                    await send(.subscriptionRequestsStateChanged(.error(apiError)))
                 } else {
-                    return .subscriptionRequestsStateChanged(.error(.error(error)))
+                    await send(.subscriptionRequestsStateChanged(.error(.error(error))))
                 }
             }
             .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-            .prepend(.subscriptionRequestsStateChanged(.loading))
-            .eraseToEffect()
 
         case .subscriptionRequestsStateChanged(let subscriptionRequestsState):
             state.subscriptionRequestsState = subscriptionRequestsState
@@ -61,7 +61,7 @@ struct SubscriptionRequestCore: ReducerProtocol {
             return .none
 
         case let .acceptSubscription(subscriberId):
-            return .task { [ownAccountId = state.ownAccountId] in
+            return .run { [ownAccountId = state.ownAccountId] send in
                 let subscriber = Subscriber(
                     userId: subscriberId,
                     subscribedUserId: ownAccountId,
@@ -70,17 +70,17 @@ struct SubscriptionRequestCore: ReducerProtocol {
 
                 _ = try await service.acceptSubscription(subscriber: subscriber)
 
-                return .subscriptionAccepted
-            } catch: { error in
+                await send(.subscriptionAccepted)
+            } catch: { error, send in
                 if let apiError = error as? APIError {
-                    return .subscriptionRequestsStateChanged(.error(apiError))
+                    await send(.subscriptionRequestsStateChanged(.error(apiError)))
                 } else {
-                    return .subscriptionRequestsStateChanged(.error(.error(error)))
+                    await send(.subscriptionRequestsStateChanged(.error(.error(error))))
                 }
             }
 
         case let .declineSubscription(subscriberId):
-            return .task { [ownAccountId = state.ownAccountId] in
+            return .run { [ownAccountId = state.ownAccountId] send in
                 let subscriber = Subscriber(
                     userId: subscriberId,
                     subscribedUserId: ownAccountId
@@ -88,12 +88,12 @@ struct SubscriptionRequestCore: ReducerProtocol {
 
                 _ = try await service.declineSubscription(subscriber: subscriber)
 
-                return .subscriptionDeclined
-            } catch: { error in
+                await send(.subscriptionDeclined)
+            } catch: { error, send in
                 if let apiError = error as? APIError {
-                    return .subscriptionRequestsStateChanged(.error(apiError))
+                    await send(.subscriptionRequestsStateChanged(.error(apiError)))
                 } else {
-                    return .subscriptionRequestsStateChanged(.error(.error(error)))
+                    await send(.subscriptionRequestsStateChanged(.error(.error(error))))
                 }
             }
 

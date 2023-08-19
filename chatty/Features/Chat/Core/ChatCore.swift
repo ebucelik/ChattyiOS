@@ -9,7 +9,7 @@ import SwiftHelper
 import ComposableArchitecture
 import Foundation
 
-class ChatCore: ReducerProtocol {
+class ChatCore: Reducer {
     struct State: Equatable, Identifiable {
         var id: UUID = UUID()
         var account: Account
@@ -37,23 +37,27 @@ class ChatCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case onViewAppear
-        case onSend
-        case onReceive(Chat)
+    enum Action: Equatable {
         case chatsStateChanged(Loadable<[Chat]>)
-        case binding(BindingAction<State>)
+        case view(View)
+
+        public enum View: BindableAction, Equatable {
+            case onViewAppear
+            case onSend
+            case onReceive(Chat)
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.chatService) var service
     @Dependency(\.accountService) var accountService
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .onViewAppear:
+            case .view(.onViewAppear):
                 SocketIOClient.shared.receive(
                     fromUserId: state.chatSession.fromUserId,
                     toUserId: state.chatSession.toUserId
@@ -73,7 +77,7 @@ class ChatCore: ReducerProtocol {
                     }
                 }
 
-            case .onSend:
+            case .view(.onSend):
                 state.chat.session = state.chatSession.id
                 state.chat.toUserId = state.account.id == state.chatSession.fromUserId
                 ? state.chatSession.toUserId
@@ -94,7 +98,7 @@ class ChatCore: ReducerProtocol {
                     )
                 )
 
-            case let .onReceive(chat):
+            case let .view(.onReceive(chat)):
                 guard case var .loaded(chats) = state.chatsState else { return .none }
 
                 chats.append(chat)
@@ -112,14 +116,17 @@ class ChatCore: ReducerProtocol {
 
                 return .none
 
-            case .binding(\.$chat.message):
+            case .view(.binding(\.$chat)):
                 if state.chat.message.count >= state.messageMaxLength {
                     state.chat.message = String(state.chat.message.prefix(state.messageMaxLength))
                 }
 
                 return .none
 
-            case .binding:
+            case .view(.binding):
+                return .none
+
+            case .view:
                 return .none
             }
         }

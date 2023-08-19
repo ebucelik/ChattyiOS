@@ -14,7 +14,7 @@ struct ChattyNavigationView: ViewModifier {
         if isOtherAccount {
             content
         } else {
-            NavigationView {
+            NavigationStack {
                 content
             }
         }

@@ -5,17 +5,47 @@
 //  Created by Ing. Ebu Celik, BSc on 04.02.23.
 //
 
+import SwiftHelper
 import SwiftUI
 import ComposableArchitecture
 
+extension BindingViewStore<UploadPostCore.State> {
+    var view: UploadPostView.ViewState {
+        UploadPostView.ViewState(
+            ownAccountId: self.ownAccountId,
+            postState: self.postState,
+            pickedImage: self.pickedImage,
+            textMaxLength: self.textMaxLength,
+            approachesMaxLength: self.approachesMaxLength,
+            isImagePicked: self.isImagePicked,
+            caption: self.$caption,
+            showBanner: self.$showBanner,
+            banner: self.banner
+        )
+    }
+}
+
 struct UploadPostView: View {
 
+    struct ViewState: Equatable {
+        var ownAccountId: Int?
+        var postState: Loadable<Message>
+        var pickedImage: UIImage?
+        var textMaxLength: Int
+        var approachesMaxLength: Bool
+        var isImagePicked: Bool
+        @BindingViewState var caption: String
+        @BindingViewState var showBanner: Bool
+        var banner: Banner
+    }
+
+    typealias UploadPostViewStore = ViewStore<UploadPostView.ViewState, UploadPostCore.Action.View>
     let store: StoreOf<UploadPostCore>
     let imagePickerController = ImagePickerController(placeholder: "imageUpload")
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            NavigationView {
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
+            NavigationStack {
                 VStack(spacing: 24) {
                     uploadPostBody(viewStore)
                 }
@@ -63,14 +93,14 @@ struct UploadPostView: View {
                 }
                 .banner(
                     data: viewStore.banner,
-                    show: viewStore.binding(\.$showBanner)
+                    show: viewStore.$showBanner
                 )
             }
         }
     }
 
     @ViewBuilder
-    private func uploadPostBody(_ viewStore: ViewStoreOf<UploadPostCore>) -> some View {
+    private func uploadPostBody(_ viewStore: UploadPostViewStore) -> some View {
         ViewControllerRepresentable(
             viewController: imagePickerController
         )
@@ -88,7 +118,7 @@ struct UploadPostView: View {
                 .foregroundColor(AppColor.primary)
 
             ZStack(alignment: .bottomTrailing) {
-                TextField("Write a caption...", text: viewStore.binding(\.$caption), axis: .vertical)
+                TextField("Write a caption...", text: viewStore.$caption, axis: .vertical)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .padding(.trailing, 35)

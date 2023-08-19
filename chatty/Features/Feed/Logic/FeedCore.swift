@@ -11,7 +11,7 @@ import SwiftHelper
 import ComposableArchitecture
 import Combine
 
-class FeedCore: ReducerProtocol {
+class FeedCore: Reducer {
     struct State: Equatable {
         var account: Account?
         var limit: Int
@@ -46,7 +46,7 @@ class FeedCore: ReducerProtocol {
 
     struct DebounceID: Hashable { }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onScroll:
@@ -70,24 +70,23 @@ class FeedCore: ReducerProtocol {
                     return .send(.postsStateChanged(.error(.notFound)))
                 }
 
-                return .task { [limit = state.limit] in
+                return .run { [limit = state.limit] send in
+                    await send(.postsStateChanged(.loading))
+
                     let posts = try await self.service.getFeedPosts(
                         for: account.id,
                         limit: limit
                     )
 
-                    return .postsStateChanged(.loaded(posts))
-                } catch: { error in
+                    await send(.postsStateChanged(.loaded(posts)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .postsStateChanged(.error(apiError))
+                        await send(.postsStateChanged(.error(apiError)))
                     } else {
-                        return .postsStateChanged(.error(.error(error)))
+                        await send(.postsStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: DebounceID(), for: 2, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.postsStateChanged(.loading))
-                .eraseToEffect()
 
             case let .postsStateChanged(postsState):
                 state.postsState = postsState

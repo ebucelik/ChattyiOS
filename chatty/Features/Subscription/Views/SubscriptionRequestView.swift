@@ -13,7 +13,7 @@ struct SubscriptionRequestView: View {
     let store: StoreOf<SubscriptionRequestCore>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: { $0 }) { viewStore in
             switch viewStore.subscriptionRequestsState {
             case let .loaded(subscriptionRequestAccounts):
                 if subscriptionRequestAccounts.isEmpty {

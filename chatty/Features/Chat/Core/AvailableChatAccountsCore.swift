@@ -9,7 +9,7 @@ import Foundation
 import SwiftHelper
 import ComposableArchitecture
 
-class AvailableChatAccountsCore: ReducerProtocol {
+class AvailableChatAccountsCore: Reducer {
     struct State: Equatable {
         var accountId: Int?
         var selectedAccount: Account? = nil
@@ -37,7 +37,7 @@ class AvailableChatAccountsCore: ReducerProtocol {
 
     struct DebounceID: Hashable {}
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+    func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .onAppear:
 
@@ -45,20 +45,19 @@ class AvailableChatAccountsCore: ReducerProtocol {
                 return .send(.availableChatAccountsStateChanged(.error(.notFound)))
             }
 
-            return .task {
+            return .run { send in
+                await send(.availableChatAccountsStateChanged(.loading))
+
                 let availableChatAccounts = try await self.service.getAvailableChatAccounts(by: accountId)
 
-                return .availableChatAccountsStateChanged(.loaded(availableChatAccounts))
-            } catch: { error in
+                await send(.availableChatAccountsStateChanged(.loaded(availableChatAccounts)))
+            } catch: { error, send in
                 if let apiError = error as? APIError {
-                    return .availableChatAccountsStateChanged(.error(apiError))
+                    await send(.availableChatAccountsStateChanged(.error(apiError)))
                 } else {
-                    return .availableChatAccountsStateChanged(.error(.error(error)))
+                    await send(.availableChatAccountsStateChanged(.error(.error(error))))
                 }
             }
-            .receive(on: self.mainScheduler)
-            .prepend(.availableChatAccountsStateChanged(.loading))
-            .eraseToEffect()
 
         case let .availableChatAccountsStateChanged(availableChatAccountsStateChanged):
             state.availableChatAccountsState = availableChatAccountsStateChanged

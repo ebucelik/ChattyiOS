@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-class EntryCore: ReducerProtocol {
+class EntryCore: Reducer {
 
     enum EntryViewState {
         case login
@@ -27,20 +27,20 @@ class EntryCore: ReducerProtocol {
         case showFeed(Account)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case let .login(.showFeed(account)), let .register(.showFeed(account)):
+            case let .login(.view(.showFeed(account))), let .register(.view(.showFeed(account))):
                 state.entryViewState = .login
 
                 return .send(.showFeed(account))
 
-            case .login(.showRegisterView):
+            case .login(.view(.showRegisterView)):
                 state.entryViewState = .register
 
                 return .none
 
-            case .register(.showLoginView):
+            case .register(.view(.showLoginView)):
                 state.entryViewState = .login
 
                 return .none

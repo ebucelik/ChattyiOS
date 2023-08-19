@@ -9,7 +9,7 @@ import Foundation
 import SwiftHelper
 import ComposableArchitecture
 
-class ChatSessionCore: ReducerProtocol {
+class ChatSessionCore: Reducer {
     struct State: Equatable {
         var account: Account?
         var chatSessionState: Loadable<[ChatSession]>
@@ -44,20 +44,18 @@ class ChatSessionCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case onAppear
-
+    enum Action {
         case chatSessionStateChanged(Loadable<[ChatSession]>)
-
-        case showSubscribedAccountsView
-
         case availableChatAccounts(AvailableChatAccountsCore.Action)
-
         case chat(id: ChatCore.State.ID, action: ChatCore.Action)
+        case view(View)
 
-        case cancelListeners(ChatSession)
-
-        case binding(BindingAction<State>)
+        public enum View: BindableAction, Equatable {
+            case onAppear
+            case showSubscribedAccountsView
+            case cancelListeners(ChatSession)
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.chatSessionService) var service
@@ -65,12 +63,12 @@ class ChatSessionCore: ReducerProtocol {
 
     struct DebounceID: Hashable {}
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .onAppear:
+            case .view(.onAppear):
                 guard let account = state.account else {
                     return .send(.chatSessionStateChanged(.error(.notFound)))
                 }
@@ -108,7 +106,7 @@ class ChatSessionCore: ReducerProtocol {
 
                 return .none
 
-            case .showSubscribedAccountsView:
+            case .view(.showSubscribedAccountsView):
                 state.showSubscribedAccountsView.toggle()
 
                 return .none
@@ -121,12 +119,12 @@ class ChatSessionCore: ReducerProtocol {
             case .availableChatAccounts(.chatSessionCreated):
                 state.showSubscribedAccountsView = false
 
-                return .send(.onAppear)
+                return .send(.view(.onAppear))
 
             case .chat:
                 return .none
 
-            case let .cancelListeners(chatSession):
+            case let .view(.cancelListeners(chatSession)):
                 SocketIOClient.shared.cancelListeners(
                     fromUserId: chatSession.fromUserId,
                     toUserId: chatSession.toUserId
@@ -134,7 +132,7 @@ class ChatSessionCore: ReducerProtocol {
 
                 return .none
 
-            case .binding:
+            case .view(.binding):
                 return .none
             }
         }

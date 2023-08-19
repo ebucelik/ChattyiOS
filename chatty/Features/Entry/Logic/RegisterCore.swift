@@ -12,7 +12,7 @@ import ComposableArchitecture
 import SwiftHelper
 import UIKit
 
-class RegisterCore: ReducerProtocol {
+class RegisterCore: Reducer {
 
     enum ViewState {
         case usernameView
@@ -109,33 +109,38 @@ class RegisterCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case register
+    enum Action: Equatable {
         case registerStateChanged(Loadable<Account>)
-
-        case checkUsername
-        case checkIfEmailIsValid
-        case checkEmail
-        case checkPassword
-
-        case showPassword
-
-        case showUsernameView
-        case showEmailAndPasswordView
-        case showProfilePictureView
-
-        case setImage(UIImage)
 
         case usernameAvailableStateChanged(Loadable<Bool>)
         case emailAvailableStateChanged(Loadable<Bool>)
         case passwordValidStateChanged(Loadable<Bool>)
 
-        case showLoginView
-        case showFeed(Account)
+        case view(View)
 
-        case reset
+        public enum View: BindableAction, Equatable {
+            case register
 
-        case binding(BindingAction<State>)
+            case checkUsername
+            case checkIfEmailIsValid
+            case checkEmail
+            case checkPassword
+
+            case showPassword
+
+            case showUsernameView
+            case showEmailAndPasswordView
+            case showProfilePictureView
+
+            case setImage(UIImage)
+
+            case showLoginView
+            case showFeed(Account)
+
+            case reset
+
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.registerService) var service
@@ -143,15 +148,17 @@ class RegisterCore: ReducerProtocol {
     @Dependency(\.imageService) var imageService
     @Dependency(\.mainScheduler) var mainScheduler
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .register:
+            case .view(.register):
                 struct Debounce: Hashable { }
 
-                return .task { [register = state.register, picture = state.picture] in
+                return .run { [register = state.register, picture = state.picture] send in
+                    await send(.registerStateChanged(.loading))
+
                     if let picture = picture,
                        let jpegData = picture.jpegData(compressionQuality: 1.0) {
                         let pictureLink = try await self.imageService.uploadImage(imageData: jpegData)
@@ -165,23 +172,20 @@ class RegisterCore: ReducerProtocol {
                             )
                         )
 
-                        return .registerStateChanged(.loaded(account))
+                        await send(.registerStateChanged(.loaded(account)))
                     } else {
                         let account = try await self.service.register(register: register)
 
-                        return .registerStateChanged(.loaded(account))
+                        await send(.registerStateChanged(.loaded(account)))
                     }
-                } catch: { error in
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .registerStateChanged(.error(apiError))
+                        await send(.registerStateChanged(.error(apiError)))
                     } else {
-                        return .registerStateChanged(.error(.error(error)))
+                        await send(.registerStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.registerStateChanged(.loading))
-                .eraseToEffect()
 
             case let .registerStateChanged(registerStateDidChanged):
                 state.registerState = registerStateDidChanged
@@ -190,31 +194,30 @@ class RegisterCore: ReducerProtocol {
 
                     Account.addToUserDefaults(account)
 
-                    return .send(.showFeed(account))
+                    return .send(.view(.showFeed(account)))
                 }
 
                 return .none
 
-            case .checkUsername:
+            case .view(.checkUsername):
                 struct Debounce: Hashable { }
 
                 let username = state.register.username
 
-                return .task {
+                return .run { send in
+                    await send(.usernameAvailableStateChanged(.loading))
+
                     let checkUsername = try await self.accountAvailabilityService.checkUsername(username: username)
 
-                    return .usernameAvailableStateChanged(.loaded(checkUsername))
-                } catch: { error in
+                    await send(.usernameAvailableStateChanged(.loaded(checkUsername)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .usernameAvailableStateChanged(.error(apiError))
+                        await send(.usernameAvailableStateChanged(.error(apiError)))
                     } else {
-                        return .usernameAvailableStateChanged(.error(.error(error)))
+                        await send(.usernameAvailableStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.usernameAvailableStateChanged(.loading))
-                .eraseToEffect()
 
             case let .usernameAvailableStateChanged(usernameAvailabilityStateDidChanged):
                 state.usernameAvailableState = usernameAvailabilityStateDidChanged
@@ -241,95 +244,99 @@ class RegisterCore: ReducerProtocol {
 
                 return .none
 
-            case .checkIfEmailIsValid:
+            case .view(.checkIfEmailIsValid):
                 struct Debounce: Hashable { }
 
                 let email = state.register.email
 
                 if email.checkEmailValidation() {
-                    return .send(.checkEmail)
+                    return .concatenate(
+                        .send(.emailAvailableStateChanged(.loading)),
+                        .send(.view(.checkEmail))
+                    )
                     .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                    .prepend(.emailAvailableStateChanged(.loading))
-                    .eraseToEffect()
                 }
 
-                return .send(
-                    .emailAvailableStateChanged(
-                        .error(
-                            APIError.unexpectedError("Please provide a valid e-mail.")
+                return .concatenate(
+                    .send(.emailAvailableStateChanged(.loading)),
+                    .send(
+                        .emailAvailableStateChanged(
+                            .error(
+                                APIError.unexpectedError("Please provide a valid e-mail.")
+                            )
                         )
                     )
                 )
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                .prepend(.emailAvailableStateChanged(.loading))
-                .eraseToEffect()
 
-            case .checkEmail:
+            case .view(.checkEmail):
                 struct Debounce: Hashable { }
 
-                return .task { [email = state.register.email] in
-                    return .emailAvailableStateChanged(
-                        .loaded(try await self.accountAvailabilityService.checkEmail(email: email))
+                return .run { [email = state.register.email] send in
+                    await send(.emailAvailableStateChanged(.loading))
+
+                    await send(
+                        .emailAvailableStateChanged(
+                            .loaded(try await self.accountAvailabilityService.checkEmail(email: email))
+                        )
                     )
-                } catch: { error in
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .emailAvailableStateChanged(.error(apiError))
+                        await send(.emailAvailableStateChanged(.error(apiError)))
                     } else {
-                        return .emailAvailableStateChanged(.error(.error(error)))
+                        await send(.emailAvailableStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.emailAvailableStateChanged(.loading))
-                .eraseToEffect()
 
-            case .checkPassword:
+            case .view(.checkPassword):
                 struct Debounce: Hashable { }
 
                 let password = state.register.password
 
                 let loadable: Loadable = password.count > 4 ? .loaded(true) : .error(APIError.unexpectedError("Please provide a stronger password."))
 
-                return .send(.passwordValidStateChanged(loadable))
+                return .concatenate(
+                    .send(.passwordValidStateChanged(.loading)),
+                    .send(.passwordValidStateChanged(loadable))
+                )
                 .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
-                .prepend(.passwordValidStateChanged(.loading))
-                .eraseToEffect()
 
-            case .showPassword:
+            case .view(.showPassword):
                 state.showPassword.toggle()
 
                 return .none
 
-            case .showUsernameView:
+            case .view(.showUsernameView):
                 state.viewState = .usernameView
 
                 return .none
 
-            case .showEmailAndPasswordView:
+            case .view(.showEmailAndPasswordView):
                 state.viewState = .emailAndPasswordView
 
                 return .none
 
-            case .showProfilePictureView:
+            case .view(.showProfilePictureView):
                 state.viewState = .profilePictureView
 
                 return .none
 
-            case let .setImage(picture):
+            case let .view(.setImage(picture)):
                 state.picture = picture
 
                 return .none
 
-            case .showFeed:
+            case .view(.showFeed):
                 struct Debounce: Hashable { }
 
-                return .send(.reset)
+                return .send(.view(.reset))
                 .debounce(id: Debounce(), for: 2, scheduler: self.mainScheduler)
 
-            case .showLoginView:
+            case .view(.showLoginView):
                 return .none
 
-            case .reset:
+            case .view(.reset):
                 state.register = .empty
                 state.registerState = .none
                 state.usernameAvailableState = .none
@@ -340,7 +347,10 @@ class RegisterCore: ReducerProtocol {
 
                 return .none
 
-            case .binding:
+            case .view(.binding):
+                return .none
+
+            case .view:
                 return .none
             }
         }

@@ -19,7 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabViewController = TabViewController(
             store: Store(
                 initialState: AppCore.State(),
-                reducer: AppCore()
+                reducer: {
+                    AppCore()
+                }
             )
         )
 

@@ -34,7 +34,7 @@ class TabViewController: UITabBarController {
 
     init(store: StoreOf<AppCore>) {
         self.store = store
-        self.viewStore = ViewStore(store)
+        self.viewStore = ViewStore(store, observe: { $0 })
 
         self.feedView = FeedView(
             store: store.scope(

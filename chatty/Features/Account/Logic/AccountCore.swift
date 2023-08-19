@@ -9,9 +9,10 @@ import Foundation
 import SwiftHelper
 import ComposableArchitecture
 
-class AccountCore: ReducerProtocol {
+class AccountCore: Reducer {
 
-    struct State: Equatable {
+    struct State: Equatable, Identifiable {
+        var id: Int
         var ownAccountId: Int?
         var accountState: Loadable<Account>
         var subscriberState: Loadable<[Account]>
@@ -54,6 +55,7 @@ class AccountCore: ReducerProtocol {
             self.postsState = postsState
 
             guard case let .loaded(account) = accountState else {
+                self.id = ownAccountId ?? 0
                 self.ownAccountId = nil
                 return
             }
@@ -63,14 +65,16 @@ class AccountCore: ReducerProtocol {
             if let ownAccountId = ownAccountId,
                account.id != ownAccountId {
                 self.ownAccountId = ownAccountId
+                self.id = account.id
+            } else {
+                self.id = ownAccountId ?? 0
             }
         }
     }
 
-    enum Action: BindableAction, Equatable {
+    enum Action: Equatable {
         case fetchSubscriberInfo
 
-        case fetchAccount
         case accountStateChanged(Loadable<Account>)
 
         case fetchSubscriber
@@ -79,26 +83,32 @@ class AccountCore: ReducerProtocol {
         case fetchSubscribed
         case subscribedStateChanged(Loadable<[Account]>)
 
-        case fetchSubscriptionInfo
-        case sendSubscriptionRequest
-        case declineOrCancelSubscriptionRequest
         case subscriptionInfoChanged(Loadable<SubscriptionInfo>)
 
         case fetchPosts
         case sendPostsRequest(Int)
         case postsStateChanged(Loadable<[Post]>)
 
-        case toggleNewUpdatesAvailable
-
-        case showMore
-
-        case logout
-        case loggedOut
-
-        case binding(BindingAction<State>)
-
         case subscriptionRequest(SubscriptionRequestCore.Action)
 
+        case view(View)
+
+        public enum View: BindableAction, Equatable {
+            case fetchAccount
+
+            case fetchSubscriptionInfo
+            case sendSubscriptionRequest
+            case declineOrCancelSubscriptionRequest
+
+            case toggleNewUpdatesAvailable
+
+            case showMore
+
+            case logout
+            case loggedOut
+
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.accountService) var service
@@ -109,8 +119,8 @@ class AccountCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
@@ -122,18 +132,18 @@ class AccountCore: ReducerProtocol {
                     ]
                 )
 
-            case .fetchAccount:
+            case .view(.fetchAccount):
                 guard case let .loaded(account) = state.accountState else { return .none }
 
-                return .task { [id = account.id] in
+                return .run { [id = account.id] send in
                     let account = try await self.service.getAccountBy(id: id)
 
-                    return .accountStateChanged(.loaded(account))
-                } catch: { error in
+                    await send(.accountStateChanged(.loaded(account)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .accountStateChanged(.error(apiError))
+                        await send(.accountStateChanged(.error(apiError)))
                     } else {
-                        return .accountStateChanged(.error(.error(error)))
+                        await send(.accountStateChanged(.error(.error(error))))
                     }
                 }
 
@@ -144,7 +154,7 @@ class AccountCore: ReducerProtocol {
                     return .merge(
                         [
                             .send(.fetchSubscriberInfo),
-                            .send(.fetchSubscriptionInfo),
+                            .send(.view(.fetchSubscriptionInfo)),
                             .send(.fetchPosts)
                         ]
                     )
@@ -158,20 +168,19 @@ class AccountCore: ReducerProtocol {
                       !state.isOtherAccount
                 else { return .none }
 
-                return .task { [id = account.id] in
+                return .run { [id = account.id] send in
+                    await send(.subscriberStateChanged(.loading))
+
                     let subscriberAccounts = try await self.subscriberService.getSubscriberBy(id: id)
 
-                    return .subscriberStateChanged(.loaded(subscriberAccounts))
-                } catch: { error in
+                    await send(.subscriberStateChanged(.loaded(subscriberAccounts)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .subscriberStateChanged(.error(apiError))
+                        await send(.subscriberStateChanged(.error(apiError)))
                     } else {
-                        return .subscriberStateChanged(.error(.error(error)))
+                        await send(.subscriberStateChanged(.error(.error(error))))
                     }
                 }
-                .receive(on: self.mainScheduler)
-                .prepend(.subscriberStateChanged(.loading))
-                .eraseToEffect()
 
             case let .subscriberStateChanged(subscriberState):
                 state.subscriberState = subscriberState
@@ -184,74 +193,72 @@ class AccountCore: ReducerProtocol {
                       !state.isOtherAccount
                 else { return .none }
 
-                return .task { [id = account.id] in
+                return .run { [id = account.id] send in
+                    await send(.subscribedStateChanged(.loading))
+
                     let subscribedAccounts = try await self.subscriberService.getSubscribedBy(id: id)
 
-                    return .subscribedStateChanged(.loaded(subscribedAccounts))
-                } catch: { error in
+                    await send(.subscribedStateChanged(.loaded(subscribedAccounts)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .subscribedStateChanged(.error(apiError))
+                        await send(.subscribedStateChanged(.error(apiError)))
                     } else {
-                        return .subscribedStateChanged(.error(.error(error)))
+                        await send(.subscribedStateChanged(.error(.error(error))))
                     }
                 }
-                .receive(on: self.mainScheduler)
-                .prepend(.subscribedStateChanged(.loading))
-                .eraseToEffect()
 
             case let .subscribedStateChanged(subscribedState):
                 state.subscribedState = subscribedState
 
                 return .none
 
-            case .fetchSubscriptionInfo:
+            case .view(.fetchSubscriptionInfo):
 
                 guard let ownAccountId = state.ownAccountId,
                       case let .loaded(account) = state.accountState else { return .none }
 
-                return .task {
+                return .run { send in
+                    await send(.subscriptionInfoChanged(.loading))
+
                     let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscriptionInfo(subscriber: subscriber)
 
-                    return .subscriptionInfoChanged(.loaded(subscriptionInfo))
-                } catch: { error in
+                    await send(.subscriptionInfoChanged(.loaded(subscriptionInfo)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .subscriptionInfoChanged(.error(apiError))
+                        await send(.subscriptionInfoChanged(.error(apiError)))
                     } else {
-                        return .subscriptionInfoChanged(.error(.error(error)))
+                        await send(.subscriptionInfoChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: DebounceId(), for: 0.3, scheduler: self.mainScheduler)
-                .prepend(.subscriptionInfoChanged(.loading))
-                .eraseToEffect()
 
-            case .sendSubscriptionRequest:
+            case .view(.sendSubscriptionRequest):
 
                 guard let ownAccountId = state.ownAccountId,
                       case let .loaded(account) = state.accountState
                 else { return .none }
 
-                return .task {
+                return .run { send in
                     let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
-                    return .subscriptionInfoChanged(.loaded(subscriptionInfo))
-                } catch: { error in
+                    await send(.subscriptionInfoChanged(.loaded(subscriptionInfo)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .subscriptionInfoChanged(.error(apiError))
+                        await send(.subscriptionInfoChanged(.error(apiError)))
                     } else {
-                        return .subscriptionInfoChanged(.error(.error(error)))
+                        await send(.subscriptionInfoChanged(.error(.error(error))))
                     }
                 }
 
-            case .declineOrCancelSubscriptionRequest:
+            case .view(.declineOrCancelSubscriptionRequest):
 
                 guard let ownAccountId = state.ownAccountId,
                       case let .loaded(account) = state.accountState,
                       case let .loaded(subscriptionInfo) = state.subscriptionInfoState
                 else { return .none }
 
-                return .task {
+                return .run { send in
                     let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
 
                     if subscriptionInfo.accepted {
@@ -260,7 +267,7 @@ class AccountCore: ReducerProtocol {
                         _ = try await self.subscriberService.declineSubscription(subscriber: subscriber)
                     }
 
-                    return .fetchSubscriptionInfo
+                    await send(.view(.fetchSubscriptionInfo))
                 }
 
             case let .subscriptionInfoChanged(subscriptionInfoState):
@@ -299,59 +306,55 @@ class AccountCore: ReducerProtocol {
                     accountId = stateAccountId
                 }
 
-                return .task { [accountId = accountId] in
+                return .run { [accountId = accountId] send in
                     let posts = try await self.postService.fetchPostsBy(
                         id: id,
                         userId: accountId
                     )
 
-                    return .postsStateChanged(.loaded(posts))
-                } catch: { error in
+                    await send(.postsStateChanged(.loaded(posts)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .postsStateChanged(.error(apiError))
+                        await send(.postsStateChanged(.error(apiError)))
                     } else {
-                        return .postsStateChanged(.error(.error(error)))
+                        await send(.postsStateChanged(.error(.error(error))))
                     }
                 }
-                .receive(on: self.mainScheduler)
-                .eraseToEffect()
 
             case let .postsStateChanged(postsState):
                 state.postsState = postsState
 
                 return .none
 
-            case .toggleNewUpdatesAvailable:
+            case .view(.toggleNewUpdatesAvailable):
                 state.newUpdatesAvailable.toggle()
 
                 return .none
 
-            case .showMore:
+            case .view(.showMore):
                 state.showMore.toggle()
 
                 return .none
 
-            case .logout:
-                return .task {
+            case .view(.logout):
+                return .run { send in
                     _ = try await self.logoutService.logout()
 
-                    return .loggedOut
-                } catch: { _ in
-                    return .loggedOut
+                    await send(.view(.loggedOut))
+                } catch: { _, send in
+                    await send(.view(.loggedOut))
                 }
                 .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .eraseToEffect()
 
-            case .loggedOut:
+            case .view(.loggedOut):
                 return .none
 
-            case .binding:
+            case .view(.binding):
                 return .none
 
                 // MARK: SubscriptionRequestCore
             case .subscriptionRequest(.subscriptionAccepted):
-                return .send(.toggleNewUpdatesAvailable)
+                return .send(.view(.toggleNewUpdatesAvailable))
 
             case .subscriptionRequest:
                 return .none

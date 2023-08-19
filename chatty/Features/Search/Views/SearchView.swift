@@ -5,47 +5,69 @@
 //  Created by Ing. Ebu Celik, BSc on 23.01.23.
 //
 
+import SwiftHelper
 import SwiftUI
 import ComposableArchitecture
 
+extension BindingViewStore<SearchCore.State> {
+    var view: SearchView.ViewState {
+        SearchView.ViewState(
+            searchQuery: self.$searchQuery,
+            searchAccountState: self.searchAccountState,
+            accountStates: self.accountStates,
+            ownAccountId: self.ownAccountId
+        )
+    }
+}
+
 struct SearchView: View {
+
+    struct ViewState: Equatable {
+        @BindingViewState var searchQuery: String
+        var searchAccountState: Loadable<[Account]>
+        var accountStates: IdentifiedArrayOf<AccountCore.State>
+        var ownAccountId: Int?
+    }
 
     let store: StoreOf<SearchCore>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            NavigationView {
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
+            NavigationStack {
                 switch viewStore.searchAccountState {
                 case let .loaded(accounts):
                     List {
                         if accounts.isEmpty {
                             InfoView(text: "No accounts were found 🙁")
                         } else {
-                            ForEach(accounts, id: \.id) { account in
+                            ForEachStore(
+                                store.scope(
+                                    state: \.accountStates,
+                                    action: SearchCore.Action.account(id:action:)
+                                )
+                            ) { accountStore in
                                 NavigationLink {
                                     AccountView(
-                                        store: Store(
-                                            initialState: AccountCore.State(
-                                                ownAccountId: viewStore.ownAccountId,
-                                                accountState: .loaded(account)
-                                            ),
-                                            reducer: AccountCore()
-                                        )
+                                        store: accountStore
                                     )
                                 } label: {
-                                    HStack {
-                                        ChattyImage(
-                                            picture: account.picture,
-                                            frame: CGSize(width: 30, height: 30)
-                                        )
+                                    WithViewStore(accountStore, observe: \.accountState) { accountState in
+                                        if case let .loaded(account) = accountState.state {
+                                            HStack {
+                                                ChattyImage(
+                                                    picture: account.picture,
+                                                    frame: CGSize(width: 30, height: 30)
+                                                )
 
-                                        Text(account.username)
-                                            .font(AppFont.body)
-                                            .foregroundColor(AppColor.black)
+                                                Text(account.username)
+                                                    .font(AppFont.body)
+                                                    .foregroundColor(AppColor.black)
 
-                                        Spacer()
+                                                Spacer()
+                                            }
+                                            .frame(height: 40)
+                                        }
                                     }
-                                    .frame(height: 40)
                                 }
                             }
                         }
@@ -66,9 +88,9 @@ struct SearchView: View {
                     ErrorView()
                 }
             }
-            .searchable(text: viewStore.binding(\.$searchQuery), prompt: "Search here 🤩")
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled(true)
+            .searchable(text: viewStore.$searchQuery, prompt: "Search here 🤩")
         }
     }
 }

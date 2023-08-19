@@ -17,7 +17,7 @@ struct SubscriptionView: View {
     }
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: { $0 }) { viewStore in
             if viewStore.accounts.isEmpty {
                 InfoView(text: viewStore.info)
             } else {
@@ -31,7 +31,9 @@ struct SubscriptionView: View {
                                             ownAccountId: viewStore.ownAccountId,
                                             accountState: .loaded(account)
                                         ),
-                                        reducer: AccountCore()
+                                        reducer: {
+                                            AccountCore()
+                                        }
                                     )
                                 )
                             } label: {

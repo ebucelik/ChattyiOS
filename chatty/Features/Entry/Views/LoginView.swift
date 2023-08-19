@@ -6,21 +6,40 @@
 //
 
 import SwiftUI
-
+import SwiftHelper
 import ComposableArchitecture
 
+extension BindingViewStore<LoginCore.State> {
+    var view: LoginView.ViewState {
+        LoginView.ViewState(
+            login: self.$login,
+            loginState: self.loginState,
+            showPassword: self.showPassword,
+            isError: self.isError,
+            error: self.error
+        )
+    }
+}
+
 struct LoginView: View {
+    struct ViewState: Equatable {
+        @BindingViewState var login: Login
+        var loginState: Loadable<Account>
+        var showPassword: Bool
+        var isError: Bool
+        var error: String
+    }
 
     let store: Store<LoginCore.State, LoginCore.Action>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             stateBody(viewStore)
         }
     }
 
     @ViewBuilder
-    func stateBody(_ viewStore: ViewStore<LoginCore.State, LoginCore.Action>) -> some View {
+    func stateBody(_ viewStore: ViewStore<LoginView.ViewState, LoginCore.Action.View>) -> some View {
         switch viewStore.loginState {
         case .none, .error, .loaded, .loading, .refreshing:
             loginBody(viewStore)
@@ -31,7 +50,7 @@ struct LoginView: View {
     }
 
     @ViewBuilder
-    func loginBody(_ viewStore: ViewStore<LoginCore.State, LoginCore.Action>) -> some View {
+    func loginBody(_ viewStore: ViewStore<LoginView.ViewState, LoginCore.Action.View>) -> some View {
         VStack(spacing: 16) {
             Spacer()
                 .frame(height: 36)
@@ -50,7 +69,7 @@ struct LoginView: View {
                 HStack(spacing: 16) {
                     Image(systemSymbol: .personFill)
                         .foregroundColor(AppColor.gray)
-                    TextField("Email", text: viewStore.binding(\.$login.email))
+                    TextField("Email", text: viewStore.$login.email)
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
@@ -66,12 +85,12 @@ struct LoginView: View {
                         .foregroundColor(AppColor.gray)
 
                     if viewStore.state.showPassword {
-                        TextField("Password", text: viewStore.binding(\.$login.password))
+                        TextField("Password", text: viewStore.$login.password)
                             .textContentType(.password)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
                     } else {
-                        SecureField("Password", text: viewStore.binding(\.$login.password))
+                        SecureField("Password", text: viewStore.$login.password)
                             .textContentType(.password)
                             .textInputAutocapitalization(.never)
                     }
@@ -144,16 +163,3 @@ struct LoginView: View {
         }
     }
 }
-
-#if DEBUG
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView(
-            store: Store(
-                initialState: LoginCore.State(),
-                reducer: LoginCore()
-            )
-        )
-    }
-}
-#endif

@@ -13,8 +13,8 @@ struct FeedView: View {
     let store: StoreOf<FeedCore>
 
     var body: some View {
-        NavigationView {
-            WithViewStore(store) { viewStore in
+        NavigationStack {
+            WithViewStore(store, observe: { $0 }) { viewStore in
                 VStack {
                     GeometryReader { reader in
                         List {
@@ -64,7 +64,9 @@ struct FeedView: View {
                             postState: .loaded(post),
                             isFeedView: true
                         ),
-                        reducer: PostCore()
+                        reducer: {
+                            PostCore()
+                        }
                     ),
                     size: reader.size
                 )

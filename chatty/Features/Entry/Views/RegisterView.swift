@@ -10,14 +10,46 @@ import SwiftUI
 import ComposableArchitecture
 import SwiftHelper
 
+extension BindingViewStore<RegisterCore.State> {
+    var view: RegisterView.ViewState {
+        RegisterView.ViewState(
+            registerState: self.registerState,
+            usernameAvailableState: self.usernameAvailableState,
+            emailAvailableState: self.emailAvailableState,
+            passwordValidState: self.passwordValidState,
+            showPassword: self.showPassword,
+            viewState: self.viewState,
+            picture: self.picture,
+            register: self.$register,
+            error: self.error,
+            isUsernameAvailable: self.isUsernameAvailable,
+            isEmailAndPasswordValid: self.isEmailAndPasswordValid
+        )
+    }
+}
+
 struct RegisterView: View {
 
-    typealias RegisterViewStore = ViewStore<RegisterCore.State, RegisterCore.Action>
+    struct ViewState: Equatable {
+        var registerState: Loadable<Account>
+        var usernameAvailableState: Loadable<Bool>
+        var emailAvailableState: Loadable<Bool>
+        var passwordValidState: Loadable<Bool>
+        var showPassword: Bool
+        var viewState: RegisterCore.ViewState
+        var picture: UIImage?
+        @BindingViewState var register: Register
+        var error: String
+        var isUsernameAvailable: Bool
+        var isEmailAndPasswordValid: Bool
+    }
+
+    typealias RegisterViewStore = ViewStore<RegisterView.ViewState, RegisterCore.Action.View>
     let store: Store<RegisterCore.State, RegisterCore.Action>
     let imagePickerController = ImagePickerController(placeholder: "person.crop.circle.fill")
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             ZStack {
                 switch viewStore.viewState {
                 case .usernameView:
@@ -65,7 +97,7 @@ struct RegisterView: View {
                         Image(systemSymbol: .personFill)
                             .foregroundColor(AppColor.gray)
 
-                        TextField("Username", text: viewStore.binding(\.$register.username))
+                        TextField("Username", text: viewStore.$register.username)
                             .textContentType(.username)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
@@ -160,7 +192,7 @@ struct RegisterView: View {
                         Image(systemSymbol: .envelopeFill)
                             .foregroundColor(AppColor.gray)
 
-                        TextField("E-Mail", text: viewStore.binding(\.$register.email))
+                        TextField("E-Mail", text: viewStore.$register.email)
                             .textContentType(.emailAddress)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
@@ -184,8 +216,8 @@ struct RegisterView: View {
                         Image(systemSymbol: .lockFill)
                             .foregroundColor(AppColor.gray)
 
-                        if viewStore.state.showPassword {
-                            TextField("Password", text: viewStore.binding(\.$register.password))
+                        if viewStore.showPassword {
+                            TextField("Password", text: viewStore.$register.password)
                                 .textContentType(.newPassword)
                                 .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
@@ -193,7 +225,7 @@ struct RegisterView: View {
                                     viewStore.send(.checkPassword)
                                 }
                         } else {
-                            SecureField("Password", text: viewStore.binding(\.$register.password))
+                            SecureField("Password", text: viewStore.$register.password)
                                 .textContentType(.newPassword)
                                 .textInputAutocapitalization(.never)
                                 .onChange(of: viewStore.register.password) { _ in
@@ -207,7 +239,7 @@ struct RegisterView: View {
                             action: {
                                 viewStore.send(.showPassword)
                             }, label: {
-                                Image(systemSymbol: viewStore.state.showPassword ? .eyeFill : .eyeSlashFill)
+                                Image(systemSymbol: viewStore.showPassword ? .eyeFill : .eyeSlashFill)
                                     .foregroundColor(AppColor.gray)
                             }
                         )
@@ -312,16 +344,3 @@ struct RegisterView: View {
         .padding()
     }
 }
-
-#if DEBUG
-struct RegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegisterView(
-            store: Store(
-                initialState: RegisterCore.State(),
-                reducer: RegisterCore()
-            )
-        )
-    }
-}
-#endif

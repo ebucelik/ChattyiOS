@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 import SwiftHelper
 
-class PostCore: ReducerProtocol {
+class PostCore: Reducer {
 
     struct State: Equatable {
         var otherAccountId: Int?
@@ -50,24 +50,28 @@ class PostCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction, Equatable {
-        case fetchPost
+    enum Action: Equatable {
         case postStateChanged(Loadable<Post>)
-
-        case setPostDate(Double)
-
-        case showDeleteAlert
-        case deletePost
         case deletePostStateChanged(Loadable<Message>)
+        case view(View)
 
-        case likePost
-        case postLiked
+        public enum View: BindableAction, Equatable {
+            case fetchPost
 
-        case removeLikeFromPost
-        case likeRemoved
+            case setPostDate(Double)
 
-        case showAlert
-        case binding(BindingAction<State>)
+            case showDeleteAlert
+            case deletePost
+
+            case likePost
+            case postLiked
+
+            case removeLikeFromPost
+            case likeRemoved
+
+            case showAlert
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.postService) var service
@@ -75,12 +79,12 @@ class PostCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .fetchPost:
+            case .view(.fetchPost):
 
                 var userId = 0
 
@@ -92,68 +96,67 @@ class PostCore: ReducerProtocol {
 
                 guard case let .loaded(post) = state.postState else { return .none }
 
-                return .task { [userId = userId] in
+                return .run { [userId = userId] send in
+                    await send(.postStateChanged(.loading))
+
                     let post = try await self.service.fetchPostBy(
                         id: post.id,
                         userId: userId
                     )
 
-                    return .postStateChanged(.loaded(post))
-                } catch: { error in
+                    await send(.postStateChanged(.loaded(post)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .postStateChanged(.error(apiError))
+                        await send(.postStateChanged(.error(apiError)))
                     } else {
-                        return .postStateChanged(.error(.error(error)))
+                        await send(.postStateChanged(.error(.error(error))))
                     }
                 }
-                .prepend(.postStateChanged(.loading))
-                .eraseToEffect()
 
             case let .postStateChanged(postState):
                 state.postState = postState
 
                 if case let .loaded(post) = postState {
-                    return .send(.setPostDate(post.timestamp))
+                    return .send(.view(.setPostDate(post.timestamp)))
                 }
 
                 return .none
 
-            case let .setPostDate(timestamp):
+            case let .view(.setPostDate(timestamp)):
                 state.postDate = timestamp.toStringDate
 
                 return .none
 
-            case .showDeleteAlert:
+            case .view(.showDeleteAlert):
                 state.showDeleteAlert.toggle()
 
                 return .none
 
-            case .deletePost:
+            case .view(.deletePost):
 
                 guard case let .loaded(post) = state.postState else { return .none }
 
-                return .task {
+                return .run { send in
+                    await send(.deletePostStateChanged(.loading))
+
                     let message = try await self.service.deletePost(id: post.id)
 
-                    return .deletePostStateChanged(.loaded(message))
-                } catch: { error in
+                    await send(.deletePostStateChanged(.loaded(message)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .deletePostStateChanged(.error(apiError))
+                        await send(.deletePostStateChanged(.error(apiError)))
                     } else {
-                        return .deletePostStateChanged(.error(.error(error)))
+                        await send(.deletePostStateChanged(.error(.error(error))))
                     }
                 }
                 .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.deletePostStateChanged(.loading))
-                .eraseToEffect()
 
             case let .deletePostStateChanged(deletePostState):
                 state.deletePostState = deletePostState
 
                 return .none
 
-            case .likePost:
+            case .view(.likePost):
 
                 if state.postLiked { return .none }
 
@@ -169,21 +172,21 @@ class PostCore: ReducerProtocol {
 
                 return .concatenate(
                     [
-                        .task { [userId = userId] in
+                        .run { [userId = userId] send in
                             _ = try await self.service.saveLikeFromAccountToPost(postId: post.id, userId: userId)
 
-                            return .fetchPost
+                            await send(.view(.fetchPost))
                         },
-                        .send(.postLiked)
+                        .send(.view(.postLiked))
                     ]
                 )
 
-            case .postLiked:
+            case .view(.postLiked):
                 state.postLiked = true
 
                 return .none
 
-            case .removeLikeFromPost:
+            case .view(.removeLikeFromPost):
 
                 var userId = 0
 
@@ -197,26 +200,29 @@ class PostCore: ReducerProtocol {
 
                 return .concatenate(
                     [
-                        .task { [userId = userId] in
+                        .run { [userId = userId] send in
                             _ = try await self.service.removeLikeFromAccountToPost(postId: post.id, userId: userId)
 
-                            return .fetchPost
+                            await send(.view(.fetchPost))
                         },
-                        .send(.likeRemoved)
+                        .send(.view(.likeRemoved))
                     ]
                 )
 
-            case .likeRemoved:
+            case .view(.likeRemoved):
                 state.postLiked = false
 
                 return .none
 
-            case .showAlert:
+            case .view(.showAlert):
                 state.showAlert.toggle()
 
                 return .none
 
-            case .binding:
+            case .view(.binding):
+                return .none
+
+            case .view:
                 return .none
             }
         }

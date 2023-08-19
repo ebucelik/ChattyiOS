@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 import SwiftHelper
 
-class AppCore: ReducerProtocol {
+class AppCore: Reducer {
     struct State: Equatable {
         var accountState: Loadable<Account?> = .none
         var showFeed = false
@@ -39,11 +39,11 @@ class AppCore: ReducerProtocol {
     @Dependency(\.accountService) var accountService
     @Dependency(\.mainScheduler) var mainScheduler
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return EffectTask(value: .loadAccount)
+                return .send(.loadAccount)
 
             case .loadAccount:
                 guard let account = Account.getFromUserDefaults()
@@ -54,7 +54,7 @@ class AppCore: ReducerProtocol {
                 state.upload.ownAccountId = account.id
                 state.chat.account = account
 
-                return .task {
+                return .run { send in
                     let loadedAccount = try await self.accountService.getAccountBy(id: account.id)
 
                     if loadedAccount.username != account.username ||
@@ -66,19 +66,17 @@ class AppCore: ReducerProtocol {
 
                         Account.addToUserDefaults(loadedAccount)
 
-                        return .accountStateChanged(.loaded(loadedAccount))
+                        await send(.accountStateChanged(.loaded(loadedAccount)))
                     } else {
-                        return .accountStateChanged(.loaded(account))
+                        await send(.accountStateChanged(.loaded(account)))
                     }
-                } catch: { error in
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .accountStateChanged(.error(apiError))
+                        await send(.accountStateChanged(.error(apiError)))
                     } else {
-                        return .accountStateChanged(.error(.error(error)))
+                        await send(.accountStateChanged(.error(.error(error))))
                     }
                 }
-                .receive(on: self.mainScheduler)
-                .eraseToEffect()
 
             case let .accountStateChanged(accountStateChanged):
                 state.accountState = accountStateChanged
@@ -111,7 +109,7 @@ class AppCore: ReducerProtocol {
                 return .send(.setShowFeed(true))
 
                 // MARK: AccountCore:
-            case .account(.loggedOut):
+            case .account(.view(.loggedOut)):
                 state.feed = FeedCore.State()
                 state.search = SearchCore.State()
                 state.upload = UploadPostCore.State()

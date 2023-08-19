@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 import SwiftHelper
 
-class UploadPostCore: ReducerProtocol {
+class UploadPostCore: Reducer {
 
     struct State: Equatable {
         var ownAccountId: Int?
@@ -49,18 +49,23 @@ class UploadPostCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case uploadPost
+    enum Action: Equatable {
         case postStateChanged(Loadable<Message>)
 
-        case setImage(UIImage)
+        case view(View)
 
-        case showBanner
+        public enum View: BindableAction, Equatable {
+            case uploadPost
 
-        case binding(BindingAction<State>)
+            case setImage(UIImage)
 
-        case reset
-        case resetted
+            case showBanner
+
+            case binding(BindingAction<State>)
+
+            case reset
+            case resetted
+        }
     }
 
     @Dependency(\.postService) var service
@@ -69,25 +74,30 @@ class UploadPostCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case .uploadPost:
-                return .task { [pickedImage = state.pickedImage,
-                                ownAccountId = state.ownAccountId,
-                                caption = state.caption] in
+            case .view(.uploadPost):
+                return .run { [pickedImage = state.pickedImage,
+                               ownAccountId = state.ownAccountId,
+                               caption = state.caption] send in
+                    await send(.postStateChanged(.loading))
 
                     guard let ownAccountId = ownAccountId,
                           let postImage = pickedImage,
                           let jpegData = postImage.jpegData(compressionQuality: 1.0)
                     else {
-                        return .postStateChanged(
-                            .error(
-                                APIError.unexpectedError("An error occured while uploading your post...")
+                        await send(
+                            .postStateChanged(
+                                .error(
+                                    APIError.unexpectedError("An error occured while uploading your post...")
+                                )
                             )
                         )
+
+                        return
                     }
 
                     let imageLink = try await self.imageService.uploadImage(imageData: jpegData)
@@ -104,18 +114,15 @@ class UploadPostCore: ReducerProtocol {
 
                     let message = try await self.service.uploadPost(post: post)
 
-                    return .postStateChanged(.loaded(message))
-                } catch: { error in
+                    await send(.postStateChanged(.loaded(message)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .postStateChanged(.error(apiError))
+                        await send(.postStateChanged(.error(apiError)))
                     } else {
-                        return .postStateChanged(.error(.error(error)))
+                        await send(.postStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: DebounceId(), for: 1, scheduler: self.mainScheduler)
-                .receive(on: self.mainScheduler)
-                .prepend(.postStateChanged(.loading))
-                .eraseToEffect()
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .postStateChanged(postState):
                 state.postState = postState
@@ -128,8 +135,8 @@ class UploadPostCore: ReducerProtocol {
 
                     return .concatenate(
                         [
-                            .send(.showBanner),
-                            .send(.reset)
+                            .send(.view(.showBanner)),
+                            .send(.view(.reset))
                         ]
                     )
                 } else if case .error = postState {
@@ -140,39 +147,39 @@ class UploadPostCore: ReducerProtocol {
 
                     return .concatenate(
                         [
-                            .send(.showBanner),
-                            .send(.reset)
+                            .send(.view(.showBanner)),
+                            .send(.view(.reset))
                         ]
                     )
                 }
 
                 return .none
 
-            case let .setImage(pickedImage):
+            case let .view(.setImage(pickedImage)):
                 state.pickedImage = pickedImage
 
                 return .none
 
-            case .showBanner:
+            case .view(.showBanner):
                 state.showBanner = true
 
                 return .none
 
-            case .binding:
+            case .view(.binding):
                 if state.caption.count >= state.textMaxLength {
                     state.caption = String(state.caption.prefix(state.textMaxLength))
                 }
 
                 return .none
 
-            case .reset:
+            case .view(.reset):
                 state.pickedImage = nil
                 state.caption = ""
 
-                return .send(.resetted)
+                return .send(.view(.resetted))
                 .debounce(id: DebounceId(), for: 3, scheduler: self.mainScheduler)
 
-            case .resetted:
+            case .view(.resetted):
                 state.postState = .none
                 state.showBanner = false
 

@@ -13,7 +13,7 @@ struct EntryView: View {
     let store: StoreOf<EntryCore>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: { $0 }) { viewStore in
             switch viewStore.entryViewState {
             case .login:
                 loginViewBody()
@@ -44,16 +44,3 @@ struct EntryView: View {
         )
     }
 }
-
-#if DEBUG
-struct EntryView_Previews: PreviewProvider {
-    static var previews: some View {
-        EntryView(
-            store: Store(
-                initialState: EntryCore.State(),
-                reducer: EntryCore()
-            )
-        )
-    }
-}
-#endif

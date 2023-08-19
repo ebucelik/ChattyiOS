@@ -9,12 +9,14 @@ import Foundation
 import SwiftHelper
 import ComposableArchitecture
 
-struct SearchCore: ReducerProtocol {
+struct SearchCore: Reducer {
 
     struct State: Equatable {
         @BindingState
         var searchQuery: String
         var searchAccountState: Loadable<[Account]>
+
+        var accountStates = IdentifiedArrayOf<AccountCore.State>()
 
         var ownAccountId: Int?
 
@@ -27,10 +29,15 @@ struct SearchCore: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction {
-        case searchBy(String)
+    enum Action: Equatable {
         case searchAccountStateChanged(Loadable<[Account]>)
-        case binding(BindingAction<State>)
+        case account(id: AccountCore.State.ID, action: AccountCore.Action)
+        case view(View)
+
+        public enum View: BindableAction, Equatable {
+            case searchBy(String)
+            case binding(BindingAction<State>)
+        }
     }
 
     @Dependency(\.searchService) var searchService
@@ -38,47 +45,67 @@ struct SearchCore: ReducerProtocol {
 
     struct DebounceId: Hashable {}
 
-    var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    var body: some Reducer<State, Action> {
+        BindingReducer(action: /Action.view)
 
         Reduce { state, action in
             switch action {
-            case let .searchBy(username):
+            case let .view(.searchBy(username)):
                 guard let ownAccountId = state.ownAccountId else { return .none }
 
-                return .task {
+                return .run { send in
+                    await send(.searchAccountStateChanged(.loading))
+                    
                     let accounts = try await self.searchService.searchBy(
                         id: ownAccountId,
                         username: username
                     )
 
-                    return .searchAccountStateChanged(.loaded(accounts))
-                } catch: { error in
+                    await send(.searchAccountStateChanged(.loaded(accounts)))
+                } catch: { error, send in
                     if let apiError = error as? APIError {
-                        return .searchAccountStateChanged(.error(apiError))
+                        await send(.searchAccountStateChanged(.error(apiError)))
                     } else {
-                        return .searchAccountStateChanged(.error(.error(error)))
+                        await send(.searchAccountStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: DebounceId(), for: 2, scheduler: self.mainScheduler)
-                .prepend(.searchAccountStateChanged(.loading))
-                .eraseToEffect()
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .searchAccountStateChanged(searchAccountState):
                 state.searchAccountState = searchAccountState
 
+                if case let .loaded(accounts) = searchAccountState {
+                    state.accountStates = IdentifiedArray(
+                        uniqueElements: accounts.compactMap {
+                            AccountCore.State(
+                                ownAccountId: state.ownAccountId,
+                                accountState: .loaded($0)
+                            )
+                        }
+                    )
+                }
+
                 return .none
 
-            case .binding(\.$searchQuery):
+            case .account:
+                return .none
+
+            case .view(.binding(\.$searchQuery)):
                 if state.searchQuery.isEmpty {
                     return .send(.searchAccountStateChanged(.none))
                 }
 
-                return .send(.searchBy(state.searchQuery))
+                return .send(.view(.searchBy(state.searchQuery)))
 
-            case .binding:
+            case .view(.binding):
+                return .none
+
+            case .view:
                 return .none
             }
+        }
+        .forEach(\.accountStates, action: /Action.account(id:action:)) {
+            AccountCore()
         }
     }
 }

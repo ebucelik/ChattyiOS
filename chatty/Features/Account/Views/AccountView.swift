@@ -9,7 +9,42 @@ import SwiftUI
 import ComposableArchitecture
 import SwiftHelper
 
+extension BindingViewStore<AccountCore.State> {
+    var view: AccountView.ViewState {
+        AccountView.ViewState(
+            ownAccountId: self.ownAccountId,
+            accountState: self.accountState,
+            subscriberState: self.subscribedState,
+            subscribedState: self.subscribedState,
+            subscribeState: self.subscribeState,
+            subscriptionInfoState: self.subscriptionInfoState,
+            postsState: self.postsState,
+            subscriptionRequestCoreState: self.subscriptionRequestCoreState,
+            isOtherAccount: self.isOtherAccount,
+            newUpdatesAvailable: self.newUpdatesAvailable,
+            showMore: self.$showMore
+        )
+    }
+}
+
 struct AccountView: View {
+
+    struct ViewState: Equatable {
+        var ownAccountId: Int?
+        var accountState: Loadable<Account>
+        var subscriberState: Loadable<[Account]>
+        var subscribedState: Loadable<[Account]>
+        var subscribeState: Loadable<Subscriber>
+        var subscriptionInfoState: Loadable<SubscriptionInfo>
+        var postsState: Loadable<[Post]>
+        var subscriptionRequestCoreState: SubscriptionRequestCore.State?
+        var isOtherAccount: Bool
+        var accountId: Int?
+        var newUpdatesAvailable: Bool
+        @BindingViewState var showMore: Bool
+    }
+
+    typealias AccountViewStore = ViewStore<AccountView.ViewState, AccountCore.Action.View>
 
     let store: StoreOf<AccountCore>
 
@@ -19,7 +54,7 @@ struct AccountView: View {
     ]
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             VStack {
                 switch viewStore.accountState {
                 case .loading, .refreshing, .none:
@@ -48,7 +83,7 @@ struct AccountView: View {
                 viewStore.send(.fetchAccount)
             }
             .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
-            .sheet(isPresented: viewStore.binding(\.$showMore)) {
+            .sheet(isPresented: viewStore.$showMore) {
                 MoreView(
                     onLogoutTap: { viewStore.send(.logout) }
                 )
@@ -57,7 +92,7 @@ struct AccountView: View {
     }
 
     @ViewBuilder
-    private func accountBody(with account: Account, _ viewStore: ViewStoreOf<AccountCore>) -> some View {
+    private func accountBody(with account: Account, _ viewStore: AccountViewStore) -> some View {
         GeometryReader { reader in
             ScrollView(.vertical) {
                 VStack(spacing: 24) {
@@ -81,7 +116,9 @@ struct AccountView: View {
                                             accounts: subscriberAccounts,
                                             subscriptionMode: .subscriber
                                         ),
-                                        reducer: SubscriptionCore()
+                                        reducer: {
+                                            SubscriptionCore()
+                                        }
                                     )
                                 )
                             }
@@ -110,7 +147,9 @@ struct AccountView: View {
                                             accounts: subscribedAccounts,
                                             subscriptionMode: .subscribed
                                         ),
-                                        reducer: SubscriptionCore()
+                                        reducer: {
+                                            SubscriptionCore()
+                                        }
                                     )
                                 )
                             }
@@ -185,7 +224,7 @@ struct AccountView: View {
     }
 
     @ViewBuilder
-    private func subscriptionBody(_ viewStore: ViewStoreOf<AccountCore>) -> some View {
+    private func subscriptionBody(_ viewStore: AccountViewStore) -> some View {
         if viewStore.isOtherAccount {
             switch viewStore.subscriptionInfoState {
             case let .loaded(subscriptionInfo):
@@ -229,7 +268,7 @@ struct AccountView: View {
     }
 
     @ViewBuilder
-    private func postBody(_ viewStore: ViewStoreOf<AccountCore>, reader: GeometryProxy) -> some View {
+    private func postBody(_ viewStore: AccountViewStore, reader: GeometryProxy) -> some View {
         switch viewStore.postsState {
         case let .loaded(posts):
             if posts.isEmpty {
@@ -249,7 +288,9 @@ struct AccountView: View {
                                                 ownAccountId: viewStore.accountId,
                                                 postState: .loaded(post)
                                             ),
-                                            reducer: PostCore()
+                                            reducer: {
+                                                PostCore()
+                                            }
                                         ),
                                         size: reader.size
                                     )
@@ -281,16 +322,3 @@ struct AccountView: View {
         }
     }
 }
-
-#if DEBUG
-struct AccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        AccountView(
-            store: Store(
-                initialState: AccountCore.State(),
-                reducer: AccountCore()
-            )
-        )
-    }
-}
-#endif

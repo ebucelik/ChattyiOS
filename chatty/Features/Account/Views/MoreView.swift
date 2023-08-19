@@ -18,7 +18,7 @@ struct MoreView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 16) {
                 HStack {
                     Image(systemSymbol: .infoCircle)
