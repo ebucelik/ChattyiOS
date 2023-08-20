@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OneSignalFramework
 import SwiftHelper
 import ComposableArchitecture
 
@@ -345,6 +346,8 @@ class AccountCore: Reducer {
                 .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.loggedOut):
+                OneSignal.logout()
+
                 return .none
 
             case .view(.binding):

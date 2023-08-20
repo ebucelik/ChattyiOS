@@ -88,6 +88,11 @@ class ChatCore: Reducer {
                     chat: state.chat
                 )
 
+                OneSignalClient.shared.sendPush(
+                    with: state.chat.message,
+                    title: state.receiverAccount.username
+                )
+
                 guard case var .loaded(chats) = state.chatsState else { return .none }
 
                 chats.append(state.chat)

@@ -7,12 +7,17 @@
 
 import UIKit
 import SFSafeSymbols
+import OneSignalFramework
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        OneSignal.initialize("4500c6ba-85dc-4990-bdc3-7e95aea9dd2f", withLaunchOptions: launchOptions)
+
+        OneSignal.User.pushSubscription.optIn()
 
         return true
     }

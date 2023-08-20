@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import ComposableArchitecture
 import Combine
+import OneSignalFramework
 
 class TabViewController: UITabBarController {
 
@@ -113,13 +114,16 @@ class TabViewController: UITabBarController {
                 loadingView.view.isHidden = true
                 errorView?.view.isHidden = true
 
-                if account == nil {
+                if let account = account {
+                    OneSignal.login("\(account.id)")
+                } else {
                     pushViewController(with: entryView)
 
                     viewStore.send(.setShowFeed(false))
                 }
 
             case .error:
+                OneSignal.logout()
                 loadingView.view.isHidden = true
                 errorView?.view.isHidden = false
 
