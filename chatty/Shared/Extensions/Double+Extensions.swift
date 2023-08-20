@@ -13,7 +13,17 @@ extension Double {
 
         let dateFormatter = DateFormatter()
         dateFormatter.locale = NSLocale.autoupdatingCurrent
-        dateFormatter.dateFormat = "d. MMM yyyy\nHH:mm"
+        dateFormatter.dateFormat = "d. MMM yyyy"
+
+        return dateFormatter.string(from: date)
+    }
+
+    var toStringTime: String {
+        let date = Date(timeIntervalSinceReferenceDate: self)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale.autoupdatingCurrent
+        dateFormatter.dateFormat = "HH:mm"
 
         return dateFormatter.string(from: date)
     }

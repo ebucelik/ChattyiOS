@@ -111,6 +111,9 @@ class FeedCore: Reducer {
 
                 return .none
 
+            case .post(id: _, action: .view(.loadPosts)):
+                return .send(.loadPosts)
+
             case .post:
                 return .none
             }

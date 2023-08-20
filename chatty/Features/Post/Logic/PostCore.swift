@@ -17,13 +17,17 @@ class PostCore: Reducer {
         var ownAccountId: Int?
         var postState: Loadable<Post>
         var deletePostState: Loadable<Message>
+        var reportPostState: Loadable<Report>
 
         var postDate: String = ""
+        var postTime: String = ""
 
-        @BindingState
-        var showAlert: Bool = false
-        @BindingState
-        var showDeleteAlert: Bool = false
+        @BindingState var showAlert: Bool = false
+        @BindingState var showDeleteAlert: Bool = false
+        @BindingState var showReportAlert: Bool = false
+        @BindingState var showReportView: Bool = false
+        @BindingState var scale: Double = 1.0
+        var reportReason: ReportReason = .none
 
         var postLiked: Bool = false
 
@@ -33,21 +37,30 @@ class PostCore: Reducer {
             otherAccountId != nil
         }
 
+        var account: AccountCore.State? = nil
+
         init(otherAccountId: Int?,
              ownAccountId: Int?,
              postState: Loadable<Post> = .none,
              deletePostState: Loadable<Message> = .none,
+             reportPostState: Loadable<Report> = .none,
              isFeedView: Bool = false) {
             self.otherAccountId = otherAccountId
             self.ownAccountId = ownAccountId
             self.postState = postState
             self.deletePostState = deletePostState
+            self.reportPostState = reportPostState
             self.isFeedView = isFeedView
 
             if case let .loaded(post) = postState {
                 self.postDate = post.timestamp.toStringDate
+                self.postTime = post.timestamp.toStringTime
                 self.postLiked = post.likedByYou
                 self.id = post.id
+                self.account = AccountCore.State(
+                    ownAccountId: ownAccountId,
+                    accountState: .loaded(post.account)
+                )
             }
         }
     }
@@ -55,7 +68,10 @@ class PostCore: Reducer {
     enum Action: Equatable {
         case postStateChanged(Loadable<Post>)
         case deletePostStateChanged(Loadable<Message>)
+        case reportPostStateChanged(Loadable<Report>)
         case view(View)
+
+        case account(AccountCore.Action)
 
         public enum View: BindableAction, Equatable {
             case fetchPost
@@ -65,11 +81,18 @@ class PostCore: Reducer {
             case showDeleteAlert
             case deletePost
 
+            case showReportView
+            case reportPost
+            case setReportReason(ReportReason)
+            case loadPosts
+
             case likePost
             case postLiked
 
             case removeLikeFromPost
             case likeRemoved
+
+            case setScale(Double)
 
             case showAlert
             case binding(BindingAction<State>)
@@ -78,6 +101,7 @@ class PostCore: Reducer {
 
     @Dependency(\.postService) var service
     @Dependency(\.mainScheduler) var mainScheduler
+    @Dependency(\.reportService) var reportService
 
     struct DebounceId: Hashable {}
 
@@ -120,6 +144,10 @@ class PostCore: Reducer {
 
                 if case let .loaded(post) = postState {
                     state.id = post.id
+                    state.account = AccountCore.State(
+                        ownAccountId: state.ownAccountId,
+                        accountState: .loaded(post.account)
+                    )
 
                     return .send(.view(.setPostDate(post.timestamp)))
                 }
@@ -128,6 +156,7 @@ class PostCore: Reducer {
 
             case let .view(.setPostDate(timestamp)):
                 state.postDate = timestamp.toStringDate
+                state.postTime = timestamp.toStringTime
 
                 return .none
 
@@ -160,6 +189,55 @@ class PostCore: Reducer {
 
                 return .none
 
+            case .view(.showReportView):
+                state.showReportView.toggle()
+
+                return .none
+
+            case .view(.reportPost):
+
+                guard case let .loaded(post) = state.postState else { return .none }
+                guard state.reportReason != .none else { return .none }
+
+                let report = Report(
+                    id: 0,
+                    postId: post.id,
+                    reason: state.reportReason.rawValue
+                )
+
+                return .run { send in
+                    await send(.reportPostStateChanged(.loading))
+
+                    let loadedReport = try await self.reportService.report(report: report)
+
+                    await send(.reportPostStateChanged(.loaded(loadedReport)))
+                } catch: { error, send in
+                    if let apiError = error as? APIError {
+                        await send(.reportPostStateChanged(.error(apiError)))
+                    } else {
+                        await send(.reportPostStateChanged(.error(.error(error))))
+                    }
+                }
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
+
+            case let .reportPostStateChanged(reportPostState):
+                state.reportPostState = reportPostState
+                state.reportReason = .none
+
+                if case .loaded = reportPostState {
+                    state.showReportAlert = true
+                }
+
+                return .none
+
+            case let .view(.setReportReason(reportReason)):
+                state.reportReason = reportReason
+
+                return .none
+
+            case .view(.loadPosts):
+                return .none
+
             case .view(.likePost):
 
                 if state.postLiked { return .none }
@@ -176,14 +254,15 @@ class PostCore: Reducer {
 
                 return .concatenate(
                     [
+                        .send(.view(.postLiked)),
                         .run { [userId = userId] send in
                             _ = try await self.service.saveLikeFromAccountToPost(postId: post.id, userId: userId)
 
                             await send(.view(.fetchPost))
-                        },
-                        .send(.view(.postLiked))
+                        }
                     ]
                 )
+                .debounce(id: DebounceId(), for: 0.4, scheduler: self.mainScheduler)
 
             case .view(.postLiked):
                 state.postLiked = true
@@ -218,6 +297,11 @@ class PostCore: Reducer {
 
                 return .none
 
+            case let .view(.setScale(value)):
+                state.scale = value
+
+                return .none
+
             case .view(.showAlert):
                 state.showAlert.toggle()
 
@@ -228,7 +312,13 @@ class PostCore: Reducer {
 
             case .view:
                 return .none
+
+            case .account:
+                return .none
             }
+        }
+        .ifLet(\.account, action: /Action.account) {
+            AccountCore()
         }
     }
 }
