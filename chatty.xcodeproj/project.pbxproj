@@ -116,6 +116,7 @@
 		71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */; };
 		71BD35232895482800C85C10 /* AccountAvailabilityCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */; };
 		71BD352528954A8200C85C10 /* AccountAvailabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */; };
+		71C5C2302A95338900DC853B /* OneSignalPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C5C22F2A95338900DC853B /* OneSignalPush.swift */; };
 		71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BC2878AA8C004A457D /* AppDelegate.swift */; };
 		71C977BF2878AA8C004A457D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C977BE2878AA8C004A457D /* SceneDelegate.swift */; };
 		71C977C62878AA8D004A457D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71C977C52878AA8D004A457D /* Assets.xcassets */; };
@@ -290,6 +291,7 @@
 		71B5975C2973452D00EAECC2 /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
 		71BD352428954A8200C85C10 /* AccountAvailabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityService.swift; sourceTree = "<group>"; };
+		71C5C22F2A95338900DC853B /* OneSignalPush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSignalPush.swift; sourceTree = "<group>"; };
 		71C977B92878AA8C004A457D /* chatty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71C977BC2878AA8C004A457D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71C977BE2878AA8C004A457D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -704,6 +706,7 @@
 				71B5975A2973163D00EAECC2 /* FormData.swift */,
 				710E06092997D9CC0076AD0C /* Deployment.swift */,
 				7123D7FA2A92A80700895FCD /* OneSignalClient.swift */,
+				71C5C22F2A95338900DC853B /* OneSignalPush.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1177,6 +1180,7 @@
 				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
 				7117B00D2A92665E005562F6 /* ReportService.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
+				71C5C2302A95338900DC853B /* OneSignalPush.swift in Sources */,
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,
 				713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */,

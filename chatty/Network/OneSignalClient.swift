@@ -17,10 +17,12 @@ class OneSignalClient {
 
     static let shared = OneSignalClient()
 
+    static let appId = "4500c6ba-85dc-4990-bdc3-7e95aea9dd2f"
+
     fileprivate init(
         parameters: [String : Any] = [
-            "app_id": "4500c6ba-85dc-4990-bdc3-7e95aea9dd2f",
-            "include_player_ids": ["a2908161-9c4c-4a2e-adf8-b61e71c24291"] // TODO: somehow get subscription ids.
+            "app_id": OneSignalClient.appId,
+            "include_aliases": "{\"external_id\":\"[29]\"}" // TODO: somehow get subscription ids.
         ] as [String : Any]
     ) {
         self.parameters = parameters
@@ -30,18 +32,23 @@ class OneSignalClient {
         let errors: [String]
     }
 
-    func sendPush(with message: String, title: String) {
-        parameters.updateValue(
-            ["en": title],
-            forKey: "headings"
-        )
-        parameters.updateValue(
-            ["en": message],
-            forKey: "contents"
+    func sendPush(with message: String, title: String, accountId: Int) {
+        let oneSignalPush = OneSignalPush(
+            appId: OneSignalClient.appId,
+            includeAliases: OneSignalPush.ExternalId(
+                externalId: ["\(accountId)"]
+            ),
+            targetChannel: "push",
+            headings: [
+                "en": title
+            ],
+            contents: [
+                "en": message
+            ]
         )
         
         do {
-            let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            let postData = try JSONEncoder().encode(oneSignalPush)
 
             let request = NSMutableURLRequest(
                 url: NSURL(string: "https://onesignal.com/api/v1/notifications")! as URL,
