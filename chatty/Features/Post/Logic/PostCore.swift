@@ -84,7 +84,6 @@ class PostCore: Reducer {
             case showReportView
             case reportPost
             case setReportReason(ReportReason)
-            case loadPosts
 
             case likePost
             case postLiked
@@ -96,6 +95,15 @@ class PostCore: Reducer {
 
             case showAlert
             case binding(BindingAction<State>)
+
+            case didLastPostAppear(PostCore.State?)
+
+            case delegate(Delegate)
+
+            enum Delegate: Equatable {
+                case loadPosts
+                case didLastPostAppeared
+            }
         }
     }
 
@@ -235,9 +243,6 @@ class PostCore: Reducer {
 
                 return .none
 
-            case .view(.loadPosts):
-                return .none
-
             case .view(.likePost):
 
                 if state.postLiked { return .none }
@@ -307,7 +312,14 @@ class PostCore: Reducer {
 
                 return .none
 
-            case .view(.binding):
+            case let .view(.didLastPostAppear(lastPostState)):
+                guard let lastPostState = lastPostState,
+                      state.isFeedView else { return .none }
+
+                if state == lastPostState {
+                    return .send(.view(.delegate(.didLastPostAppeared)))
+                }
+
                 return .none
 
             case .view:

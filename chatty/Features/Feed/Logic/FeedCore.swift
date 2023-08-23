@@ -17,7 +17,6 @@ class FeedCore: Reducer {
         var limit: Int
         var postsState: Loadable<[Post]>
         var posts: [Post] = [.mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock]
-        var postsComplete: Bool = false
 
         var postsStates = IdentifiedArrayOf<PostCore.State>()
 
@@ -37,8 +36,7 @@ class FeedCore: Reducer {
     }
 
     enum Action: Equatable {
-        case onScroll
-        case increaseLimit
+        case onAppear
         case loadPosts
         case postsStateChanged(Loadable<[Post]>)
         case post(id: PostCore.State.ID, action: PostCore.Action)
@@ -52,20 +50,12 @@ class FeedCore: Reducer {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onScroll:
-                return .concatenate(
-                    [
-                        .send(.increaseLimit),
-                        .send(.loadPosts)
-                    ]
-                )
-                
-            case .increaseLimit:
-                if !state.postsComplete {
+            case .onAppear:
+                if state.limit == 0 {
                     state.limit += 2
                 }
-
-                return .none
+                
+                return .send(.loadPosts)
 
             case .loadPosts:
 
@@ -95,7 +85,6 @@ class FeedCore: Reducer {
                 state.postsState = postsState
 
                 if case let .loaded(posts) = postsState {
-                    state.postsComplete = state.posts.count == posts.count
                     state.posts = posts
                     state.postsStates = IdentifiedArray(
                         uniqueElements: posts.compactMap {
@@ -111,7 +100,12 @@ class FeedCore: Reducer {
 
                 return .none
 
-            case .post(id: _, action: .view(.loadPosts)):
+            case .post(id: _, action: .view(.delegate(.didLastPostAppeared))):
+                state.limit += 2
+
+                return .send(.loadPosts)
+
+            case .post(id: _, action: .view(.delegate(.loadPosts))):
                 return .send(.loadPosts)
 
             case .post:

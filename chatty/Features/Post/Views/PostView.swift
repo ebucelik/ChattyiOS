@@ -55,10 +55,27 @@ struct PostView: View {
 
     typealias PostViewStore = ViewStore<PostView.ViewState, PostCore.Action.View>
     let store: StoreOf<PostCore>
+    let lastPostState: PostCore.State?
     let size: CGSize
+
+    init(store: StoreOf<PostCore>, lastPostState: PostCore.State? = nil, size: CGSize) {
+        self.store = store
+        self.lastPostState = lastPostState
+        self.size = size
+    }
 
     var body: some View {
         WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
+            postBody(viewStore)
+                .task {
+                    viewStore.send(.didLastPostAppear(lastPostState))
+                }
+        }
+    }
+
+    @ViewBuilder
+    private func postBody(_ viewStore: PostViewStore) -> some View {
+        ZStack {
             switch viewStore.postState {
             case let .loaded(post):
                 VStack(spacing: 16) {
@@ -190,7 +207,7 @@ struct PostView: View {
                     isPresented: viewStore.$showReportAlert,
                     actions: {
                         Button("Ok") {
-                            viewStore.send(.loadPosts)
+                            viewStore.send(.delegate(.loadPosts))
                         }
                     },
                     message: {

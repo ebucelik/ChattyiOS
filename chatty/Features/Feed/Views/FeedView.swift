@@ -30,14 +30,14 @@ struct FeedView: View {
                             viewStore.send(.loadPosts)
                         }
                         .onAppear {
-                            viewStore.send(.loadPosts)
+                            viewStore.send(.onAppear)
                         }
                     }
                 }
                 .onChange(of: viewStore.account) { account in
                     guard account != nil else { return }
 
-                    viewStore.send(.onScroll)
+                    viewStore.send(.onAppear)
                 }
                 .navigationTitle("Welcome \(viewStore.username)")
             }
@@ -63,6 +63,7 @@ struct FeedView: View {
             ) { postStore in
                 PostView(
                     store: postStore,
+                    lastPostState: viewStore.postsStates.last,
                     size: reader.size
                 )
                 .redacted(reason: viewStore.posts.first == .mock ? .placeholder : .privacy)
@@ -76,7 +77,8 @@ struct FeedView: View {
                 )
             }
 
-            if viewStore.postsComplete {
+            switch viewStore.postsState {
+            case .loaded, .error, .none:
                 Text("""
                             You have all shared posts from your friends.
                             Come back later again.
@@ -86,17 +88,12 @@ struct FeedView: View {
                 .frame(maxWidth: .infinity)
                 .listSectionSeparator(.hidden)
                 .fixedSize(horizontal: false, vertical: true)
-                .onAppear {
-                    viewStore.send(.onScroll)
-                }
                 .padding(.vertical, 25)
-            } else {
+
+            case .loading, .refreshing:
                 LoadingView()
                     .frame(maxWidth: .infinity)
                     .listSectionSeparator(.hidden)
-                    .onAppear {
-                        viewStore.send(.onScroll)
-                    }
                     .padding(.vertical, 25)
             }
         }
