@@ -134,6 +134,8 @@
 		71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E729E32B1600E78240 /* BannerViewModifier.swift */; };
 		71D322EB29E32B8D00E78240 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322EA29E32B8D00E78240 /* Banner.swift */; };
 		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
+		71DE7CEC2A96760F00DE8672 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 71DE7CEB2A96760F00DE8672 /* CachedAsyncImage */; };
+		71DE7CEE2A9678C700DE8672 /* URLCache+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DE7CED2A9678C700DE8672 /* URLCache+Extensions.swift */; };
 		71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C69297F4560001C0908 /* SearchCall.swift */; };
 		71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */; };
 		71EE5C6E297F45D6001C0908 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C6D297F45D6001C0908 /* SearchService.swift */; };
@@ -312,6 +314,7 @@
 		71D322E529E32A7600E78240 /* UniversalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalHelper.swift; sourceTree = "<group>"; };
 		71D322E729E32B1600E78240 /* BannerViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModifier.swift; sourceTree = "<group>"; };
 		71D322EA29E32B8D00E78240 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		71DE7CED2A9678C700DE8672 /* URLCache+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLCache+Extensions.swift"; sourceTree = "<group>"; };
 		71EE5C69297F4560001C0908 /* SearchCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCall.swift; sourceTree = "<group>"; };
 		71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProtocol.swift; sourceTree = "<group>"; };
 		71EE5C6D297F45D6001C0908 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
@@ -340,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7111696C296CB89800AAF736 /* Alamofire in Frameworks */,
+				71DE7CEC2A96760F00DE8672 /* CachedAsyncImage in Frameworks */,
 				7123D7E22A92A02D00895FCD /* OneSignalExtension in Frameworks */,
 				7123D7E42A92A02D00895FCD /* OneSignalFramework in Frameworks */,
 				71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */,
@@ -608,6 +612,7 @@
 				710E060F29981EEA0076AD0C /* Double+Extensions.swift */,
 				71619CF22A0051B200CBFF7D /* Notification+Extensions.swift */,
 				7115E80F2A90BEAA00B4D8D6 /* KeyboardReadable.swift */,
+				71DE7CED2A9678C700DE8672 /* URLCache+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1004,6 +1009,7 @@
 				7123D7E32A92A02D00895FCD /* OneSignalFramework */,
 				7123D7E52A92A02D00895FCD /* OneSignalInAppMessages */,
 				7123D7E72A92A02D00895FCD /* OneSignalLocation */,
+				71DE7CEB2A96760F00DE8672 /* CachedAsyncImage */,
 			);
 			productName = chatty;
 			productReference = 71C977B92878AA8C004A457D /* chatty.app */;
@@ -1087,6 +1093,7 @@
 				71BC0D2829DCD43D00F585C9 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				7192065129E4625F00B52109 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 				7123D7E02A92A02D00895FCD /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+				71DE7CEA2A96760F00DE8672 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 71C977BA2878AA8C004A457D /* Products */;
 			projectDirPath = "";
@@ -1258,6 +1265,7 @@
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
 				713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */,
 				71526D4C298FF1F700588C7D /* PostCall.swift in Sources */,
+				71DE7CEE2A9678C700DE8672 /* URLCache+Extensions.swift in Sources */,
 				71F216DB298EFAEB0085DB80 /* UploadPostCall.swift in Sources */,
 				713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */,
 				71F216D3298E9B350085DB80 /* UploadPostView.swift in Sources */,
@@ -1737,6 +1745,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		71DE7CEA2A96760F00DE8672 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1784,6 +1800,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71D7D6F1295EF94D00484831 /* XCRemoteSwiftPackageReference "SwiftHelper" */;
 			productName = SwiftHelper;
+		};
+		71DE7CEB2A96760F00DE8672 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 71DE7CEA2A96760F00DE8672 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

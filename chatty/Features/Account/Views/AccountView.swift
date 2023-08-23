@@ -8,6 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 import SwiftHelper
+import CachedAsyncImage
 
 extension BindingViewStore<AccountCore.State> {
     var view: AccountView.ViewState {
@@ -305,7 +306,7 @@ struct AccountView: View {
                                 }
                             }
                         } label: {
-                            AsyncImage(url: URL(string: post.imageLink)) { image in
+                            CachedAsyncImage(url: URL(string: post.imageLink), urlCache: .imageCache) { image in
                                 image
                                     .resizable()
                                     .frame(width: (reader.size.width / 2) - 20, height: (reader.size.width / 2) - 20)

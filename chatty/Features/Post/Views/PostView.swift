@@ -8,6 +8,7 @@
 import SwiftHelper
 import SwiftUI
 import ComposableArchitecture
+import CachedAsyncImage
 
 extension BindingViewStore<PostCore.State> {
     var view: PostView.ViewState {
@@ -83,7 +84,7 @@ struct PostView: View {
                     }
                     .padding(.horizontal, 24)
 
-                    AsyncImage(url: URL(string: post.imageLink)) { image in
+                    CachedAsyncImage(url: URL(string: post.imageLink), urlCache: .imageCache) { image in
                         image
                             .resizable()
                             .frame(width: size.width, height: size.width)
@@ -242,7 +243,7 @@ struct PostView: View {
 
     @ViewBuilder
     private func headerPostBody(_ post: Post) -> some View {
-        AsyncImage(url: URL(string: post.account.picture)) { image in
+        CachedAsyncImage(url: URL(string: post.account.picture), urlCache: .imageCache) { image in
             image
                 .resizable()
                 .frame(width: 35, height: 35)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import CachedAsyncImage
 
 struct AvailableChatAccountsView: View {
 
@@ -53,7 +54,7 @@ struct AvailableChatAccountsView: View {
             List {
                 ForEach(accounts, id: \.id) { account in
                     HStack(spacing: 20) {
-                        AsyncImage(url: URL(string: account.picture)) { image in
+                        CachedAsyncImage(url: URL(string: account.picture), urlCache: .imageCache) { image in
                             image
                                 .resizable()
                                 .frame(width: 50, height: 50)

@@ -9,6 +9,7 @@ import Combine
 import SwiftUI
 import SwiftHelper
 import ComposableArchitecture
+import CachedAsyncImage
 
 extension BindingViewStore<ChatCore.State> {
     var view: ChatView.ViewState {
@@ -84,7 +85,10 @@ struct ChatView: View, KeyboardReadable {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    AsyncImage(url: URL(string: viewStore.receiverAccount.picture)) { image in
+                    CachedAsyncImage(
+                        url: URL(string: viewStore.receiverAccount.picture),
+                        urlCache: .imageCache
+                    ) { image in
                         image
                             .resizable()
                             .frame(width: 30, height: 30)

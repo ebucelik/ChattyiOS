@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftHelper
+import CachedAsyncImage
 
 public struct ChattyDivider: View {
     public var body: some View {
@@ -92,7 +93,7 @@ public struct ChattyImage: View {
                 .frame(width: frame.width, height: frame.height)
                 .foregroundColor(AppColor.gray)
         } else {
-            AsyncImage(url: URL(string: picture)) { profilePicture in
+            CachedAsyncImage(url: URL(string: picture), urlCache: .imageCache) { profilePicture in
                 profilePicture
                     .resizable()
                     .aspectRatio(contentMode: .fill)

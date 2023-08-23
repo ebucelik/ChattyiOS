@@ -9,6 +9,7 @@ import SwiftHelper
 import UIKit
 import SwiftUI
 import ComposableArchitecture
+import CachedAsyncImage
 
 extension BindingViewStore<ChatSessionCore.State> {
     var view: ChatSessionView.ViewState {
@@ -108,7 +109,10 @@ struct ChatSessionView: View {
                     } label: {
                         WithViewStore(chatStore, observe: \.chatSession) { chatSession in
                             HStack(spacing: 20) {
-                                AsyncImage(url: URL(string: chatSession.receiverAccount.picture)) { image in
+                                CachedAsyncImage(
+                                    url: URL(string: chatSession.receiverAccount.picture),
+                                    urlCache: .imageCache
+                                ) { image in
                                     image
                                         .resizable()
                                         .frame(width: 80, height: 80)
