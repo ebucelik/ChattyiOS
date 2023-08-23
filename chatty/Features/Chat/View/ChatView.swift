@@ -50,21 +50,36 @@ struct ChatView: View, KeyboardReadable {
         WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             ZStack {
                 VStack {
-                    ScrollView {
-                        ScrollViewReader { reader in
-                            VStack {
-                                switch viewStore.chatsState {
-                                case let .loaded(chats):
+                    switch viewStore.chatsState {
+                    case let .loaded(chats):
+                        if chats.isEmpty {
+                            InfoView(
+                                text: """
+                                    No messages available.
+                                    Start the chat now.
+                                    """
+                            )
+                        } else {
+                            ScrollView {
+                                ScrollViewReader { reader in
                                     chatBody(
                                         chats,
                                         viewStore,
                                         reader
                                     )
-
-                                case .none, .error, .loading, .refreshing:
-                                    EmptyView()
                                 }
                             }
+                        }
+
+                    case .none, .loading, .refreshing:
+                        LoadingView()
+
+                    case .error:
+                        ErrorView(
+                            text: "An error appeared while trying to fetch the chat."
+                        ) {
+                            viewStore.send(.cancelListeners)
+                            viewStore.send(.onViewAppear)
                         }
                     }
 

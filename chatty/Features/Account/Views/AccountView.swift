@@ -73,6 +73,7 @@ struct AccountView: View {
                                 viewStore.send(.fetchAccount)
                             }
                         }
+                        .navigationTitle(account.username)
 
                 case let .error(error):
                     ErrorView(
@@ -103,11 +104,6 @@ struct AccountView: View {
                         frame: CGSize(width: 125, height: 125)
                     )
 
-                    Text("@\(account.username)")
-                        .font(AppFont.title3.bold())
-
-                    ChattyDivider()
-
                     HStack(spacing: 16) {
                         NavigationLink {
                             if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
@@ -130,7 +126,7 @@ struct AccountView: View {
                                     .font(AppFont.caption)
 
                                 Text(String(account.subscriberCount))
-                                    .font(AppFont.caption)
+                                    .font(AppFont.headline)
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.leading)
@@ -161,7 +157,7 @@ struct AccountView: View {
                                     .font(AppFont.caption)
 
                                 Text(String(account.subscribedCount))
-                                    .font(AppFont.caption)
+                                    .font(AppFont.headline)
                             }
                             .frame(maxWidth: .infinity)
                             .foregroundColor(AppColor.black)
@@ -175,13 +171,11 @@ struct AccountView: View {
                                 .font(AppFont.caption)
 
                             Text(String(account.postCount))
-                                .font(AppFont.caption)
+                                .font(AppFont.headline)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.trailing)
                     }
-
-                    ChattyDivider()
 
                     subscriptionBody(viewStore)
 
@@ -271,8 +265,6 @@ struct AccountView: View {
                     .opacity(0.5)
                 }
             }
-
-            ChattyDivider()
         }
     }
 

@@ -45,6 +45,7 @@ class ChatCore: Reducer {
             case onViewAppear
             case onSend
             case onReceive(Chat)
+            case cancelListeners
             case binding(BindingAction<State>)
         }
     }
@@ -114,6 +115,14 @@ class ChatCore: Reducer {
                         .loaded(chats)
                     )
                 )
+
+            case .view(.cancelListeners):
+                SocketIOClient.shared.cancelListeners(
+                    fromUserId: state.chatSession.fromUserId,
+                    toUserId: state.chatSession.toUserId
+                )
+                
+                return .none
 
             case let .chatsStateChanged(chatsState):
                 state.chatsState = chatsState

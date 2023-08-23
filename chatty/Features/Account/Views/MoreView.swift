@@ -38,7 +38,7 @@ struct MoreView: View {
                         .resizable()
                         .frame(width: 20, height: 20)
 
-                    Text("Signout")
+                    Text("Sign out")
 
                     Spacer()
                 }
