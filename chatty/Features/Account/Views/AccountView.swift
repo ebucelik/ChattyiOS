@@ -24,7 +24,8 @@ extension BindingViewStore<AccountCore.State> {
             isOtherAccount: self.isOtherAccount,
             accountId: self.accountId,
             newUpdatesAvailable: self.newUpdatesAvailable,
-            showMore: self.$showMore
+            showMore: self.$showMore,
+            showDeleteAlert: self.$showDeleteAlert
         )
     }
 }
@@ -44,6 +45,7 @@ struct AccountView: View {
         var accountId: Int?
         var newUpdatesAvailable: Bool
         @BindingViewState var showMore: Bool
+        @BindingViewState var showDeleteAlert: Bool
     }
 
     typealias AccountViewStore = ViewStore<AccountView.ViewState, AccountCore.Action.View>
@@ -88,7 +90,10 @@ struct AccountView: View {
             .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
             .sheet(isPresented: viewStore.$showMore) {
                 MoreView(
-                    onLogoutTap: { viewStore.send(.logout) }
+                    onLogoutTap: { viewStore.send(.logout) },
+                    onDeleteAccountTap: { viewStore.send(.didDeleteAccountTapped) },
+                    deleteAccount: { viewStore.send(.didDeleteAccount) },
+                    showDeleteAlert: viewStore.$showDeleteAlert
                 )
             }
         }

@@ -12,9 +12,18 @@ struct MoreView: View {
     @Environment(\.dismiss) var dismiss
 
     let onLogoutTap: () -> Void
+    let onDeleteAccountTap: () -> Void
+    let deleteAccount: () -> Void
+    let showDeleteAlert: Binding<Bool>
 
-    init(onLogoutTap: @escaping () -> Void) {
+    init(onLogoutTap: @escaping () -> Void,
+         onDeleteAccountTap: @escaping () -> Void,
+         deleteAccount: @escaping () -> Void,
+         showDeleteAlert: Binding<Bool>) {
         self.onLogoutTap = onLogoutTap
+        self.onDeleteAccountTap = onDeleteAccountTap
+        self.deleteAccount = deleteAccount
+        self.showDeleteAlert = showDeleteAlert
     }
 
     var body: some View {
@@ -56,10 +65,38 @@ struct MoreView: View {
                     .bold()
                     .foregroundColor(AppColor.error)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .onTapGesture {
+                        onDeleteAccountTap()
+                    }
             }
             .padding(24)
             .navigationTitle(Text("More"))
             .navigationBarTitleDisplayMode(.inline)
+            .alert(
+                "Account deletion",
+                isPresented: showDeleteAlert,
+                actions: {
+                    Button(
+                        role: .cancel,
+                        action: {}
+                    ) {
+                        Text("Cancel")
+                    }
+
+                    Button(
+                        role: .destructive,
+                        action: {
+                            dismiss()
+                            deleteAccount()
+                        }
+                    ) {
+                        Text("Delete permanently")
+                    }
+                },
+                message: {
+                    Text("Do you really want to delete your account permanently?")
+                }
+            )
         }
     }
 }

@@ -56,6 +56,7 @@
 		713887BB2975F86B00BF01DA /* DeclineSubscriptionCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */; };
 		713887BD2975FA5200BF01DA /* SubscriberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BC2975FA5200BF01DA /* SubscriberService.swift */; };
 		713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */; };
+		713F6C1D2A97D57700F8584E /* DeleteAccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */; };
 		713F7BEE2979A9D4003B29B3 /* SubscriptionCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */; };
 		713F7BF12979CD31003B29B3 /* SubscriptionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7BF02979CD31003B29B3 /* SubscriptionInfo.swift */; };
 		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
@@ -235,6 +236,7 @@
 		713887BA2975F86B00BF01DA /* DeclineSubscriptionCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclineSubscriptionCall.swift; sourceTree = "<group>"; };
 		713887BC2975FA5200BF01DA /* SubscriberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberService.swift; sourceTree = "<group>"; };
 		713887BE2975FA5F00BF01DA /* SubscriberServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberServiceProtocol.swift; sourceTree = "<group>"; };
+		713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountCall.swift; sourceTree = "<group>"; };
 		713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCore.swift; sourceTree = "<group>"; };
 		713F7BF02979CD31003B29B3 /* SubscriptionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionInfo.swift; sourceTree = "<group>"; };
 		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
@@ -455,6 +457,7 @@
 				7137C83A29741A8E0077D91C /* AccountCall.swift */,
 				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
 				7137C83E29741B680077D91C /* AccountService.swift */,
+				713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1263,6 +1266,7 @@
 				716DB8B929585534003BF4A9 /* EntryView.swift in Sources */,
 				714D177A288423FB0091BD10 /* RegisterCall.swift in Sources */,
 				714FCC92296A0D0200AA3F48 /* ImageService.swift in Sources */,
+				713F6C1D2A97D57700F8584E /* DeleteAccountCall.swift in Sources */,
 				713887B22975F4DC00BF01DA /* Subscriber.swift in Sources */,
 				71526D4C298FF1F700588C7D /* PostCall.swift in Sources */,
 				71DE7CEE2A9678C700DE8672 /* URLCache+Extensions.swift in Sources */,

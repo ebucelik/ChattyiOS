@@ -14,6 +14,12 @@ class AccountService: BackendClient, AccountServiceProtocol {
 
         return try await sendRequest(call: call)
     }
+
+    func deleteAccount(account: Account) async throws -> Message {
+        let deleteAccountCall = DeleteAccountCall(account: account)
+
+        return try await sendRequest(call: deleteAccountCall)
+    }
 }
 
 extension AccountService: DependencyKey {

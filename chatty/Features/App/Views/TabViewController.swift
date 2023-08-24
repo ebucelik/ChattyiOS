@@ -125,7 +125,11 @@ class TabViewController: UITabBarController {
             case .error:
                 OneSignal.logout()
                 loadingView.view.isHidden = true
-                errorView?.view.isHidden = false
+                errorView?.view.isHidden = true
+                
+                pushViewController(with: entryView)
+
+                viewStore.send(.setShowFeed(false))
 
             }
         }.store(in: &cancellables)

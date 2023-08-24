@@ -9,4 +9,6 @@ import Foundation
 
 protocol AccountServiceProtocol {
     func getAccountBy(id: Int) async throws -> Account
+
+    func deleteAccount(account: Account) async throws -> Message
 }

@@ -41,6 +41,9 @@ class AccountCore: Reducer {
         @BindingState
         var showMore: Bool = false
 
+        @BindingState
+        var showDeleteAlert: Bool = false
+
         init(ownAccountId: Int? = nil,
              accountState: Loadable<Account> = .none,
              subscriberState: Loadable<[Account]> = .none,
@@ -107,6 +110,9 @@ class AccountCore: Reducer {
 
             case logout
             case loggedOut
+
+            case didDeleteAccount
+            case didDeleteAccountTapped
 
             case binding(BindingAction<State>)
         }
@@ -347,6 +353,20 @@ class AccountCore: Reducer {
 
             case .view(.loggedOut):
                 OneSignal.logout()
+
+                return .none
+
+            case .view(.didDeleteAccount):
+                guard case let .loaded(account) = state.accountState else { return .none }
+
+                return .run { send in
+                    _ = try await self.service.deleteAccount(account: account)
+
+                    await send(.view(.loggedOut))
+                }
+
+            case .view(.didDeleteAccountTapped):
+                state.showDeleteAlert = true
 
                 return .none
 
