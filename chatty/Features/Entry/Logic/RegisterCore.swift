@@ -168,7 +168,8 @@ class RegisterCore: Reducer {
                                 username: register.username,
                                 email: register.email,
                                 password: register.password,
-                                picture: pictureLink
+                                picture: pictureLink,
+                                biography: register.biography
                             )
                         )
 

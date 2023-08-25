@@ -281,33 +281,7 @@ struct RegisterView: View {
     @ViewBuilder
     func provideProfilePicture(_ viewStore: RegisterViewStore) -> some View {
         VStack(spacing: 16) {
-            HStack {
-                Button(action: { viewStore.send(.showEmailAndPasswordView) }) {
-                    Text("Back")
-                        .bold()
-                        .foregroundColor(AppColor.gray)
-                }
-                .disabled(.loading == viewStore.registerState)
-
-                Spacer()
-
-                Button(action: { viewStore.send(.register) }) {
-                    Text("Skip")
-                        .bold()
-                        .foregroundColor(AppColor.error)
-                }
-                .disabled(.loading == viewStore.registerState)
-                .opacity(viewStore.picture != nil ? 0 : 1)
-            }
-
-            Spacer()
-
-            Text("Welcome \(viewStore.register.username)")
-                .font(AppFont.title2)
-                .bold()
-                .frame(maxWidth: .infinity, alignment: .center)
-
-            Spacer()
+            provideProfilePictureHeader(viewStore)
 
             ViewControllerRepresentable(
                 viewController: imagePickerController
@@ -320,6 +294,23 @@ struct RegisterView: View {
                 }
             }
             .disabled(.loading == viewStore.registerState)
+
+            Spacer()
+                .frame(height: 50)
+
+            HStack(spacing: 16) {
+                HStack(spacing: 16) {
+                    TextField("Your bio", text: viewStore.$register.biography)
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                        .multilineTextAlignment(.center)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(AppColor.gray, lineWidth: 2)
+                )
+            }
 
             Spacer()
                 .frame(height: 50)
@@ -342,5 +333,36 @@ struct RegisterView: View {
             .opacity(viewStore.picture != nil ? 1 : 0)
         }
         .padding()
+    }
+
+    @ViewBuilder
+    private func provideProfilePictureHeader(_ viewStore: RegisterViewStore) -> some View {
+        HStack {
+            Button(action: { viewStore.send(.showEmailAndPasswordView) }) {
+                Text("Back")
+                    .bold()
+                    .foregroundColor(AppColor.gray)
+            }
+            .disabled(.loading == viewStore.registerState)
+
+            Spacer()
+
+            Button(action: { viewStore.send(.register) }) {
+                Text("Skip")
+                    .bold()
+                    .foregroundColor(AppColor.error)
+            }
+            .disabled(.loading == viewStore.registerState)
+            .opacity(viewStore.picture != nil ? 0 : 1)
+        }
+
+        Spacer()
+
+        Text("Welcome \(viewStore.register.username)")
+            .font(AppFont.title2)
+            .bold()
+            .frame(maxWidth: .infinity, alignment: .center)
+
+        Spacer()
     }
 }

@@ -15,8 +15,16 @@ public struct Account: Equatable, Codable, Hashable {
     let subscriberCount: Int
     let subscribedCount: Int
     let postCount: Int
+    let biography: String
 
-    init(id: Int, username: String, email: String, picture: String, subscriberCount: Int, subscribedCount: Int, postCount: Int) {
+    init(id: Int,
+         username: String,
+         email: String,
+         picture: String,
+         subscriberCount: Int,
+         subscribedCount: Int,
+         postCount: Int,
+         biography: String) {
         self.id = id
         self.username = username
         self.email = email
@@ -24,6 +32,7 @@ public struct Account: Equatable, Codable, Hashable {
         self.subscriberCount = subscriberCount
         self.subscribedCount = subscribedCount
         self.postCount = postCount
+        self.biography = biography
     }
 }
 
@@ -66,7 +75,8 @@ extension Account {
             picture: "",
             subscriberCount: 0,
             subscribedCount: 0,
-            postCount: 0
+            postCount: 0,
+            biography: ""
         )
     }
 }
