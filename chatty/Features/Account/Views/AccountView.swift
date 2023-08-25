@@ -109,6 +109,13 @@ struct AccountView: View {
                         frame: CGSize(width: 125, height: 125)
                     )
 
+                    VStack(spacing: 10) {
+                        Text(account.biography)
+                            .font(AppFont.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(AppColor.black)
+
                     HStack(spacing: 16) {
                         NavigationLink {
                             if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
