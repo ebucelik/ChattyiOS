@@ -214,7 +214,9 @@ class AccountCore: Reducer {
             case let .accountStateChanged(accountState):
                 state.accountState = accountState
 
-                if case .loaded = accountState {
+                if case let .loaded(account) = accountState {
+                    state.profilePictureCoreState = ProfilePictureCore.State(account: account)
+
                     return .merge(
                         [
                             .send(.fetchSubscriberInfo),

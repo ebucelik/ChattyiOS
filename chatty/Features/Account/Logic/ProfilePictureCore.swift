@@ -27,6 +27,8 @@ struct ProfilePictureCore: Reducer {
 
         case didImagePicked(UIImage)
         case didUpdatedImage
+
+        case reset
     }
 
     @Dependency(\.accountService) var service
@@ -98,6 +100,11 @@ struct ProfilePictureCore: Reducer {
             return .none
 
         case .didUpdatedImage:
+            return .none
+
+        case .reset:
+            state.pickedImage = nil
+            
             return .none
         }
     }
