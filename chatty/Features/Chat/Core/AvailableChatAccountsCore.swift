@@ -74,8 +74,7 @@ class AvailableChatAccountsCore: Reducer {
                     id: 0,
                     fromUserId: accountId,
                     toUserId: selectedAccount.id,
-                    receiverAccount: .empty,
-                    available: false
+                    receiverAccount: .empty
                 )
             )
 

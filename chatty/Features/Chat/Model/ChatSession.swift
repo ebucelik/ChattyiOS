@@ -12,7 +12,6 @@ struct ChatSession: Equatable, Identifiable, Codable, Hashable {
     let fromUserId: Int
     let toUserId: Int
     let receiverAccount: Account
-    let available: Bool
 }
 
 extension ChatSession {
@@ -21,8 +20,7 @@ extension ChatSession {
             id: 0,
             fromUserId: 0,
             toUserId: 0,
-            receiverAccount: .empty,
-            available: false
+            receiverAccount: .empty
         )
     }
 }

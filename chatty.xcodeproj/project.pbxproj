@@ -1514,6 +1514,7 @@
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Chatty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1550,6 +1551,7 @@
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Chatty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

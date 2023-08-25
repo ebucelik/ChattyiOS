@@ -22,17 +22,9 @@ class ChatSessionCore: Reducer {
         var chatStates = IdentifiedArrayOf<ChatCore.State>()
 
         var isChatSessionNotAvailable: Bool {
-            guard let account = account,
-                  case let .loaded(chatSessions) = chatSessionState
-            else { return true }
-
-            if chatSessions.first(where: { $0.fromUserId == account.id }) != nil {
-                return false
-            }
-
-            if chatSessions.first(where: { $0.available }) != nil {
-                return false
-            }
+            guard case let .loaded(chatSessions) = chatSessionState,
+                  chatSessions.isEmpty
+            else { return false }
 
             return true
         }
