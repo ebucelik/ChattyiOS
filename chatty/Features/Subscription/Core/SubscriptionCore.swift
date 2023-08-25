@@ -36,7 +36,7 @@ struct SubscriptionCore: Reducer {
         }
     }
 
-    enum Action {}
+    enum Action: Equatable {}
 
     func reduce(into state: inout State, action: Action) -> Effect<Action> {}
 }

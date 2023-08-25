@@ -118,61 +118,49 @@ struct AccountView: View {
 
                     HStack(spacing: 16) {
                         NavigationLink {
-                            if case let .loaded(subscriberAccounts) = viewStore.subscriberState {
-                                SubscriptionView(
-                                    store: Store(
-                                        initialState: SubscriptionCore.State(
-                                            ownAccountId: account.id,
-                                            accounts: subscriberAccounts,
-                                            subscriptionMode: .subscriber
-                                        ),
-                                        reducer: {
-                                            SubscriptionCore()
-                                        }
-                                    )
+                            SubscriptionView(
+                                store: store.scope(
+                                    state: \.subscriberCoreState,
+                                    action: AccountCore.Action.subscription
                                 )
-                            }
+                            )
                         } label: {
-                            VStack(spacing: 10) {
-                                Text("Subscriber")
-                                    .font(AppFont.caption)
+                            Group {
+                                VStack(spacing: 10) {
+                                    Text("Subscriber")
+                                        .font(AppFont.caption)
 
-                                Text(String(account.subscriberCount))
-                                    .font(AppFont.headline)
+                                    Text(String(account.subscriberCount))
+                                        .font(AppFont.headline)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.leading)
+                                .foregroundColor(AppColor.black)
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.leading)
-                            .foregroundColor(AppColor.black)
                         }
                         .disabled(viewStore.isOtherAccount)
 
                         ChattyDivider()
 
                         NavigationLink {
-                            if case let .loaded(subscribedAccounts) = viewStore.subscribedState {
-                                SubscriptionView(
-                                    store: Store(
-                                        initialState: SubscriptionCore.State(
-                                            ownAccountId: account.id,
-                                            accounts: subscribedAccounts,
-                                            subscriptionMode: .subscribed
-                                        ),
-                                        reducer: {
-                                            SubscriptionCore()
-                                        }
-                                    )
+                            SubscriptionView(
+                                store: store.scope(
+                                    state: \.subscribedCoreState,
+                                    action: AccountCore.Action.subscription
                                 )
-                            }
+                            )
                         } label: {
-                            VStack(spacing: 10) {
-                                Text("Subscribed")
-                                    .font(AppFont.caption)
+                            Group {
+                                VStack(spacing: 10) {
+                                    Text("Subscribed")
+                                        .font(AppFont.caption)
 
-                                Text(String(account.subscribedCount))
-                                    .font(AppFont.headline)
+                                    Text(String(account.subscribedCount))
+                                        .font(AppFont.headline)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .foregroundColor(AppColor.black)
                             }
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(AppColor.black)
                         }
                         .disabled(viewStore.isOtherAccount)
 

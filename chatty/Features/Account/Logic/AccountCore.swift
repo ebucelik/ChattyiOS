@@ -24,6 +24,9 @@ class AccountCore: Reducer {
 
         var subscriptionRequestCoreState: SubscriptionRequestCore.State?
 
+        var subscriberCoreState: SubscriptionCore.State
+        var subscribedCoreState: SubscriptionCore.State
+
         var isOtherAccount: Bool {
             ownAccountId != nil
         }
@@ -61,6 +64,17 @@ class AccountCore: Reducer {
             guard case let .loaded(account) = accountState else {
                 self.id = ownAccountId ?? 0
                 self.ownAccountId = nil
+                self.subscriberCoreState = SubscriptionCore.State(
+                    ownAccountId: ownAccountId ?? 0,
+                    accounts: [],
+                    subscriptionMode: .subscriber
+                )
+                self.subscribedCoreState = SubscriptionCore.State(
+                    ownAccountId: ownAccountId ?? 0,
+                    accounts: [],
+                    subscriptionMode: .subscribed
+                )
+
                 return
             }
 
@@ -73,6 +87,17 @@ class AccountCore: Reducer {
             } else {
                 self.id = ownAccountId ?? 0
             }
+
+            self.subscriberCoreState = SubscriptionCore.State(
+                ownAccountId: self.id,
+                accounts: [],
+                subscriptionMode: .subscriber
+            )
+            self.subscribedCoreState = SubscriptionCore.State(
+                ownAccountId: self.id,
+                accounts: [],
+                subscriptionMode: .subscribed
+            )
         }
     }
 
@@ -94,6 +119,8 @@ class AccountCore: Reducer {
         case postsStateChanged(Loadable<[Post]>)
 
         case subscriptionRequest(SubscriptionRequestCore.Action)
+
+        case subscription(SubscriptionCore.Action)
 
         case view(View)
 
@@ -128,6 +155,20 @@ class AccountCore: Reducer {
 
     var body: some Reducer<State, Action> {
         BindingReducer(action: /Action.view)
+
+        Scope(
+            state: \.subscriberCoreState,
+            action: /Action.subscription
+        ) {
+            SubscriptionCore()
+        }
+
+        Scope(
+            state: \.subscribedCoreState,
+            action: /Action.subscription
+        ) {
+            SubscriptionCore()
+        }
 
         Reduce { state, action in
             switch action {
@@ -191,6 +232,15 @@ class AccountCore: Reducer {
             case let .subscriberStateChanged(subscriberState):
                 state.subscriberState = subscriberState
 
+                if case let .loaded(subscriberAccounts) = subscriberState,
+                   case let .loaded(account) = state.accountState {
+                    state.subscriberCoreState = SubscriptionCore.State(
+                        ownAccountId: account.id,
+                        accounts: subscriberAccounts,
+                        subscriptionMode: .subscriber
+                    )
+                }
+
                 return .none
 
             case .fetchSubscribed:
@@ -216,6 +266,18 @@ class AccountCore: Reducer {
             case let .subscribedStateChanged(subscribedState):
                 state.subscribedState = subscribedState
 
+                if case let .loaded(subscribedAccounts) = subscribedState,
+                   case let .loaded(account) = state.accountState {
+                    state.subscribedCoreState = SubscriptionCore.State(
+                        ownAccountId: account.id,
+                        accounts: subscribedAccounts,
+                        subscriptionMode: .subscribed
+                    )
+                }
+
+                return .none
+
+            case .subscription:
                 return .none
 
             case .view(.fetchSubscriptionInfo):
