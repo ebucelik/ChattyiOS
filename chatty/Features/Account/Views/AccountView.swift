@@ -104,10 +104,19 @@ struct AccountView: View {
         GeometryReader { reader in
             ScrollView(.vertical) {
                 VStack(spacing: 24) {
-                    ChattyImage(
-                        picture: account.picture,
-                        frame: CGSize(width: 125, height: 125)
-                    )
+                    NavigationLink {
+                        ProfilePictureView(
+                            store: store.scope(
+                                state: \.profilePictureCoreState,
+                                action: AccountCore.Action.profilePicture
+                            )
+                        )
+                    } label: {
+                        ChattyImage(
+                            picture: account.picture,
+                            frame: CGSize(width: 125, height: 125)
+                        )
+                    }
 
                     VStack(spacing: 10) {
                         Text(account.biography)

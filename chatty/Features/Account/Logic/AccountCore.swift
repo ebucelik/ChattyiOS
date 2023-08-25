@@ -27,6 +27,8 @@ class AccountCore: Reducer {
         var subscriberCoreState: SubscriptionCore.State
         var subscribedCoreState: SubscriptionCore.State
 
+        var profilePictureCoreState: ProfilePictureCore.State
+
         var isOtherAccount: Bool {
             ownAccountId != nil
         }
@@ -69,11 +71,14 @@ class AccountCore: Reducer {
                     accounts: [],
                     subscriptionMode: .subscriber
                 )
+
                 self.subscribedCoreState = SubscriptionCore.State(
                     ownAccountId: ownAccountId ?? 0,
                     accounts: [],
                     subscriptionMode: .subscribed
                 )
+
+                self.profilePictureCoreState = ProfilePictureCore.State(account: .empty)
 
                 return
             }
@@ -93,11 +98,14 @@ class AccountCore: Reducer {
                 accounts: [],
                 subscriptionMode: .subscriber
             )
+
             self.subscribedCoreState = SubscriptionCore.State(
                 ownAccountId: self.id,
                 accounts: [],
                 subscriptionMode: .subscribed
             )
+
+            self.profilePictureCoreState = ProfilePictureCore.State(account: account)
         }
     }
 
@@ -121,6 +129,8 @@ class AccountCore: Reducer {
         case subscriptionRequest(SubscriptionRequestCore.Action)
 
         case subscription(SubscriptionCore.Action)
+
+        case profilePicture(ProfilePictureCore.Action)
 
         case view(View)
 
@@ -169,6 +179,12 @@ class AccountCore: Reducer {
         ) {
             SubscriptionCore()
         }
+
+        Scope(
+            state: \.profilePictureCoreState,
+            action: /Action.profilePicture) {
+                ProfilePictureCore()
+            }
 
         Reduce { state, action in
             switch action {
@@ -278,6 +294,12 @@ class AccountCore: Reducer {
                 return .none
 
             case .subscription:
+                return .none
+
+            case .profilePicture(.didUpdatedImage):
+                return .send(.view(.fetchAccount))
+
+            case .profilePicture:
                 return .none
 
             case .view(.fetchSubscriptionInfo):

@@ -59,6 +59,9 @@
 		713F6C1D2A97D57700F8584E /* DeleteAccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */; };
 		713F7BEE2979A9D4003B29B3 /* SubscriptionCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */; };
 		713F7BF12979CD31003B29B3 /* SubscriptionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713F7BF02979CD31003B29B3 /* SubscriptionInfo.swift */; };
+		714036E12A993CBB00522C06 /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714036E02A993CBB00522C06 /* ProfilePictureView.swift */; };
+		714036E32A993D9C00522C06 /* UpdateProfilePictureCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714036E22A993D9C00522C06 /* UpdateProfilePictureCall.swift */; };
+		714036E52A993F5E00522C06 /* ProfilePictureCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714036E42A993F5E00522C06 /* ProfilePictureCore.swift */; };
 		714D1774288406A50091BD10 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1773288406A50091BD10 /* AppColor.swift */; };
 		714D1776288413680091BD10 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D1775288413680091BD10 /* Message.swift */; };
 		714D177828841FB60091BD10 /* RegisterCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D177728841FB60091BD10 /* RegisterCore.swift */; };
@@ -239,6 +242,9 @@
 		713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountCall.swift; sourceTree = "<group>"; };
 		713F7BED2979A9D4003B29B3 /* SubscriptionCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCore.swift; sourceTree = "<group>"; };
 		713F7BF02979CD31003B29B3 /* SubscriptionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionInfo.swift; sourceTree = "<group>"; };
+		714036E02A993CBB00522C06 /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
+		714036E22A993D9C00522C06 /* UpdateProfilePictureCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfilePictureCall.swift; sourceTree = "<group>"; };
+		714036E42A993F5E00522C06 /* ProfilePictureCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureCore.swift; sourceTree = "<group>"; };
 		714D1773288406A50091BD10 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		714D1775288413680091BD10 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		714D177728841FB60091BD10 /* RegisterCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCore.swift; sourceTree = "<group>"; };
@@ -458,6 +464,7 @@
 				7137C83C29741B400077D91C /* AccountServiceProtocol.swift */,
 				7137C83E29741B680077D91C /* AccountService.swift */,
 				713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */,
+				714036E22A993D9C00522C06 /* UpdateProfilePictureCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -804,6 +811,7 @@
 			children = (
 				71C977FF2878C3DE004A457D /* AccountView.swift */,
 				710E060B29980D330076AD0C /* MoreView.swift */,
+				714036E02A993CBB00522C06 /* ProfilePictureView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -812,6 +820,7 @@
 			isa = PBXGroup;
 			children = (
 				716E7F43295E3590006C5513 /* AccountCore.swift */,
+				714036E42A993F5E00522C06 /* ProfilePictureCore.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -1161,6 +1170,7 @@
 				71367C84297745A100D92CC0 /* SubscriberCall.swift in Sources */,
 				7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */,
 				71619CF32A0051B200CBFF7D /* Notification+Extensions.swift in Sources */,
+				714036E32A993D9C00522C06 /* UpdateProfilePictureCall.swift in Sources */,
 				714FCC852969E57D00AA3F48 /* DependencyValues.swift in Sources */,
 				71005654287AE54100EBD93A /* LoginCall.swift in Sources */,
 				7192065629E4634000B52109 /* SocketIOClient.swift in Sources */,
@@ -1203,6 +1213,7 @@
 				7137C83F29741B680077D91C /* AccountService.swift in Sources */,
 				7100564B287AD35000EBD93A /* Register.swift in Sources */,
 				7192749D29E0D4190029E547 /* FeedPostsCall.swift in Sources */,
+				714036E52A993F5E00522C06 /* ProfilePictureCore.swift in Sources */,
 				710E060E29980DB00076AD0C /* LogoutServiceProtocol.swift in Sources */,
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
@@ -1280,6 +1291,7 @@
 				71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */,
 				714FCC90296A0CB800AA3F48 /* ImageServiceProtocol.swift in Sources */,
 				7192064A29E4524200B52109 /* AvailableChatAccountsCall.swift in Sources */,
+				714036E12A993CBB00522C06 /* ProfilePictureView.swift in Sources */,
 				71005649287AD30200EBD93A /* Login.swift in Sources */,
 				710E060A2997D9CC0076AD0C /* Deployment.swift in Sources */,
 			);

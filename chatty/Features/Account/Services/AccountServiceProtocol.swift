@@ -11,4 +11,6 @@ protocol AccountServiceProtocol {
     func getAccountBy(id: Int) async throws -> Account
 
     func deleteAccount(account: Account) async throws -> Message
+
+    func updateProfilePicture(account: Account) async throws -> Account
 }

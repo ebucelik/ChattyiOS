@@ -11,7 +11,7 @@ public struct Account: Equatable, Codable, Hashable {
     let id: Int
     let username: String
     let email: String
-    let picture: String
+    var picture: String
     let subscriberCount: Int
     let subscribedCount: Int
     let postCount: Int

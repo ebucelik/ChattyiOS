@@ -20,6 +20,12 @@ class AccountService: BackendClient, AccountServiceProtocol {
 
         return try await sendRequest(call: deleteAccountCall)
     }
+
+    func updateProfilePicture(account: Account) async throws -> Account {
+        let updateProfilePictureCall = UpdateProfilePictureCall(account: account)
+
+        return try await sendRequest(call: updateProfilePictureCall)
+    }
 }
 
 extension AccountService: DependencyKey {
