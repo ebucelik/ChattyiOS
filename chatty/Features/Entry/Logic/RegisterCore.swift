@@ -41,6 +41,9 @@ class RegisterCore: Reducer {
             return register.biography.count >= textMaxLength - 10
         }
 
+        var termsAndConditionsAccepted: Bool = false
+        var showTermsAndConditionsWebView: Bool = false
+
         var error: String {
             if case let .error(error) = registerState {
                 if case let .unexpectedError(apiError) = error {
@@ -140,6 +143,9 @@ class RegisterCore: Reducer {
 
             case setImage(UIImage)
 
+            case setTermsAndConditions(Bool)
+            case setShowTermsAndConditionsWebView(Bool)
+
             case showLoginView
             case showFeed(Account)
 
@@ -161,6 +167,8 @@ class RegisterCore: Reducer {
             switch action {
             case .view(.register):
                 struct Debounce: Hashable { }
+
+                guard state.termsAndConditionsAccepted else { return .none }
 
                 return .run { [register = state.register, picture = state.picture] send in
                     await send(.registerStateChanged(.loading))
@@ -331,6 +339,16 @@ class RegisterCore: Reducer {
 
             case let .view(.setImage(picture)):
                 state.picture = picture
+
+                return .none
+
+            case let .view(.setTermsAndConditions(value)):
+                state.termsAndConditionsAccepted = value
+
+                return .none
+
+            case let .view(.setShowTermsAndConditionsWebView(value)):
+                state.showTermsAndConditionsWebView = value
 
                 return .none
 

@@ -16,15 +16,18 @@ struct MoreView: View {
     let onDeleteAccountTap: () -> Void
     let deleteAccount: () -> Void
     let showDeleteAlert: Binding<Bool>
+    let onPrivacyPolicyTap: () -> Void
 
     init(onLogoutTap: @escaping () -> Void,
          onDeleteAccountTap: @escaping () -> Void,
          deleteAccount: @escaping () -> Void,
-         showDeleteAlert: Binding<Bool>) {
+         showDeleteAlert: Binding<Bool>,
+         onPrivacyPolicyTap: @escaping () -> Void) {
         self.onLogoutTap = onLogoutTap
         self.onDeleteAccountTap = onDeleteAccountTap
         self.deleteAccount = deleteAccount
         self.showDeleteAlert = showDeleteAlert
+        self.onPrivacyPolicyTap = onPrivacyPolicyTap
     }
 
     var body: some View {
@@ -64,6 +67,11 @@ struct MoreView: View {
                 .padding()
                 .background(AppColor.lightgray)
                 .cornerRadius(6)
+                .onTapGesture {
+                    dismiss()
+
+                    onPrivacyPolicyTap()
+                }
 
                 HStack {
                     Image(systemSymbol: .rectanglePortraitAndArrowRight)
@@ -76,6 +84,7 @@ struct MoreView: View {
                 }
                 .padding()
                 .background(AppColor.error)
+                .foregroundColor(.white)
                 .cornerRadius(6)
                 .onTapGesture {
                     dismiss()

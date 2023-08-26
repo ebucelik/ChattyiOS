@@ -50,6 +50,8 @@ class AccountCore: Reducer {
         @BindingState
         var showDeleteAlert: Bool = false
 
+        var showPrivacyPolicyWebView: Bool = false
+
         init(ownAccountId: Int? = nil,
              ownAccount: Account? = nil,
              accountState: Loadable<Account> = .none,
@@ -159,6 +161,8 @@ class AccountCore: Reducer {
 
             case didDeleteAccount
             case didDeleteAccountTapped
+
+            case setShowPrivacyPolicyWebView(Bool)
 
             case binding(BindingAction<State>)
         }
@@ -470,6 +474,11 @@ class AccountCore: Reducer {
 
             case .view(.didDeleteAccountTapped):
                 state.showDeleteAlert = true
+
+                return .none
+
+            case let .view(.setShowPrivacyPolicyWebView(value)):
+                state.showPrivacyPolicyWebView = value
 
                 return .none
 

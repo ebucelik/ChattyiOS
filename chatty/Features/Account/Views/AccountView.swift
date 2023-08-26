@@ -25,7 +25,8 @@ extension BindingViewStore<AccountCore.State> {
             accountId: self.accountId,
             newUpdatesAvailable: self.newUpdatesAvailable,
             showMore: self.$showMore,
-            showDeleteAlert: self.$showDeleteAlert
+            showDeleteAlert: self.$showDeleteAlert,
+            showPrivacyPolicyWebView: self.showPrivacyPolicyWebView
         )
     }
 }
@@ -46,6 +47,7 @@ struct AccountView: View {
         var newUpdatesAvailable: Bool
         @BindingViewState var showMore: Bool
         @BindingViewState var showDeleteAlert: Bool
+        var showPrivacyPolicyWebView: Bool
     }
 
     typealias AccountViewStore = ViewStore<AccountView.ViewState, AccountCore.Action.View>
@@ -95,9 +97,20 @@ struct AccountView: View {
                     onLogoutTap: { viewStore.send(.logout) },
                     onDeleteAccountTap: { viewStore.send(.didDeleteAccountTapped) },
                     deleteAccount: { viewStore.send(.didDeleteAccount) },
-                    showDeleteAlert: viewStore.$showDeleteAlert
+                    showDeleteAlert: viewStore.$showDeleteAlert,
+                    onPrivacyPolicyTap: { viewStore.send(.setShowPrivacyPolicyWebView(true)) }
                 )
                 .environmentObject(inAppStore)
+            }
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.showPrivacyPolicyWebView,
+                    send: { .setShowPrivacyPolicyWebView($0) })
+            ) {
+                WebView(url: URL(string: "https://main--helpful-naiad-524c37.netlify.app")!)
+                    .onDisappear {
+                        viewStore.send(.setShowPrivacyPolicyWebView(false))
+                    }
             }
         }
     }

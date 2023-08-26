@@ -25,7 +25,9 @@ extension BindingViewStore<RegisterCore.State> {
             isUsernameAvailable: self.isUsernameAvailable,
             isEmailAndPasswordValid: self.isEmailAndPasswordValid,
             textMaxLength: self.textMaxLength,
-            approachesMaxLength: self.approachesMaxLength
+            approachesMaxLength: self.approachesMaxLength,
+            termsAndConditionsAccepted: self.termsAndConditionsAccepted,
+            showTermsAndConditionsWebView: self.showTermsAndConditionsWebView
         )
     }
 }
@@ -46,6 +48,8 @@ struct RegisterView: View {
         var isEmailAndPasswordValid: Bool
         var textMaxLength: Int
         var approachesMaxLength: Bool
+        var termsAndConditionsAccepted: Bool
+        var showTermsAndConditionsWebView: Bool
     }
 
     typealias RegisterViewStore = ViewStore<RegisterView.ViewState, RegisterCore.Action.View>
@@ -75,6 +79,13 @@ struct RegisterView: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 UniversalHelper.resignFirstResponder()
+            }
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.showTermsAndConditionsWebView,
+                    send: { .setShowTermsAndConditionsWebView($0) })
+            ) {
+                WebView(url: URL(string: "https://main--helpful-naiad-524c37.netlify.app/terms.html")!)
             }
         }
     }
@@ -299,9 +310,6 @@ struct RegisterView: View {
             }
             .disabled(.loading == viewStore.registerState)
 
-            Spacer()
-                .frame(height: 50)
-
             HStack(spacing: 16) {
                 HStack(spacing: 16) {
                     ZStack(alignment: .bottomTrailing) {
@@ -346,7 +354,29 @@ struct RegisterView: View {
                 isLoading: .loading == viewStore.registerState,
                 action: { viewStore.send(.register) }
             )
-            .opacity(viewStore.picture != nil ? 1 : 0)
+            .disabled(!viewStore.termsAndConditionsAccepted)
+            .opacity(viewStore.termsAndConditionsAccepted ? 1 : 0.8)
+
+            Toggle(
+                isOn: viewStore.binding(
+                    get: \.termsAndConditionsAccepted,
+                    send: { .setTermsAndConditions($0) }
+                )
+            ) {
+                Group {
+                    Text("By checking this box, you are agreeing to our ")
+                        .font(AppFont.caption) +
+                    Text("terms of service.")
+                        .font(AppFont.caption)
+                        .bold()
+                        .foregroundColor(AppColor.primary)
+                }
+                    .onTapGesture {
+                        viewStore.send(.setShowTermsAndConditionsWebView(true))
+                    }
+            }
+
+            Spacer()
         }
         .padding()
     }
@@ -362,14 +392,6 @@ struct RegisterView: View {
             .disabled(.loading == viewStore.registerState)
 
             Spacer()
-
-            Button(action: { viewStore.send(.register) }) {
-                Text("Skip")
-                    .bold()
-                    .foregroundColor(AppColor.error)
-            }
-            .disabled(.loading == viewStore.registerState)
-            .opacity(viewStore.picture != nil ? 0 : 1)
         }
 
         Spacer()
