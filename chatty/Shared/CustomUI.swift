@@ -17,20 +17,20 @@ public struct ChattyDivider: View {
 
 public struct ChattyIcon: View {
 
-    private let width: CGFloat?
-    private let height: CGFloat?
+    private let width: CGFloat
+    private let height: CGFloat
 
-    public init(width: CGFloat? = 100, height: CGFloat? = 100) {
+    public init(width: CGFloat = 100, height: CGFloat = 100) {
         self.width = width
         self.height = height
     }
 
     public var body: some View {
-        Image(systemSymbol: .messageCircle)
+        Image("appicon")
             .resizable(resizingMode: .stretch)
             .frame(width: width, height: height)
+            .cornerRadius(width/2)
             .padding()
-            .foregroundColor(AppColor.primary)
     }
 }
 

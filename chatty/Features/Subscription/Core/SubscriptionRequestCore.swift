@@ -72,7 +72,7 @@ struct SubscriptionRequestCore: Reducer {
 
                 OneSignalClient.shared.sendPush(
                     with: "@\(ownAccount.username) accepted your subscription.",
-                    title: "Chatty",
+                    title: "",
                     accountId: subscriberAccount.id
                 )
 

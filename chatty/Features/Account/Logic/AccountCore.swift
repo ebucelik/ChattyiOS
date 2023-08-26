@@ -350,7 +350,7 @@ class AccountCore: Reducer {
 
                     OneSignalClient.shared.sendPush(
                         with: "@\(ownAccount.username) would like to subscribe you.",
-                        title: "Chatty",
+                        title: "",
                         accountId: account.id
                     )
 
