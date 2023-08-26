@@ -333,6 +333,12 @@ class AccountCore: Reducer {
                     let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
+                    OneSignalClient.shared.sendPush(
+                        with: "@\(account.username) would like to subscribe you.",
+                        title: "Chatty",
+                        accountId: account.id
+                    )
+
                     await send(.subscriptionInfoChanged(.loaded(subscriptionInfo)))
                 } catch: { error, send in
                     if let apiError = error as? APIError {

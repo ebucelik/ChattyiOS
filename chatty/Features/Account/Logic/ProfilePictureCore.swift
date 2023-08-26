@@ -14,9 +14,19 @@ struct ProfilePictureCore: Reducer {
         var account: Account
         var accountState: Loadable<Account> = .none
         var pickedImage: UIImage? = nil
+        var biography: String
+
+        var didImagePickedOrBiographyChanged: Bool {
+            pickedImage != nil || didBiographyChanged
+        }
+
+        var didBiographyChanged: Bool {
+            biography != account.biography
+        }
 
         init(account: Account) {
             self.account = account
+            self.biography = account.biography
         }
     }
 
@@ -28,6 +38,8 @@ struct ProfilePictureCore: Reducer {
         case didImagePicked(UIImage)
         case didUpdatedImage
 
+        case setBiography(String)
+
         case reset
     }
 
@@ -37,12 +49,14 @@ struct ProfilePictureCore: Reducer {
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .updateImage:
-            guard let pickedImage = state.pickedImage else { return .none }
+            guard state.pickedImage != nil || state.biography != state.account.biography
+            else { return .none }
 
             return .run { [state = state] send in
                 await send(.accountStateChanged(.loading))
 
-                if let jpegData = pickedImage.jpegData(compressionQuality: 1.0) {
+                if let pickedImage = state.pickedImage,
+                    let jpegData = pickedImage.jpegData(compressionQuality: 1.0) {
                     let pictureLink = try await self.imageService.uploadImage(imageData: jpegData)
 
                     let account = try await self.service.updateProfilePicture(
@@ -58,7 +72,39 @@ struct ProfilePictureCore: Reducer {
                         )
                     )
 
-                    await send(.accountStateChanged(.loaded(account)))
+                    if state.biography != account.biography {
+                        let biographyChangedAccount = try await self.service.updateBiography(
+                            account: Account(
+                                id: state.account.id,
+                                username: state.account.username,
+                                email: state.account.email,
+                                picture: account.picture,
+                                subscriberCount: state.account.subscriberCount,
+                                subscribedCount: state.account.subscribedCount,
+                                postCount: state.account.postCount,
+                                biography: state.biography
+                            )
+                        )
+
+                        await send(.accountStateChanged(.loaded(biographyChangedAccount)))
+                    } else {
+                        await send(.accountStateChanged(.loaded(account)))
+                    }
+                } else if state.biography != state.account.biography {
+                    let biographyChangedAccount = try await self.service.updateBiography(
+                        account: Account(
+                            id: state.account.id,
+                            username: state.account.username,
+                            email: state.account.email,
+                            picture: state.account.picture,
+                            subscriberCount: state.account.subscriberCount,
+                            subscribedCount: state.account.subscribedCount,
+                            postCount: state.account.postCount,
+                            biography: state.biography
+                        )
+                    )
+
+                    await send(.accountStateChanged(.loaded(biographyChangedAccount)))
                 }
             } catch: { error, send in
                 if let apiError = error as? APIError {
@@ -100,6 +146,11 @@ struct ProfilePictureCore: Reducer {
             return .none
 
         case .didUpdatedImage:
+            return .none
+
+        case let .setBiography(biography):
+            state.biography = biography
+
             return .none
 
         case .reset:

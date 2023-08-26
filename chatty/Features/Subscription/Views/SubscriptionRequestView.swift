@@ -72,7 +72,7 @@ struct SubscriptionRequestView: View {
                             .frame(width: 30, height: 30)
                             .foregroundColor(AppColor.success)
                             .onTapGesture {
-                                viewStore.send(.acceptSubscription(subscriptionRequestAccount.id))
+                                viewStore.send(.acceptSubscription(subscriptionRequestAccount))
                             }
 
                         Image(systemSymbol: .xmarkCircleFill)

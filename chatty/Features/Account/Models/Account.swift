@@ -15,7 +15,7 @@ public struct Account: Equatable, Codable, Hashable {
     let subscriberCount: Int
     let subscribedCount: Int
     let postCount: Int
-    let biography: String
+    var biography: String
 
     init(id: Int,
          username: String,

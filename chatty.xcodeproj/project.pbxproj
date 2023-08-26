@@ -93,6 +93,7 @@
 		716DB8BE2959DF04003BF4A9 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */; };
 		716E7F44295E3590006C5513 /* AccountCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F43295E3590006C5513 /* AccountCore.swift */; };
 		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
+		717E9E292A99EE1C007C26A8 /* UpdateBiographyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */; };
 		71840FD1299187FA00511953 /* DeletePostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71840FD0299187FA00511953 /* DeletePostCall.swift */; };
 		7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */; };
 		718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */; };
@@ -276,6 +277,7 @@
 		716DB8BD2959DF04003BF4A9 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		716E7F43295E3590006C5513 /* AccountCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCore.swift; sourceTree = "<group>"; };
 		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBiographyCall.swift; sourceTree = "<group>"; };
 		71840FD0299187FA00511953 /* DeletePostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePostCall.swift; sourceTree = "<group>"; };
 		7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattyNavigationView.swift; sourceTree = "<group>"; };
 		718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestView.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 				7137C83E29741B680077D91C /* AccountService.swift */,
 				713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */,
 				714036E22A993D9C00522C06 /* UpdateProfilePictureCall.swift */,
+				717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1239,6 +1242,7 @@
 				716DB8BB29585547003BF4A9 /* EntryCore.swift in Sources */,
 				7192065029E453CD00B52109 /* AvailableChatAccountsCore.swift in Sources */,
 				71D322E629E32A7600E78240 /* UniversalHelper.swift in Sources */,
+				717E9E292A99EE1C007C26A8 /* UpdateBiographyCall.swift in Sources */,
 				7115E8102A90BEAA00B4D8D6 /* KeyboardReadable.swift in Sources */,
 				7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */,
 				710CBFDF2A002EEB00AE98BB /* ChatCore.swift in Sources */,

@@ -17,59 +17,92 @@ struct ProfilePictureView: View {
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
-            VStack {
-                ZStack {
-                    if viewStore.pickedImage == nil {
-                        ChattyImage(
-                            picture: viewStore.account.picture,
-                            frame: CGSize(width: 125, height: 125)
+            ZStack {
+                VStack {
+                    ZStack {
+                        if viewStore.pickedImage == nil {
+                            ChattyImage(
+                                picture: viewStore.account.picture,
+                                frame: CGSize(width: 125, height: 125)
+                            )
+                        }
+
+                        ViewControllerRepresentable(
+                            viewController: imagePickerController
+                        )
+                        .frame(width: 125, height: 125, alignment: .center)
+                        .cornerRadius(62.5)
+                        .onAppear {
+                            imagePickerController.onImagePicked = { pickedImage in
+                                viewStore.send(.didImagePicked(pickedImage))
+                            }
+                        }
+                        .disabled(.loading == viewStore.accountState)
+                    }
+
+                    Spacer()
+                        .frame(height: 50)
+
+                    HStack(spacing: 16) {
+                        HStack(spacing: 16) {
+                            TextField(
+                                "Your bio",
+                                text: viewStore.binding(
+                                    get: \.biography,
+                                    send: { .setBiography($0) }
+                                )
+                            )
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .multilineTextAlignment(.center)
+                        }
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(AppColor.gray, lineWidth: 2)
                         )
                     }
+                    .padding()
 
-                    ViewControllerRepresentable(
-                        viewController: imagePickerController
-                    )
-                    .frame(width: 125, height: 125, alignment: .center)
-                    .cornerRadius(62.5)
-                    .onAppear {
-                        imagePickerController.onImagePicked = { pickedImage in
-                            viewStore.send(.didImagePicked(pickedImage))
+                    Spacer()
+                        .frame(height: 50)
+
+                    HStack {
+                        ChattyButton(
+                            text: "Delete picture",
+                            backgroundColor: AppColor.error
+                        ) {
+                            viewStore.send(.deleteImage)
                         }
+                        .disabled(viewStore.account.picture.isEmpty)
+                        .opacity(viewStore.account.picture.isEmpty ? 0.8 : 1)
+
+                        ChattyButton(
+                            text: "Update profile",
+                            isLoading: viewStore.accountState == .loading
+                        ) {
+                            viewStore.send(.updateImage)
+                        }
+                        .disabled(!viewStore.didImagePickedOrBiographyChanged)
+                        .opacity(!viewStore.didImagePickedOrBiographyChanged ? 0.8 : 1)
                     }
-                    .disabled(.loading == viewStore.accountState)
+                    .padding()
+                    .disabled(viewStore.accountState == .loading)
                 }
-
-                Spacer()
-                    .frame(height: 50)
-
-                VStack {
-                    ChattyButton(
-                        text: "Update profile picture",
-                        isLoading: viewStore.accountState == .loading
-                    ) {
-                        viewStore.send(.updateImage)
-                    }
-
-                    ChattyButton(
-                        text: "Delete profile picture",
-                        isLoading: viewStore.accountState == .loading,
-                        backgroundColor: AppColor.error
-                    ) {
-                        viewStore.send(.deleteImage)
+                .navigationTitle("Edit profile")
+                .navigationBarTitleDisplayMode(.inline)
+                .onChange(of: viewStore.accountState) { accountState in
+                    if case .loaded = accountState {
+                        dismiss()
                     }
                 }
-                .padding()
-                .disabled(viewStore.accountState == .loading)
-            }
-            .navigationTitle("Profile Picture")
-            .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: viewStore.accountState) { accountState in
-                if case .loaded = accountState {
-                    dismiss()
+                .onDisappear {
+                    viewStore.send(.reset)
                 }
             }
-            .onDisappear {
-                viewStore.send(.reset)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                UniversalHelper.resignFirstResponder()
             }
         }
     }

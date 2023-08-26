@@ -26,6 +26,12 @@ class AccountService: BackendClient, AccountServiceProtocol {
 
         return try await sendRequest(call: updateProfilePictureCall)
     }
+
+    func updateBiography(account: Account) async throws -> Account {
+        let updateBiographyCall = UpdateBiographyCall(account: account)
+
+        return try await sendRequest(call: updateBiographyCall)
+    }
 }
 
 extension AccountService: DependencyKey {

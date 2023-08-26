@@ -26,7 +26,7 @@ struct SubscriptionRequestCore: Reducer {
         case fetchSubscriptionRequests
         case subscriptionRequestsStateChanged(Loadable<[Account]>)
 
-        case acceptSubscription(Int)
+        case acceptSubscription(Account)
         case subscriptionAccepted
         case declineSubscription(Int)
         case subscriptionDeclined
@@ -60,15 +60,21 @@ struct SubscriptionRequestCore: Reducer {
 
             return .none
 
-        case let .acceptSubscription(subscriberId):
+        case let .acceptSubscription(subscriberAccount):
             return .run { [ownAccountId = state.ownAccountId] send in
                 let subscriber = Subscriber(
-                    userId: subscriberId,
+                    userId: subscriberAccount.id,
                     subscribedUserId: ownAccountId,
                     accepted: true
                 )
 
                 _ = try await service.acceptSubscription(subscriber: subscriber)
+
+                OneSignalClient.shared.sendPush(
+                    with: "@\(subscriberAccount.username) accepted your subscription.",
+                    title: "Chatty",
+                    accountId: subscriberAccount.id
+                )
 
                 await send(.subscriptionAccepted)
             } catch: { error, send in

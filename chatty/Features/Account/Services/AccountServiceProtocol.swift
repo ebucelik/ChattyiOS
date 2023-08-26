@@ -13,4 +13,6 @@ protocol AccountServiceProtocol {
     func deleteAccount(account: Account) async throws -> Message
 
     func updateProfilePicture(account: Account) async throws -> Account
+
+    func updateBiography(account: Account) async throws -> Account
 }

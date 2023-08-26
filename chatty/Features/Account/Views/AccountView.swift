@@ -156,8 +156,6 @@ struct AccountView: View {
                         }
                         .disabled(viewStore.isOtherAccount)
 
-                        ChattyDivider()
-
                         NavigationLink {
                             SubscriptionView(
                                 store: store.scope(
@@ -179,8 +177,6 @@ struct AccountView: View {
                             }
                         }
                         .disabled(viewStore.isOtherAccount)
-
-                        ChattyDivider()
 
                         VStack(spacing: 10) {
                             Text("Posts")
