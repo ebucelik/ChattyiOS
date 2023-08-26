@@ -94,6 +94,8 @@
 		716E7F44295E3590006C5513 /* AccountCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F43295E3590006C5513 /* AccountCore.swift */; };
 		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
 		717E9E292A99EE1C007C26A8 /* UpdateBiographyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */; };
+		717E9E2B2A9A20DA007C26A8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */; };
+		717E9E2E2A9A2151007C26A8 /* InAppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E9E2D2A9A2151007C26A8 /* InAppStore.swift */; };
 		71840FD1299187FA00511953 /* DeletePostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71840FD0299187FA00511953 /* DeletePostCall.swift */; };
 		7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */; };
 		718BF4B1297AA79E0049297F /* SubscriptionRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */; };
@@ -278,6 +280,8 @@
 		716E7F43295E3590006C5513 /* AccountCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCore.swift; sourceTree = "<group>"; };
 		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBiographyCall.swift; sourceTree = "<group>"; };
+		717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		717E9E2D2A9A2151007C26A8 /* InAppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppStore.swift; sourceTree = "<group>"; };
 		71840FD0299187FA00511953 /* DeletePostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePostCall.swift; sourceTree = "<group>"; };
 		7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattyNavigationView.swift; sourceTree = "<group>"; };
 		718BF4B0297AA79E0049297F /* SubscriptionRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequestView.swift; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 				7192065929E470B400B52109 /* SocketIO in Frameworks */,
 				7123D7E62A92A02D00895FCD /* OneSignalInAppMessages in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
+				717E9E2B2A9A20DA007C26A8 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +635,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		717E9E2C2A9A2132007C26A8 /* InAppStore */ = {
+			isa = PBXGroup;
+			children = (
+				717E9E2D2A9A2151007C26A8 /* InAppStore.swift */,
+			);
+			path = InAppStore;
+			sourceTree = "<group>";
+		};
 		71840FD22991889000511953 /* Calls */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,6 +669,7 @@
 		7192065729E470B400B52109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -732,6 +746,7 @@
 		71C977F22878C0F2004A457D /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				717E9E2C2A9A2132007C26A8 /* InAppStore */,
 				71D322EC29E36EC200E78240 /* Chat */,
 				71EE5C64297F453A001C0908 /* Search */,
 				713F7BE72979A83F003B29B3 /* Post */,
@@ -1203,6 +1218,7 @@
 				716E7F44295E3590006C5513 /* AccountCore.swift in Sources */,
 				7117B00D2A92665E005562F6 /* ReportService.swift in Sources */,
 				71005650287AE39200EBD93A /* BackendClient.swift in Sources */,
+				717E9E2E2A9A2151007C26A8 /* InAppStore.swift in Sources */,
 				71C5C2302A95338900DC853B /* OneSignalPush.swift in Sources */,
 				71C977F62878C1FF004A457D /* FeedView.swift in Sources */,
 				71C977BD2878AA8C004A457D /* AppDelegate.swift in Sources */,

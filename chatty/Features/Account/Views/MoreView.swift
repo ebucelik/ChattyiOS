@@ -10,6 +10,7 @@ import SwiftUI
 struct MoreView: View {
 
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var inAppStore: InAppStore
 
     let onLogoutTap: () -> Void
     let onDeleteAccountTap: () -> Void
@@ -29,6 +30,28 @@ struct MoreView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                ForEach(inAppStore.products, id: \.id) { product in
+                    HStack {
+                        Image(systemSymbol: .eurosignCircle)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+
+                        Text("Donate now")
+
+                        Spacer()
+
+                        Text("\(product.displayPrice)")
+                    }
+                    .padding()
+                    .background(AppColor.lightgray)
+                    .cornerRadius(6)
+                    .onTapGesture {
+                        Task {
+                            try await inAppStore.purchase(product)
+                        }
+                    }
+                }
+
                 HStack {
                     Image(systemSymbol: .infoCircle)
                         .resizable()

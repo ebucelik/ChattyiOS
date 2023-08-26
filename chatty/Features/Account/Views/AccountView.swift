@@ -57,6 +57,8 @@ struct AccountView: View {
         GridItem(.flexible())
     ]
 
+    @StateObject var inAppStore: InAppStore = InAppStore()
+
     var body: some View {
         WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
             VStack {
@@ -95,6 +97,7 @@ struct AccountView: View {
                     deleteAccount: { viewStore.send(.didDeleteAccount) },
                     showDeleteAlert: viewStore.$showDeleteAlert
                 )
+                .environmentObject(inAppStore)
             }
         }
     }
