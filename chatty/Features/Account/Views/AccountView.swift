@@ -234,8 +234,8 @@ struct AccountView: View {
                     }
 
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Image(systemSymbol: .ellipsis)
-                            .foregroundColor(AppColor.gray)
+                        Image(systemSymbol: .line3HorizontalCircleFill)
+                            .foregroundColor(AppColor.primary)
                             .opacity(viewStore.isOtherAccount ? 0 : 1)
                             .onTapGesture {
                                 viewStore.send(.showMore)
