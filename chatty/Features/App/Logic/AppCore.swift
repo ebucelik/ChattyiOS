@@ -50,7 +50,7 @@ class AppCore: Reducer {
                 else { return .send(.accountStateChanged(.loaded(nil))) }
 
                 state.feed.account = account
-                state.search.ownAccountId = account.id
+                state.search.ownAccount = account
                 state.upload.ownAccountId = account.id
                 state.chat.account = account
 
@@ -97,7 +97,7 @@ class AppCore: Reducer {
             case let .entry(.showFeed(account)):
                 state.accountState = .loaded(account)
                 state.feed.account = account
-                state.search.ownAccountId = account.id
+                state.search.ownAccount = account
                 state.chat.account = account
                 state.upload.ownAccountId = account.id
 

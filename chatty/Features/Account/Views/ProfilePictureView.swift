@@ -45,16 +45,25 @@ struct ProfilePictureView: View {
 
                     HStack(spacing: 16) {
                         HStack(spacing: 16) {
-                            TextField(
-                                "Your bio",
-                                text: viewStore.binding(
-                                    get: \.biography,
-                                    send: { .setBiography($0) }
+                            ZStack(alignment: .bottomTrailing) {
+                                TextField(
+                                    "Your bio",
+                                    text: viewStore.binding(
+                                        get: \.biography,
+                                        send: { .setBiography($0) }
+                                    ),
+                                    axis: .vertical
                                 )
-                            )
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                            .multilineTextAlignment(.center)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .multilineTextAlignment(.center)
+                                .padding(.trailing, 35)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                                Text("\(viewStore.biography.count)/\(viewStore.textMaxLength)")
+                                    .foregroundColor(viewStore.approachesMaxLength ? AppColor.error : AppColor.primary)
+                                    .font(viewStore.approachesMaxLength ? .caption.bold() : .caption)
+                            }
                         }
                         .padding()
                         .overlay(

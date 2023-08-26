@@ -16,12 +16,17 @@ struct SubscriptionCore: Reducer {
 
     struct State: Equatable {
         var ownAccountId: Int
+        var ownAccount: Account?
         var accounts: [Account]
         var title: String
         var info: String
 
-        public init(ownAccountId: Int, accounts: [Account], subscriptionMode: SubscriptionMode) {
+        public init(ownAccountId: Int,
+                    ownAccount: Account?,
+                    accounts: [Account],
+                    subscriptionMode: SubscriptionMode) {
             self.ownAccountId = ownAccountId
+            self.ownAccount = ownAccount
             self.accounts = accounts
 
             switch subscriptionMode {

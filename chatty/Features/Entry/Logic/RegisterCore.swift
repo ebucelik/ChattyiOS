@@ -35,6 +35,12 @@ class RegisterCore: Reducer {
         @BindingState
         var register: Register
 
+        var textMaxLength = 60
+
+        var approachesMaxLength: Bool {
+            return register.biography.count >= textMaxLength - 10
+        }
+
         var error: String {
             if case let .error(error) = registerState {
                 if case let .unexpectedError(apiError) = error {
@@ -349,6 +355,10 @@ class RegisterCore: Reducer {
                 return .none
 
             case .view(.binding):
+                if state.register.biography.count >= state.textMaxLength {
+                    state.register.biography = String(state.register.biography.prefix(state.textMaxLength))
+                }
+
                 return .none
 
             case .view:

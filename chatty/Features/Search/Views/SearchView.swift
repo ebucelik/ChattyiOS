@@ -15,7 +15,7 @@ extension BindingViewStore<SearchCore.State> {
             searchQuery: self.$searchQuery,
             searchAccountState: self.searchAccountState,
             accountStates: self.accountStates,
-            ownAccountId: self.ownAccountId
+            ownAccount: self.ownAccount
         )
     }
 }
@@ -26,7 +26,7 @@ struct SearchView: View {
         @BindingViewState var searchQuery: String
         var searchAccountState: Loadable<[Account]>
         var accountStates: IdentifiedArrayOf<AccountCore.State>
-        var ownAccountId: Int?
+        var ownAccount: Account?
     }
 
     let store: StoreOf<SearchCore>

@@ -18,14 +18,14 @@ struct SearchCore: Reducer {
 
         var accountStates = IdentifiedArrayOf<AccountCore.State>()
 
-        var ownAccountId: Int?
+        var ownAccount: Account?
 
         init(searchQuery: String = "",
              searchAccountState: Loadable<[Account]> = .none,
-             ownAccountId: Int? = nil) {
+             ownAccount: Account? = nil) {
             self.searchQuery = searchQuery
             self.searchAccountState = searchAccountState
-            self.ownAccountId = ownAccountId
+            self.ownAccount = ownAccount
         }
     }
 
@@ -51,13 +51,13 @@ struct SearchCore: Reducer {
         Reduce { state, action in
             switch action {
             case let .view(.searchBy(username)):
-                guard let ownAccountId = state.ownAccountId else { return .none }
+                guard let ownAccount = state.ownAccount else { return .none }
 
                 return .run { send in
                     await send(.searchAccountStateChanged(.loading))
                     
                     let accounts = try await self.searchService.searchBy(
-                        id: ownAccountId,
+                        id: ownAccount.id,
                         username: username
                     )
 
@@ -78,7 +78,8 @@ struct SearchCore: Reducer {
                     state.accountStates = IdentifiedArray(
                         uniqueElements: accounts.compactMap {
                             AccountCore.State(
-                                ownAccountId: state.ownAccountId,
+                                ownAccountId: state.ownAccount?.id,
+                                ownAccount: state.ownAccount,
                                 accountState: .loaded($0)
                             )
                         }

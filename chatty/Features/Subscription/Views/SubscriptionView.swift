@@ -29,6 +29,7 @@ struct SubscriptionView: View {
                                     store: Store(
                                         initialState: AccountCore.State(
                                             ownAccountId: viewStore.ownAccountId,
+                                            ownAccount: viewStore.ownAccount,
                                             accountState: .loaded(account)
                                         ),
                                         reducer: {

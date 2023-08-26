@@ -15,6 +15,11 @@ struct ProfilePictureCore: Reducer {
         var accountState: Loadable<Account> = .none
         var pickedImage: UIImage? = nil
         var biography: String
+        var textMaxLength = 60
+
+        var approachesMaxLength: Bool {
+            return biography.count >= textMaxLength - 10
+        }
 
         var didImagePickedOrBiographyChanged: Bool {
             pickedImage != nil || didBiographyChanged
@@ -150,6 +155,10 @@ struct ProfilePictureCore: Reducer {
 
         case let .setBiography(biography):
             state.biography = biography
+            
+            if state.biography.count >= state.textMaxLength {
+                state.biography = String(state.biography.prefix(state.textMaxLength))
+            }
 
             return .none
 

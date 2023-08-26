@@ -15,6 +15,7 @@ class AccountCore: Reducer {
     struct State: Equatable, Identifiable {
         var id: Int
         var ownAccountId: Int?
+        var ownAccount: Account?
         var accountState: Loadable<Account>
         var subscriberState: Loadable<[Account]>
         var subscribedState: Loadable<[Account]>
@@ -50,6 +51,7 @@ class AccountCore: Reducer {
         var showDeleteAlert: Bool = false
 
         init(ownAccountId: Int? = nil,
+             ownAccount: Account? = nil,
              accountState: Loadable<Account> = .none,
              subscriberState: Loadable<[Account]> = .none,
              subscribedState: Loadable<[Account]> = .none,
@@ -57,6 +59,7 @@ class AccountCore: Reducer {
              subscriptionInfoState: Loadable<SubscriptionInfo> = .none,
              postsState: Loadable<[Post]> = .none) {
             self.accountState = accountState
+            self.ownAccount = ownAccount
             self.subscriberState = subscriberState
             self.subscribedState = subscribedState
             self.subscribeState = subscribeState
@@ -68,12 +71,14 @@ class AccountCore: Reducer {
                 self.ownAccountId = nil
                 self.subscriberCoreState = SubscriptionCore.State(
                     ownAccountId: ownAccountId ?? 0,
+                    ownAccount: .empty,
                     accounts: [],
                     subscriptionMode: .subscriber
                 )
 
                 self.subscribedCoreState = SubscriptionCore.State(
                     ownAccountId: ownAccountId ?? 0,
+                    ownAccount: .empty,
                     accounts: [],
                     subscriptionMode: .subscribed
                 )
@@ -83,7 +88,9 @@ class AccountCore: Reducer {
                 return
             }
 
-            self.subscriptionRequestCoreState = SubscriptionRequestCore.State(ownAccountId: account.id)
+            self.subscriptionRequestCoreState = SubscriptionRequestCore.State(
+                ownAccount: account
+            )
 
             if let ownAccountId = ownAccountId,
                account.id != ownAccountId {
@@ -95,12 +102,14 @@ class AccountCore: Reducer {
 
             self.subscriberCoreState = SubscriptionCore.State(
                 ownAccountId: self.id,
+                ownAccount: account,
                 accounts: [],
                 subscriptionMode: .subscriber
             )
 
             self.subscribedCoreState = SubscriptionCore.State(
                 ownAccountId: self.id,
+                ownAccount: account,
                 accounts: [],
                 subscriptionMode: .subscribed
             )
@@ -254,6 +263,7 @@ class AccountCore: Reducer {
                    case let .loaded(account) = state.accountState {
                     state.subscriberCoreState = SubscriptionCore.State(
                         ownAccountId: account.id,
+                        ownAccount: account,
                         accounts: subscriberAccounts,
                         subscriptionMode: .subscriber
                     )
@@ -288,6 +298,7 @@ class AccountCore: Reducer {
                    case let .loaded(account) = state.accountState {
                     state.subscribedCoreState = SubscriptionCore.State(
                         ownAccountId: account.id,
+                        ownAccount: account,
                         accounts: subscribedAccounts,
                         subscriptionMode: .subscribed
                     )
@@ -325,16 +336,16 @@ class AccountCore: Reducer {
 
             case .view(.sendSubscriptionRequest):
 
-                guard let ownAccountId = state.ownAccountId,
+                guard let ownAccount = state.ownAccount,
                       case let .loaded(account) = state.accountState
                 else { return .none }
 
                 return .run { send in
-                    let subscriber = Subscriber(userId: ownAccountId, subscribedUserId: account.id)
+                    let subscriber = Subscriber(userId: ownAccount.id, subscribedUserId: account.id)
                     let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
                     OneSignalClient.shared.sendPush(
-                        with: "@\(account.username) would like to subscribe you.",
+                        with: "@\(ownAccount.username) would like to subscribe you.",
                         title: "Chatty",
                         accountId: account.id
                     )

@@ -23,7 +23,9 @@ extension BindingViewStore<RegisterCore.State> {
             register: self.$register,
             error: self.error,
             isUsernameAvailable: self.isUsernameAvailable,
-            isEmailAndPasswordValid: self.isEmailAndPasswordValid
+            isEmailAndPasswordValid: self.isEmailAndPasswordValid,
+            textMaxLength: self.textMaxLength,
+            approachesMaxLength: self.approachesMaxLength
         )
     }
 }
@@ -42,6 +44,8 @@ struct RegisterView: View {
         var error: String
         var isUsernameAvailable: Bool
         var isEmailAndPasswordValid: Bool
+        var textMaxLength: Int
+        var approachesMaxLength: Bool
     }
 
     typealias RegisterViewStore = ViewStore<RegisterView.ViewState, RegisterCore.Action.View>
@@ -300,10 +304,22 @@ struct RegisterView: View {
 
             HStack(spacing: 16) {
                 HStack(spacing: 16) {
-                    TextField("Your bio", text: viewStore.$register.biography)
+                    ZStack(alignment: .bottomTrailing) {
+                        TextField(
+                            "Your bio",
+                            text: viewStore.$register.biography,
+                            axis: .vertical
+                        )
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .multilineTextAlignment(.center)
+                        .padding(.trailing, 35)
+                        .fixedSize(horizontal: false, vertical: true)
+                        
+                        Text("\(viewStore.register.biography.count)/\(viewStore.textMaxLength)")
+                            .foregroundColor(viewStore.approachesMaxLength ? AppColor.error : AppColor.primary)
+                            .font(viewStore.approachesMaxLength ? .caption.bold() : .caption)
+                    }
                 }
                 .padding()
                 .overlay(

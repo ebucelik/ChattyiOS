@@ -12,12 +12,12 @@ import ComposableArchitecture
 struct SubscriptionRequestCore: Reducer {
 
     struct State: Equatable {
-        var ownAccountId: Int
+        var ownAccount: Account
         var subscriptionRequestsState: Loadable<[Account]>
 
-        init(ownAccountId: Int,
+        init(ownAccount: Account,
              subscriptionRequestsState: Loadable<[Account]> = .none) {
-            self.ownAccountId = ownAccountId
+            self.ownAccount = ownAccount
             self.subscriptionRequestsState = subscriptionRequestsState
         }
     }
@@ -40,10 +40,10 @@ struct SubscriptionRequestCore: Reducer {
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .fetchSubscriptionRequests:
-            return .run { [ownAccountId = state.ownAccountId] send in
+            return .run { [ownAccount = state.ownAccount] send in
                 await send(.subscriptionRequestsStateChanged(.loading))
 
-                let subscriptionRequestAccounts = try await service.getSubscriptionRequestsBy(id: ownAccountId)
+                let subscriptionRequestAccounts = try await service.getSubscriptionRequestsBy(id: ownAccount.id)
 
                 await send(.subscriptionRequestsStateChanged(.loaded(subscriptionRequestAccounts)))
             } catch: { error, send in
@@ -61,17 +61,17 @@ struct SubscriptionRequestCore: Reducer {
             return .none
 
         case let .acceptSubscription(subscriberAccount):
-            return .run { [ownAccountId = state.ownAccountId] send in
+            return .run { [ownAccount = state.ownAccount] send in
                 let subscriber = Subscriber(
                     userId: subscriberAccount.id,
-                    subscribedUserId: ownAccountId,
+                    subscribedUserId: ownAccount.id,
                     accepted: true
                 )
 
                 _ = try await service.acceptSubscription(subscriber: subscriber)
 
                 OneSignalClient.shared.sendPush(
-                    with: "@\(subscriberAccount.username) accepted your subscription.",
+                    with: "@\(ownAccount.username) accepted your subscription.",
                     title: "Chatty",
                     accountId: subscriberAccount.id
                 )
@@ -86,10 +86,10 @@ struct SubscriptionRequestCore: Reducer {
             }
 
         case let .declineSubscription(subscriberId):
-            return .run { [ownAccountId = state.ownAccountId] send in
+            return .run { [ownAccount = state.ownAccount] send in
                 let subscriber = Subscriber(
                     userId: subscriberId,
-                    subscribedUserId: ownAccountId
+                    subscribedUserId: ownAccount.id
                 )
 
                 _ = try await service.declineSubscription(subscriber: subscriber)
