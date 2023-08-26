@@ -39,7 +39,12 @@ struct FeedView: View {
 
                     viewStore.send(.onAppear)
                 }
-                .navigationTitle("Welcome \(viewStore.username)")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        ChattyIcon(width: 30, height: 30)
+                    }
+                }
             }
         }
     }
