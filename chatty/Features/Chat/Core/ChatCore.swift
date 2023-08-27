@@ -107,7 +107,8 @@ class ChatCore: Reducer {
                 )
 
             case let .view(.onReceive(chat)):
-                guard case var .loaded(chats) = state.chatsState else { return .none }
+                guard chat.session == state.chatSession.id,
+                      case var .loaded(chats) = state.chatsState else { return .none }
 
                 chats.append(chat)
 
