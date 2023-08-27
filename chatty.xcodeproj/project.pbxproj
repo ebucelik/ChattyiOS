@@ -305,6 +305,7 @@
 		7192749C29E0D4190029E547 /* FeedPostsCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsCall.swift; sourceTree = "<group>"; };
 		7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsServiceProtocol.swift; sourceTree = "<group>"; };
 		719274A029E0D5150029E547 /* FeedPostsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsService.swift; sourceTree = "<group>"; };
+		71ADB8372A9B4B2A00CB7E9E /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		71B5975A2973163D00EAECC2 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
 		71B5975C2973452D00EAECC2 /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
@@ -445,6 +446,7 @@
 		7123D7EF2A92A21800895FCD /* OneSignalNotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
+				71ADB8372A9B4B2A00CB7E9E /* OneSignalNotificationServiceExtension.entitlements */,
 				7123D7F02A92A21800895FCD /* NotificationService.swift */,
 				7123D7F22A92A21800895FCD /* Info.plist */,
 			);
@@ -1374,8 +1376,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -1401,8 +1404,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;

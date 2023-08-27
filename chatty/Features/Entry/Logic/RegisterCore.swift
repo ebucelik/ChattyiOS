@@ -200,7 +200,7 @@ class RegisterCore: Reducer {
                         await send(.registerStateChanged(.error(.error(error))))
                     }
                 }
-                .debounce(id: Debounce(), for: 1, scheduler: self.mainScheduler)
+                .debounce(id: Debounce(), for: 0.4, scheduler: self.mainScheduler)
 
             case let .registerStateChanged(registerStateDidChanged):
                 state.registerState = registerStateDidChanged

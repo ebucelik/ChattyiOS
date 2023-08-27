@@ -121,10 +121,20 @@ struct AccountView: View {
             ScrollView(.vertical) {
                 VStack(spacing: 24) {
                     if viewStore.isOtherAccount {
-                        ChattyImage(
-                            picture: account.picture,
-                            frame: CGSize(width: 125, height: 125)
-                        )
+                        VStack(spacing: 24) {
+                            ChattyImage(
+                                picture: account.picture,
+                                frame: CGSize(width: 125, height: 125)
+                            )
+
+                            VStack(spacing: 10) {
+                                Text(account.biography)
+                                    .font(AppFont.headline)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(AppColor.black)
+                        }
                     } else {
                         NavigationLink {
                             ProfilePictureView(
@@ -134,19 +144,22 @@ struct AccountView: View {
                                 )
                             )
                         } label: {
-                            ChattyImage(
-                                picture: account.picture,
-                                frame: CGSize(width: 125, height: 125)
-                            )
+                            VStack(spacing: 24) {
+                                ChattyImage(
+                                    picture: account.picture,
+                                    frame: CGSize(width: 125, height: 125)
+                                )
+
+                                VStack(spacing: 10) {
+                                    Text(account.biography)
+                                        .font(AppFont.headline)
+                                        .multilineTextAlignment(.center)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .foregroundColor(AppColor.black)
+                            }
                         }
                     }
-
-                    VStack(spacing: 10) {
-                        Text(account.biography)
-                            .font(AppFont.headline)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(AppColor.black)
 
                     HStack(spacing: 16) {
                         NavigationLink {

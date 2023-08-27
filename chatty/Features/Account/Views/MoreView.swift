@@ -39,7 +39,14 @@ struct MoreView: View {
                             .resizable()
                             .frame(width: 20, height: 20)
 
-                        Text("Donate now")
+                        VStack {
+                            Group {
+                                Text(product.displayName)
+                                Text(product.description)
+                                    .font(AppFont.caption)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
 
                         Spacer()
 

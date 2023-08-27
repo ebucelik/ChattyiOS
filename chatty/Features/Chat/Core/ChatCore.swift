@@ -39,6 +39,7 @@ class ChatCore: Reducer {
 
     enum Action: Equatable {
         case chatsStateChanged(Loadable<[Chat]>)
+        case setChatMessage(String)
         case view(View)
 
         public enum View: BindableAction, Equatable {
@@ -91,7 +92,7 @@ class ChatCore: Reducer {
 
                 OneSignalClient.shared.sendPush(
                     with: state.chat.message,
-                    title: state.receiverAccount.username,
+                    title: state.account.username,
                     accountId: state.receiverAccount.id
                 )
 
@@ -110,10 +111,19 @@ class ChatCore: Reducer {
 
                 chats.append(chat)
 
-                return .send(
-                    .chatsStateChanged(
-                        .loaded(chats)
-                    )
+                let message = state.chat.message
+
+                return .concatenate(
+                    [
+                        .send(
+                            .chatsStateChanged(
+                                .loaded(chats)
+                            )
+                        ),
+                        .send(
+                            .setChatMessage(message)
+                        )
+                    ]
                 )
 
             case .view(.cancelListeners):
@@ -128,6 +138,11 @@ class ChatCore: Reducer {
                 state.chatsState = chatsState
 
                 state.chat = .empty
+
+                return .none
+
+            case let .setChatMessage(message):
+                state.chat.message = message
 
                 return .none
 

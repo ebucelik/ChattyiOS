@@ -13,20 +13,12 @@ class OneSignalClient {
       "Authorization": "Basic OWQ2MWVlZGMtYThjNy00YTgzLTkxMzMtNzA2YTQyNmM3NzMw",
       "content-type": "application/json"
     ]
-    private var parameters: [String : Any]
 
     static let shared = OneSignalClient()
 
     static let appId = "4500c6ba-85dc-4990-bdc3-7e95aea9dd2f"
 
-    fileprivate init(
-        parameters: [String : Any] = [
-            "app_id": OneSignalClient.appId,
-            "include_aliases": "{\"external_id\":\"[29]\"}" // TODO: somehow get subscription ids.
-        ] as [String : Any]
-    ) {
-        self.parameters = parameters
-    }
+    fileprivate init() {}
 
     struct OneSignalError: Codable {
         let errors: [String]

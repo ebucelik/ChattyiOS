@@ -233,6 +233,7 @@ class AccountCore: Reducer {
                     return .merge(
                         [
                             .send(.fetchSubscriberInfo),
+                            state.isOtherAccount ? .send(.view(.fetchSubscriptionInfo)) : .none,
                             .send(.fetchPosts)
                         ]
                     )

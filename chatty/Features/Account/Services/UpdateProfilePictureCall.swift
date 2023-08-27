@@ -14,7 +14,7 @@ struct UpdateProfilePictureCall: Call {
     var httpMethod: HTTPMethod = .POST
     var body: Codable?
 
-    init(account: Account) {
+    init(account: Account) {
         self.body = account
     }
 }

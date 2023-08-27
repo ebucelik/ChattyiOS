@@ -13,6 +13,8 @@ struct OneSignalPush: Codable {
     let targetChannel: String
     let headings: [String: String]
     let contents: [String: String]
+    let iosBadgeType: String
+    let iosBadgeCount: Int
 
     struct ExternalId: Codable {
         let externalId: [String]
@@ -35,12 +37,16 @@ struct OneSignalPush: Codable {
          includeAliases: ExternalId,
          targetChannel: String,
          headings: [String : String],
-         contents: [String : String]) {
+         contents: [String : String],
+         iosBadgeType: String = "Increase",
+         iosBadgeCount: Int = 1) {
         self.appId = appId
         self.includeAliases = includeAliases
         self.targetChannel = targetChannel
         self.headings = headings
         self.contents = contents
+        self.iosBadgeType = iosBadgeType
+        self.iosBadgeCount = iosBadgeCount
     }
 
     init(from decoder: Decoder) throws {
@@ -50,6 +56,8 @@ struct OneSignalPush: Codable {
         targetChannel = try container.decode(String.self, forKey: .targetChannel)
         headings = try container.decode([String : String].self, forKey: .headings)
         contents = try container.decode([String : String].self, forKey: .contents)
+        iosBadgeType = try container.decode(String.self, forKey: .iosBadgeType)
+        iosBadgeCount = try container.decode(Int.self, forKey: .iosBadgeCount)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -58,5 +66,7 @@ struct OneSignalPush: Codable {
         case targetChannel = "target_channel"
         case headings
         case contents
+        case iosBadgeType = "ios_badgeType"
+        case iosBadgeCount = "ios_badgeCount"
     }
 }
