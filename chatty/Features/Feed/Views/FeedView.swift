@@ -53,10 +53,7 @@ struct FeedView: View {
     private func feedBody(_ viewStore: ViewStoreOf<FeedCore>, reader: GeometryProxy) -> some View {
         if viewStore.posts.isEmpty {
             InfoView(
-                text: """
-                            There are currently no posts available.
-                            Come back later again.
-                            """)
+                text: "There are currently no posts available.\nCome back later again.")
             .frame(maxWidth: .infinity)
             .listSeparatorSetting()
         } else {

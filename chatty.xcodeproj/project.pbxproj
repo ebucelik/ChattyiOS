@@ -119,6 +119,8 @@
 		7192749D29E0D4190029E547 /* FeedPostsCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749C29E0D4190029E547 /* FeedPostsCall.swift */; };
 		7192749F29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */; };
 		719274A129E0D5150029E547 /* FeedPostsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719274A029E0D5150029E547 /* FeedPostsService.swift */; };
+		71ADB83B2A9B8AC700CB7E9E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71ADB83D2A9B8AC700CB7E9E /* Localizable.strings */; };
+		71ADB8442A9B916A00CB7E9E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71ADB8422A9B916A00CB7E9E /* InfoPlist.strings */; };
 		71B5975B2973163D00EAECC2 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975A2973163D00EAECC2 /* FormData.swift */; };
 		71B5975D2973452D00EAECC2 /* AppFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B5975C2973452D00EAECC2 /* AppFont.swift */; };
 		71BC0D2A29DCD43D00F585C9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 71BC0D2929DCD43D00F585C9 /* SFSafeSymbols */; };
@@ -306,6 +308,9 @@
 		7192749E29E0D4CA0029E547 /* FeedPostsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsServiceProtocol.swift; sourceTree = "<group>"; };
 		719274A029E0D5150029E547 /* FeedPostsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostsService.swift; sourceTree = "<group>"; };
 		71ADB8372A9B4B2A00CB7E9E /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		71ADB83C2A9B8AC700CB7E9E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		71ADB83E2A9B8ADA00CB7E9E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		71ADB8432A9B916A00CB7E9E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		71B5975A2973163D00EAECC2 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
 		71B5975C2973452D00EAECC2 /* AppFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFont.swift; sourceTree = "<group>"; };
 		71BD35222895482800C85C10 /* AccountAvailabilityCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAvailabilityCall.swift; sourceTree = "<group>"; };
@@ -679,9 +684,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		71ADB83F2A9B8B5800CB7E9E /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				71ADB8412A9B8B6A00CB7E9E /* To Localizers */,
+				71ADB8402A9B8B6000CB7E9E /* From Localizers */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		71ADB8402A9B8B6000CB7E9E /* From Localizers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "From Localizers";
+			sourceTree = "<group>";
+		};
+		71ADB8412A9B8B6A00CB7E9E /* To Localizers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "To Localizers";
+			sourceTree = "<group>";
+		};
 		71C977B02878AA8C004A457D = {
 			isa = PBXGroup;
 			children = (
+				71ADB83D2A9B8AC700CB7E9E /* Localizable.strings */,
 				71C977BB2878AA8C004A457D /* chatty */,
 				71C977D22878AA8D004A457D /* chattyTests */,
 				71C977DC2878AA8D004A457D /* chattyUITests */,
@@ -709,6 +738,7 @@
 				71C978012878C401004A457D /* Shared */,
 				71C977F22878C0F2004A457D /* Features */,
 				71C977CA2878AA8D004A457D /* Info.plist */,
+				71ADB8422A9B916A00CB7E9E /* InfoPlist.strings */,
 				71C977F12878C06A004A457D /* Network */,
 				71C977F32878C108004A457D /* Resources */,
 			);
@@ -767,6 +797,7 @@
 		71C977F32878C108004A457D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				71ADB83F2A9B8B5800CB7E9E /* Localization */,
 				71C977BC2878AA8C004A457D /* AppDelegate.swift */,
 				71C977BE2878AA8C004A457D /* SceneDelegate.swift */,
 				71C977C52878AA8D004A457D /* Assets.xcassets */,
@@ -1119,6 +1150,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 71C977B02878AA8C004A457D;
 			packageReferences = (
@@ -1155,6 +1187,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				71C977C92878AA8D004A457D /* LaunchScreen.storyboard in Resources */,
+				71ADB8442A9B916A00CB7E9E /* InfoPlist.strings in Resources */,
+				71ADB83B2A9B8AC700CB7E9E /* Localizable.strings in Resources */,
 				71C977C62878AA8D004A457D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1361,6 +1395,23 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		71ADB83D2A9B8AC700CB7E9E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				71ADB83C2A9B8AC700CB7E9E /* en */,
+				71ADB83E2A9B8ADA00CB7E9E /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		71ADB8422A9B916A00CB7E9E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				71ADB8432A9B916A00CB7E9E /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		71C977C72878AA8D004A457D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1378,7 +1429,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -1406,7 +1457,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -1432,6 +1483,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1492,6 +1544,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1550,7 +1603,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = chatty/chatty.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;
@@ -1587,7 +1640,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = chatty/chatty.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7UZH6B548Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatty/Info.plist;

@@ -1,0 +1,6 @@
+/* Privacy - Location Usage Description */
+"NSLocationUsageDescription" = "";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Wird benötigt um Zugriff auf Ihre Foto Galerie zu erhalten.";
+

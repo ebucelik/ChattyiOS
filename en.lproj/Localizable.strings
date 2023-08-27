@@ -1,0 +1,65 @@
+/* 
+  Localizable.strings
+  chatty
+
+  Created by Ing. Ebu Celik, BSc on 27.08.23.
+  
+*/
+
+"lookforfriends" = "Look for friends, family or new people.";
+
+"nopostsavailable" = "No posts available.";
+
+"uploadfirstpost" = "Let's upload your first post.";
+
+"youandyourpartner" = "You and your partner have to subscribe each other to be able to chat.";
+
+"deletepicture" = "Delete picture";
+
+"updateprofile" = "Update profile";
+
+"Subscribed" = "Subscribed";
+
+"Subscription was sent" = "Subscription was sent";
+
+"I want to know" = "I want to know";
+
+"Error" = "Error";
+
+"An error occured while fetching a post..." = "An error occured while fetching a post...";
+
+"An error occured while uploading your post..." = "An error occured while uploading your post...";
+
+"An error occured while fetching your posts..." = "An error occured while fetching your posts...";
+
+"An error appeared while trying to fetch the chat." = "An error appeared while trying to fetch the chat.";
+
+"An error appeared while trying to fetch your data from our servers..." = "An error appeared while trying to fetch your data from our servers...";
+
+"Seems like an error appeared when fetching your subscription requests..." = "Seems like an error appeared when fetching your subscription requests...";
+
+"Buy me a coffee" = "Buy me a coffee";
+
+"This donation is going to the app-developer." = "This donation is going to the app developer.";
+
+"There are currently no posts available.\nCome back later again." = "There are currently no posts available.\nCome back later again.";
+
+"No profiles found." = "No profiles found.";
+
+"No subscription requests available." = "No subscription requests available.";
+
+"Log in" = "Log in";
+
+"Step 2" = "Step 2";
+
+"Just one step is missing" = "Just one step is missing";
+
+"Start with Chatty" = "Start with Chatty";
+
+"There are currently no chats available.\nStart a chat now 🥸" = "There are currently no chats available.\nStart a chat now 🥸";
+
+"No messages available.\nStart the chat now." = "No messages available.\nStart the chat now.";
+
+" would like to subscribe you." = " would like to subscribe you.";
+
+" accepted your subscription." = " accepted your subscription.";

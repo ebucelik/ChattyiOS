@@ -92,7 +92,7 @@ class UploadPostCore: Reducer {
                         await send(
                             .postStateChanged(
                                 .error(
-                                    APIError.unexpectedError("An error occured while uploading your post...")
+                                    APIError.unexpectedError("An error occured while uploading your post...".localize())
                                 )
                             )
                         )

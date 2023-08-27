@@ -71,7 +71,8 @@ struct SubscriptionRequestCore: Reducer {
                 _ = try await service.acceptSubscription(subscriber: subscriber)
 
                 OneSignalClient.shared.sendPush(
-                    with: "@\(ownAccount.username) accepted your subscription.",
+                    with: " accepted your subscription.",
+                    username: "@\(ownAccount.username)",
                     title: "",
                     accountId: subscriberAccount.id
                 )

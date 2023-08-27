@@ -59,7 +59,7 @@ public struct ChattyButton: View {
                         .progressViewStyle(CircularProgressViewStyle())
                         .tint(.white)
                 } else {
-                    Text(text)
+                    Text(text.localize())
                         .font(AppFont.headline)
                         .bold()
                         .foregroundColor(.white)

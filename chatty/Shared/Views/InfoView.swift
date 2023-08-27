@@ -17,6 +17,6 @@ struct InfoView: View {
     }
 
     var body: some View {
-        BaseInfoErrorView(text: text, context: .info, action: action)
+        BaseInfoErrorView(text: text.localize(), context: .info, action: action)
     }
 }

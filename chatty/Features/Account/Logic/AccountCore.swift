@@ -350,7 +350,8 @@ class AccountCore: Reducer {
                     let subscriptionInfo = try await self.subscriberService.subscribe(subscriber: subscriber)
 
                     OneSignalClient.shared.sendPush(
-                        with: "@\(ownAccount.username) would like to subscribe you.",
+                        with: " would like to subscribe you.",
+                        username: "@\(ownAccount.username)",
                         title: "",
                         accountId: account.id
                     )

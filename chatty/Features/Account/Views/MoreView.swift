@@ -41,8 +41,8 @@ struct MoreView: View {
 
                         VStack {
                             Group {
-                                Text(product.displayName)
-                                Text(product.description)
+                                Text(product.displayName.localize())
+                                Text(product.description.localize())
                                     .font(AppFont.caption)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)

@@ -1,0 +1,8 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "Chatty";
+/* Bundle name */
+"CFBundleName" = "chatty";
+/* Privacy - Location Usage Description */
+"NSLocationUsageDescription" = "We would like to use your location for this app.";
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Used to access the Image Gallery";

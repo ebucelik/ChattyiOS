@@ -80,7 +80,7 @@ struct SearchView: View {
 
                 case .none:
                     VStack {
-                        InfoView(text: "Look for friends, family or new people.")
+                        InfoView(text: "lookforfriends")
                     }
                     .navigationTitle("Search Accounts")
 

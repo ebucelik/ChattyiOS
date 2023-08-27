@@ -69,7 +69,7 @@ struct LoginView: View {
                 HStack(spacing: 16) {
                     Image(systemSymbol: .personFill)
                         .foregroundColor(AppColor.gray)
-                    TextField("Email", text: viewStore.$login.email)
+                    TextField("E-Mail", text: viewStore.$login.email)
                         .textContentType(.emailAddress)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)

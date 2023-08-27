@@ -24,7 +24,11 @@ class OneSignalClient {
         let errors: [String]
     }
 
-    func sendPush(with message: String, title: String, accountId: Int) {
+    func sendPush(with message: String,
+                  username: String = "",
+                  title: String,
+                  accountId: Int) {
+
         let oneSignalPush = OneSignalPush(
             appId: OneSignalClient.appId,
             includeAliases: OneSignalPush.ExternalId(
@@ -32,10 +36,12 @@ class OneSignalClient {
             ),
             targetChannel: "push",
             headings: [
-                "en": title
+                "en": title,
+                "de": title
             ],
             contents: [
-                "en": message
+                "en": username + message,
+                "de": username + message.localize(defaultLanguage: "de")
             ]
         )
         

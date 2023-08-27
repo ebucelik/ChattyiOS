@@ -315,7 +315,7 @@ struct AccountView: View {
         case let .loaded(posts):
             if posts.isEmpty {
                 InfoView(
-                    text: viewStore.isOtherAccount ? "No posts available." : "Let's upload your first post."
+                    text: viewStore.isOtherAccount ? "nopostsavailable" : "uploadfirstpost"
                 )
             } else {
                 LazyVGrid(columns: columns) {

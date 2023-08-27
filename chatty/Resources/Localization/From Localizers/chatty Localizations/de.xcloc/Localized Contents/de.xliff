@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="chatty/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="14.3.1" build-num="14E300c"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" xml:space="preserve">
+        <source>Chatty</source>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>chatty</source>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSLocationUsageDescription" xml:space="preserve">
+        <source>We would like to use your location for this app.</source>
+        <target/>
+        <note>Privacy - Location Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription" xml:space="preserve">
+        <source>Used to access the Image Gallery</source>
+        <target>Wird benötigt um Zugriff auf Ihre Foto Galerie zu erhalten.</target>
+        <note>Privacy - Photo Library Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="en.lproj/Localizable.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="14.3.1" build-num="14E300c"/>
+    </header>
+    <body>
+      <trans-unit id="%@" xml:space="preserve">
+        <source>%@</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="%lld" xml:space="preserve">
+        <source>%lld</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="%lld/%lld" xml:space="preserve">
+        <source>%lld/%lld</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Account deletion" xml:space="preserve">
+        <source>Account deletion</source>
+        <target>Profil löschen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Already have an account?" xml:space="preserve">
+        <source>Already have an account?</source>
+        <target>Du bist bereits registriert?</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="An error occured while trying to delete your post..." xml:space="preserve">
+        <source>An error occured while trying to delete your post...</source>
+        <target>Ein Fehler ist entstanden während des Löschen deines Posts...</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Are you sure you want to delete your post?" xml:space="preserve">
+        <source>Are you sure you want to delete your post?</source>
+        <target>Möchtest du deinen Beitrag wirklich löschen?</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Available Accounts To Chat" xml:space="preserve">
+        <source>Available Accounts To Chat</source>
+        <target>Verfügbare Accounts zum Chatten</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Back" xml:space="preserve">
+        <source>Back</source>
+        <target>Zurück</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="By checking this box, you are agreeing to our " xml:space="preserve">
+        <source>By checking this box, you are agreeing to our </source>
+        <target>Bei aktivieren des Toggles, stimmen Sie unseren zu</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target>Abbrechen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Chats" xml:space="preserve">
+        <source>Chats</source>
+        <target>Chats</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Delete" xml:space="preserve">
+        <source>Delete</source>
+        <target>Löschen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Delete account" xml:space="preserve">
+        <source>Delete account</source>
+        <target>Profil löschen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Delete permanently" xml:space="preserve">
+        <source>Delete permanently</source>
+        <target>Permanent löschen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Do you really want to delete your account permanently?" xml:space="preserve">
+        <source>Do you really want to delete your account permanently?</source>
+        <target>Möchtest du dein Profil permanent löschen?</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Don't have an account?" xml:space="preserve">
+        <source>Don't have an account?</source>
+        <target>Du hast kein Profil?</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="E-Mail" xml:space="preserve">
+        <source>E-Mail</source>
+        <target>E-Mail</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Edit profile" xml:space="preserve">
+        <source>Edit profile</source>
+        <target>Profil editieren</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Email" xml:space="preserve">
+        <source>Email</source>
+        <target>Email</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Enter your email and password" xml:space="preserve">
+        <source>Enter your email and password</source>
+        <target>E-Mail und Passwort eingeben</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="In the first step, enter your username" xml:space="preserve">
+        <source>In the first step, enter your username</source>
+        <target>Als Erstes bitte einen Benutzernamen aussuchen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="More" xml:space="preserve">
+        <source>More</source>
+        <target>Mehr</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Ok" xml:space="preserve">
+        <source>Ok</source>
+        <target>Ok</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Password" xml:space="preserve">
+        <source>Password</source>
+        <target>Passwort</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Post deletion" xml:space="preserve">
+        <source>Post deletion</source>
+        <target>Beitrag löschen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Posts" xml:space="preserve">
+        <source>Posts</source>
+        <target>Beiträge</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Privacy policy" xml:space="preserve">
+        <source>Privacy policy</source>
+        <target>Datenschutzrichtlinie</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Report" xml:space="preserve">
+        <source>Report</source>
+        <target>Melden</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Report reasons" xml:space="preserve">
+        <source>Report reasons</source>
+        <target>Meldegrund</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Search Accounts" xml:space="preserve">
+        <source>Search Accounts</source>
+        <target>Profile suchen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Search here 🤩" xml:space="preserve">
+        <source>Search here 🤩</source>
+        <target>Suche hier 🤩</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Send a message ..." xml:space="preserve">
+        <source>Send a message ...</source>
+        <target>Sende eine Nachricht ...</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Sign in now." xml:space="preserve">
+        <source>Sign in now.</source>
+        <target>Jetzt einloggen.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Sign out" xml:space="preserve">
+        <source>Sign out</source>
+        <target>Ausloggen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Sign up now." xml:space="preserve">
+        <source>Sign up now.</source>
+        <target>Jetzt registrieren.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Subscribed" xml:space="preserve">
+        <source>Subscribed</source>
+        <target>Abonniert</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Subscriber" xml:space="preserve">
+        <source>Subscriber</source>
+        <target>Abonnenten</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Subscription Requests" xml:space="preserve">
+        <source>Subscription Requests</source>
+        <target>Abonnementanfragen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Take a minute to upload a profile picture." xml:space="preserve">
+        <source>Take a minute to upload a profile picture.</source>
+        <target>Nimm dir eine Minute um ein Profilbild hochzuladen.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="To get started, enter your email and password" xml:space="preserve">
+        <source>To get started, enter your email and password</source>
+        <target>Um zu starten, trage E-Mail und Passwort ein</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Upload" xml:space="preserve">
+        <source>Upload</source>
+        <target>Hochladen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Username" xml:space="preserve">
+        <source>Username</source>
+        <target>Benutzername</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Welcome %@" xml:space="preserve">
+        <source>Welcome %@</source>
+        <target>Willkommen %@</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Why are you reporting this post?" xml:space="preserve">
+        <source>Why are you reporting this post?</source>
+        <target>Was ist der Grund dieser Beitragsmeldung?</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Write a caption..." xml:space="preserve">
+        <source>Write a caption...</source>
+        <target>Erstelle eine Bildunterschrift...</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="You have all shared posts from your friends.&#10;Come back later again." xml:space="preserve">
+        <source>You have all shared posts from your friends.
+Come back later again.</source>
+        <target>Du hast alle geteilten Beiträge deiner Freunde.
+Komm später wieder.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="You're all set!" xml:space="preserve">
+        <source>You're all set!</source>
+        <target>Du bist bereit!</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Your bio" xml:space="preserve">
+        <source>Your bio</source>
+        <target>Deine Bio</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Your report is anonymous." xml:space="preserve">
+        <source>Your report is anonymous.</source>
+        <target>Deine Meldung ist anonym.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Your report was successfully delivered. We are sorry for this experience." xml:space="preserve">
+        <source>Your report was successfully delivered. We are sorry for this experience.</source>
+        <target>Dein Beitrag ist erfolgreich eingereicht.
+Wir entschuldigen uns für diese Erfahrung.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="terms of service." xml:space="preserve">
+        <source>terms of service.</source>
+        <target>Nutzungsbedingungen</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="OneSignalNotificationServiceExtension/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="14.3.1" build-num="14E300c"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" xml:space="preserve">
+        <source>OneSignalNotificationServiceExtension</source>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>OneSignalNotificationServiceExtension</source>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSHumanReadableCopyright" xml:space="preserve">
+        <source/>
+        <note>Copyright (human-readable)</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

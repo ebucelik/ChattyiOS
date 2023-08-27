@@ -18,6 +18,6 @@ struct ErrorView: View {
     }
 
     var body: some View {
-        BaseInfoErrorView(text: text, context: .error, action: action)
+        BaseInfoErrorView(text: text.localize(), context: .error, action: action)
     }
 }

@@ -47,7 +47,8 @@ struct AvailableChatAccountsView: View {
     private func availableChatAccountsBody(_ viewStore: ViewStoreOf<AvailableChatAccountsCore>, accounts: [Account]) -> some View {
         if accounts.isEmpty {
             InfoView(
-                text: "You and your partner have to subscribe each other to be able to chat.")
+                text: "youandyourpartner"
+            )
             .frame(maxWidth: .infinity)
             .listSeparatorSetting()
         } else {

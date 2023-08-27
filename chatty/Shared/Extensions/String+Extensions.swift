@@ -15,4 +15,17 @@ public extension String {
 
         return UIImage(data: imageData)
     }
+
+    func localize(defaultLanguage: String = "en", comment: String = "") -> String {
+        let value = NSLocalizedString(self, comment: comment)
+
+        if value != self || NSLocale.preferredLanguages.first == defaultLanguage {
+            return value
+        }
+
+        guard let path = Bundle.main.path(forResource: defaultLanguage, ofType: "lproj"),
+              let bundle = Bundle(path: path) else { return value }
+
+        return NSLocalizedString(self, bundle: bundle, comment: "")
+    }
 }

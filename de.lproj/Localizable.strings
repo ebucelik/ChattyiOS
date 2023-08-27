@@ -1,0 +1,201 @@
+/* No comment provided by engineer. */
+"Account deletion" = "Profil löschen";
+
+/* No comment provided by engineer. */
+"Already have an account?" = "Du bist bereits registriert?";
+
+/* No comment provided by engineer. */
+"An error occured while trying to delete your post..." = "Ein Fehler ist entstanden während des Löschen deines Posts...";
+
+/* No comment provided by engineer. */
+"Are you sure you want to delete your post?" = "Möchtest du deinen Beitrag wirklich löschen?";
+
+/* No comment provided by engineer. */
+"Available Accounts To Chat" = "Verfügbare Accounts zum Chatten";
+
+/* No comment provided by engineer. */
+"Back" = "Zurück";
+
+/* No comment provided by engineer. */
+"By checking this box, you are agreeing to our " = "Bei aktivieren des Toggles, stimmst du unseren zu ";
+
+/* No comment provided by engineer. */
+"Cancel" = "Abbrechen";
+
+/* No comment provided by engineer. */
+"Chats" = "Chats";
+
+/* No comment provided by engineer. */
+"Delete" = "Löschen";
+
+/* No comment provided by engineer. */
+"Delete account" = "Profil löschen";
+
+/* No comment provided by engineer. */
+"Delete permanently" = "Permanent löschen";
+
+/* No comment provided by engineer. */
+"Do you really want to delete your account permanently?" = "Möchtest du dein Profil permanent löschen?";
+
+/* No comment provided by engineer. */
+"Don't have an account?" = "Du hast kein Profil?";
+
+/* No comment provided by engineer. */
+"E-Mail" = "E-Mail";
+
+/* No comment provided by engineer. */
+"Edit profile" = "Profil editieren";
+
+/* No comment provided by engineer. */
+"Enter your email and password" = "E-Mail und Passwort eingeben";
+
+/* No comment provided by engineer. */
+"In the first step, enter your username" = "Als Erstes such dir bitte einen Benutzernamen aus";
+
+/* No comment provided by engineer. */
+"More" = "Mehr";
+
+/* No comment provided by engineer. */
+"Ok" = "Ok";
+
+/* No comment provided by engineer. */
+"Password" = "Passwort";
+
+/* No comment provided by engineer. */
+"Post deletion" = "Beitrag löschen";
+
+/* No comment provided by engineer. */
+"Posts" = "Beiträge";
+
+/* No comment provided by engineer. */
+"Privacy policy" = "Datenschutzrichtlinie";
+
+/* No comment provided by engineer. */
+"Report" = "Melden";
+
+/* No comment provided by engineer. */
+"Report reasons" = "Meldegrund";
+
+/* No comment provided by engineer. */
+"Search Accounts" = "Profile suchen";
+
+/* No comment provided by engineer. */
+"Search here 🤩" = "Suche hier 🤩";
+
+/* No comment provided by engineer. */
+"Send a message ..." = "Sende eine Nachricht ...";
+
+/* No comment provided by engineer. */
+"Sign in now." = "Jetzt einloggen.";
+
+/* No comment provided by engineer. */
+"Sign out" = "Ausloggen";
+
+/* No comment provided by engineer. */
+"Sign up now." = "Jetzt registrieren.";
+
+/* No comment provided by engineer. */
+"Subscribed" = "Abonniert";
+
+/* No comment provided by engineer. */
+"Subscriber" = "Abonnenten";
+
+/* No comment provided by engineer. */
+"Subscription Requests" = "Abonnementanfragen";
+
+/* No comment provided by engineer. */
+"Take a minute to upload a profile picture." = "Nimm dir eine Minute um ein Profilbild hochzuladen.";
+
+/* No comment provided by engineer. */
+"terms of service." = "Nutzungsbedingungen";
+
+/* No comment provided by engineer. */
+"To get started, enter your email and password" = "Um zu starten, trage E-Mail und Passwort ein";
+
+/* No comment provided by engineer. */
+"Upload" = "Hochladen";
+
+/* No comment provided by engineer. */
+"Username" = "Benutzername";
+
+/* No comment provided by engineer. */
+"Welcome %@" = "Willkommen %@";
+
+/* No comment provided by engineer. */
+"Why are you reporting this post?" = "Was ist der Grund dieser Beitragsmeldung?";
+
+/* No comment provided by engineer. */
+"Write a caption..." = "Erstelle eine Bildunterschrift...";
+
+/* No comment provided by engineer. */
+"You have all shared posts from your friends.\nCome back later again." = "Du hast alle geteilten Beiträge deiner Freunde.\nKomm später wieder.";
+
+/* No comment provided by engineer. */
+"You're all set!" = "Du bist bereit!";
+
+/* No comment provided by engineer. */
+"Your bio" = "Deine Bio";
+
+/* No comment provided by engineer. */
+"Your report is anonymous." = "Deine Meldung ist anonym.";
+
+/* No comment provided by engineer. */
+"Your report was successfully delivered. We are sorry for this experience." = "Dein Beitrag ist erfolgreich eingereicht.\nWir entschuldigen uns für diese Erfahrung.";
+
+"lookforfriends" = "Suche nach Freunden, Familie oder neuen Personen.";
+
+"nopostsavailable" = "Keine Beträge verfügbar.";
+
+"uploadfirstpost" = "Lade deinen ersten Beitrag hoch.";
+
+"youandyourpartner" = "Ihr müsst euch gegenseitig abonniert haben um einen Chat zu starten.";
+
+"deletepicture" = "Profilbild löschen";
+
+"updateprofile" = "Profil aktualisieren";
+
+"Subscribed" = "Abonniert";
+
+"Subscription was sent" = "Abonnentenanfrage ist versendet";
+
+"I want to know" = "Ich möchte kennenlernen";
+
+"Error" = "Fehler";
+
+"An error occured while fetching a post..." = "Ein Fehler ist aufgetreten während des Ladens des Beitrages...";
+
+"An error occured while uploading your post..." = "Ein Fehler ist aufgetreten während des Hochladens deines Beitrages...";
+
+"An error occured while fetching your posts..." = "Ein Fehler ist aufgetreten während des Ladens deiner Beiträge...";
+
+"An error appeared while trying to fetch the chat." = "Ein Fehler ist aufgetreten während des Ladens des Chats.";
+
+"An error appeared while trying to fetch your data from our servers..." = "Ein Fehler ist aufgetreten während des Ladens der Daten von unseren Servern...";
+
+"Seems like an error appeared when fetching your subscription requests..." = "Ein Fehler ist aufgetreten während des Ladens der Abonnentenanfragen...";
+
+"Buy me a coffee" = "Spendier mir einen Kaffee";
+
+"This donation is going to the app-developer." = "Diese Spende geht an den App-Entwickler.";
+
+"There are currently no posts available.\nCome back later again." = "Aktuell sind keine geteilten Beiträge verfügbar.\nKomm später wieder.";
+
+"No profiles found." = "Keine Profile gefunden.";
+
+"No subscription requests available." = "Keine Abonnentenanfragen verfügbar.";
+
+"Log in" = "Einloggen";
+
+"Step 2" = "Weiter zu Schritt 2";
+
+"Just one step is missing" = "Ein letzter Schritt fehlt noch";
+
+"Start with Chatty" = "Starte jetzt mit Chatty";
+
+"There are currently no chats available.\nStart a chat now 🥸" = "Aktuell sind keine Chats verfügbar.\nStarte jetzt einen Chat 🥸";
+
+"No messages available.\nStart the chat now." = "Keine Nachrichten verfügbar.\nStarte jetzt den Chat.";
+
+" would like to subscribe you." = " hat dir eine Abo-Anfrage geschickt.";
+
+" accepted your subscription." = " hat deine Anfrage akzeptiert.";
