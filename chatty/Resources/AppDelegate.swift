@@ -17,13 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         OneSignal.initialize(OneSignalClient.appId, withLaunchOptions: launchOptions)
 
-        OneSignal.Notifications.requestPermission(
-            { accepted in
-                print("User accepted notifications: \(accepted)")
-            },
-            fallbackToSettings: true
-        )
-
         OneSignal.User.setLanguage(Locale.current.language.languageCode?.identifier ?? "en")
 
         OneSignal.User.pushSubscription.optIn()
