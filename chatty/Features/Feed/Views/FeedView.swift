@@ -13,7 +13,7 @@ struct FeedView: View {
     let store: StoreOf<FeedCore>
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             WithViewStore(store, observe: { $0 }) { viewStore in
                 VStack {
                     GeometryReader { reader in

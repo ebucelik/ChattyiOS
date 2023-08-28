@@ -95,7 +95,6 @@
 		716E7F44295E3590006C5513 /* AccountCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F43295E3590006C5513 /* AccountCore.swift */; };
 		716E7F46295E36AF006C5513 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716E7F45295E36AF006C5513 /* LoadingView.swift */; };
 		717E9E292A99EE1C007C26A8 /* UpdateBiographyCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */; };
-		717E9E2B2A9A20DA007C26A8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */; };
 		717E9E2E2A9A2151007C26A8 /* InAppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E9E2D2A9A2151007C26A8 /* InAppStore.swift */; };
 		71840FD1299187FA00511953 /* DeletePostCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71840FD0299187FA00511953 /* DeletePostCall.swift */; };
 		7184D10C29906F4500B617E0 /* ChattyNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */; };
@@ -144,6 +143,7 @@
 		71D322E829E32B1600E78240 /* BannerViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322E729E32B1600E78240 /* BannerViewModifier.swift */; };
 		71D322EB29E32B8D00E78240 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D322EA29E32B8D00E78240 /* Banner.swift */; };
 		71D7D6F3295EF94D00484831 /* SwiftHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 71D7D6F2295EF94D00484831 /* SwiftHelper */; };
+		71DB0D442A9CCBC40096458B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71DB0D432A9CCBC40096458B /* StoreKit.framework */; };
 		71DE7CEC2A96760F00DE8672 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 71DE7CEB2A96760F00DE8672 /* CachedAsyncImage */; };
 		71DE7CEE2A9678C700DE8672 /* URLCache+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DE7CED2A9678C700DE8672 /* URLCache+Extensions.swift */; };
 		71EE5C6A297F4560001C0908 /* SearchCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EE5C69297F4560001C0908 /* SearchCall.swift */; };
@@ -284,7 +284,6 @@
 		716E7F43295E3590006C5513 /* AccountCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCore.swift; sourceTree = "<group>"; };
 		716E7F45295E36AF006C5513 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBiographyCall.swift; sourceTree = "<group>"; };
-		717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		717E9E2D2A9A2151007C26A8 /* InAppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppStore.swift; sourceTree = "<group>"; };
 		71840FD0299187FA00511953 /* DeletePostCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePostCall.swift; sourceTree = "<group>"; };
 		7184D10B29906F4500B617E0 /* ChattyNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattyNavigationView.swift; sourceTree = "<group>"; };
@@ -336,6 +335,7 @@
 		71D322E529E32A7600E78240 /* UniversalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalHelper.swift; sourceTree = "<group>"; };
 		71D322E729E32B1600E78240 /* BannerViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModifier.swift; sourceTree = "<group>"; };
 		71D322EA29E32B8D00E78240 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		71DB0D432A9CCBC40096458B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		71DE7CED2A9678C700DE8672 /* URLCache+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLCache+Extensions.swift"; sourceTree = "<group>"; };
 		71EE5C69297F4560001C0908 /* SearchCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCall.swift; sourceTree = "<group>"; };
 		71EE5C6B297F45AA001C0908 /* SearchServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceProtocol.swift; sourceTree = "<group>"; };
@@ -374,7 +374,7 @@
 				7192065929E470B400B52109 /* SocketIO in Frameworks */,
 				7123D7E62A92A02D00895FCD /* OneSignalInAppMessages in Frameworks */,
 				71005642287ACE8600EBD93A /* ComposableArchitecture in Frameworks */,
-				717E9E2B2A9A20DA007C26A8 /* StoreKit.framework in Frameworks */,
+				71DB0D442A9CCBC40096458B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,7 +679,7 @@
 		7192065729E470B400B52109 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				717E9E2A2A9A20DA007C26A8 /* StoreKit.framework */,
+				71DB0D432A9CCBC40096458B /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
