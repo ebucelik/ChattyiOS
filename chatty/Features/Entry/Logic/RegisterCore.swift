@@ -374,7 +374,7 @@ class RegisterCore: Reducer {
                 state.usernameAvailableState = .none
                 state.emailAvailableState = .none
                 state.passwordValidState = .none
-                state.viewState = .profilePictureView
+                state.viewState = .usernameView
                 state.picture = nil
 
                 return .none

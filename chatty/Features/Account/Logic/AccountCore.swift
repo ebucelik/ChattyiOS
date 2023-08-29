@@ -34,6 +34,16 @@ class AccountCore: Reducer {
             ownAccountId != nil
         }
 
+        var isSubscribed: Bool {
+            if isOtherAccount,
+               case let .loaded(subscriptionInfo) = subscriptionInfoState,
+               subscriptionInfo.accepted {
+                return true
+            }
+
+            return false
+        }
+
         var accountId: Int? {
             if case let .loaded(account) = accountState {
                 return account.id
@@ -154,13 +164,16 @@ class AccountCore: Reducer {
 
             case toggleNewUpdatesAvailable
 
-            case showMore
+            case showMore(Bool)
 
             case logout
             case loggedOut
 
             case didDeleteAccount
             case didDeleteAccountTapped
+
+            case blockAccount
+            case blockAccountStateChanged(Loadable<BlockedAccount>)
 
             case setShowPrivacyPolicyWebView(Bool)
 
@@ -445,8 +458,8 @@ class AccountCore: Reducer {
 
                 return .none
 
-            case .view(.showMore):
-                state.showMore.toggle()
+            case let .view(.showMore(value)):
+                state.showMore = value
 
                 return .none
 
@@ -481,6 +494,38 @@ class AccountCore: Reducer {
 
             case let .view(.setShowPrivacyPolicyWebView(value)):
                 state.showPrivacyPolicyWebView = value
+
+                return .none
+
+            case .view(.blockAccount):
+                guard case let .loaded(account) = state.accountState,
+                      let ownAccountId = state.ownAccountId else { return .none }
+
+                let blockedAccount = BlockedAccount(
+                    id: 0,
+                    userId: ownAccountId,
+                    blockedUserId: account.id
+                )
+
+                return .run { send in
+                    await send(.view(.blockAccountStateChanged(.loading)))
+
+                    let blockedAccountResponse = try await self.service.blockAccount(blockedAccount: blockedAccount)
+
+                    await send(.view(.blockAccountStateChanged(.loaded(blockedAccountResponse))))
+                } catch: { error, send in
+                    if let apiError = error as? APIError {
+                        await send(.view(.blockAccountStateChanged(.error(apiError))))
+                    } else {
+                        await send(.view(.blockAccountStateChanged(.error(.error(error)))))
+                    }
+                }
+
+            case let .view(.blockAccountStateChanged(blockAccountState)):
+
+                if case .loaded = blockAccountState {
+                    return .send(.view(.fetchAccount))
+                }
 
                 return .none
 

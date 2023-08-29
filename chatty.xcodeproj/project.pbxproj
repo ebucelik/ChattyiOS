@@ -86,6 +86,8 @@
 		7166BEA72882DBA90061E03B /* FeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA62882DBA90061E03B /* FeedCore.swift */; };
 		7166BEAA2882DC550061E03B /* LogoutCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEA92882DC550061E03B /* LogoutCall.swift */; };
 		7166BEAC2882DE490061E03B /* LogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166BEAB2882DE490061E03B /* LogoutService.swift */; };
+		7168C3952A9E271700C94663 /* BlockedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7168C3942A9E271700C94663 /* BlockedAccount.swift */; };
+		7168C3972A9E276500C94663 /* BlockedAccountCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7168C3962A9E276500C94663 /* BlockedAccountCall.swift */; };
 		71692CCF28EB598E0025673A /* CustomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CCE28EB598E0025673A /* CustomUI.swift */; };
 		71692CD128EB82EF0025673A /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD028EB82EF0025673A /* UIImage+Extensions.swift */; };
 		71692CD328EB832D0025673A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71692CD228EB832D0025673A /* String+Extensions.swift */; };
@@ -275,6 +277,8 @@
 		7166BEA62882DBA90061E03B /* FeedCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCore.swift; sourceTree = "<group>"; };
 		7166BEA92882DC550061E03B /* LogoutCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutCall.swift; sourceTree = "<group>"; };
 		7166BEAB2882DE490061E03B /* LogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutService.swift; sourceTree = "<group>"; };
+		7168C3942A9E271700C94663 /* BlockedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedAccount.swift; sourceTree = "<group>"; };
+		7168C3962A9E276500C94663 /* BlockedAccountCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedAccountCall.swift; sourceTree = "<group>"; };
 		71692CCE28EB598E0025673A /* CustomUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUI.swift; sourceTree = "<group>"; };
 		71692CD028EB82EF0025673A /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		71692CD228EB832D0025673A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -483,6 +487,7 @@
 				713F6C1C2A97D57700F8584E /* DeleteAccountCall.swift */,
 				714036E22A993D9C00522C06 /* UpdateProfilePictureCall.swift */,
 				717E9E282A99EE1C007C26A8 /* UpdateBiographyCall.swift */,
+				7168C3962A9E276500C94663 /* BlockedAccountCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -883,6 +888,7 @@
 			isa = PBXGroup;
 			children = (
 				7100564C287AD3DD00EBD93A /* Account.swift */,
+				7168C3942A9E271700C94663 /* BlockedAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1249,6 +1255,7 @@
 				71692CCF28EB598E0025673A /* CustomUI.swift in Sources */,
 				71EE5C6C297F45AA001C0908 /* SearchServiceProtocol.swift in Sources */,
 				718BF4B5297AA8880049297F /* SubscriptionRequestCall.swift in Sources */,
+				7168C3952A9E271700C94663 /* BlockedAccount.swift in Sources */,
 				7123D7FB2A92A80700895FCD /* OneSignalClient.swift in Sources */,
 				7137C83D29741B400077D91C /* AccountServiceProtocol.swift in Sources */,
 				713887BF2975FA5F00BF01DA /* SubscriberServiceProtocol.swift in Sources */,
@@ -1277,6 +1284,7 @@
 				7137C83B29741A8E0077D91C /* AccountCall.swift in Sources */,
 				713887B72975F7C500BF01DA /* SubscriptionInfoCall.swift in Sources */,
 				719274A129E0D5150029E547 /* FeedPostsService.swift in Sources */,
+				7168C3972A9E276500C94663 /* BlockedAccountCall.swift in Sources */,
 				71B5975B2973163D00EAECC2 /* FormData.swift in Sources */,
 				71D322E429E31F9F00E78240 /* ListSeparatorSetting.swift in Sources */,
 				71526D4A298FF04E00588C7D /* PostCore.swift in Sources */,

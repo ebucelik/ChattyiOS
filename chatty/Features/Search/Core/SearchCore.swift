@@ -88,6 +88,11 @@ struct SearchCore: Reducer {
 
                 return .none
 
+            case .account(id: _, action: .view(.blockAccountStateChanged(.loaded))):
+                state.searchQuery = ""
+
+                return .send(.view(.searchBy(state.searchQuery)))
+
             case .account:
                 return .none
 

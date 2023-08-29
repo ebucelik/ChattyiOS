@@ -24,9 +24,10 @@ extension BindingViewStore<AccountCore.State> {
             isOtherAccount: self.isOtherAccount,
             accountId: self.accountId,
             newUpdatesAvailable: self.newUpdatesAvailable,
-            showMore: self.$showMore,
+            showMore: self.showMore,
             showDeleteAlert: self.$showDeleteAlert,
-            showPrivacyPolicyWebView: self.showPrivacyPolicyWebView
+            showPrivacyPolicyWebView: self.showPrivacyPolicyWebView,
+            isSubscribed: self.isSubscribed
         )
     }
 }
@@ -45,9 +46,10 @@ struct AccountView: View {
         var isOtherAccount: Bool
         var accountId: Int?
         var newUpdatesAvailable: Bool
-        @BindingViewState var showMore: Bool
+        var showMore: Bool
         @BindingViewState var showDeleteAlert: Bool
         var showPrivacyPolicyWebView: Bool
+        var isSubscribed: Bool
     }
 
     typealias AccountViewStore = ViewStore<AccountView.ViewState, AccountCore.Action.View>
@@ -59,7 +61,9 @@ struct AccountView: View {
         GridItem(.flexible())
     ]
 
-    @StateObject var inAppStore: InAppStore = InAppStore()
+    @Environment(\.dismiss) var dismiss
+
+//    @StateObject var inAppStore: InAppStore = InAppStore()
 
     var body: some View {
         WithViewStore(store, observe: \.view, send: { .view($0) }) { viewStore in
@@ -92,15 +96,26 @@ struct AccountView: View {
                 viewStore.send(.fetchAccount)
             }
             .handleNavigationView(isOtherAccount: viewStore.isOtherAccount)
-            .sheet(isPresented: viewStore.$showMore) {
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.showMore,
+                    send: { .showMore($0) }
+                )
+            ) {
                 MoreView(
+                    isOtherAccount: viewStore.isOtherAccount,
                     onLogoutTap: { viewStore.send(.logout) },
                     onDeleteAccountTap: { viewStore.send(.didDeleteAccountTapped) },
                     deleteAccount: { viewStore.send(.didDeleteAccount) },
                     showDeleteAlert: viewStore.$showDeleteAlert,
-                    onPrivacyPolicyTap: { viewStore.send(.setShowPrivacyPolicyWebView(true)) }
+                    onPrivacyPolicyTap: { viewStore.send(.setShowPrivacyPolicyWebView(true)) },
+                    onBlockAccountTap: {
+                        viewStore.send(.blockAccount)
+
+                        dismiss()
+                    }
                 )
-                .environmentObject(inAppStore)
+//                .environmentObject(inAppStore)
             }
             .sheet(
                 isPresented: viewStore.binding(
@@ -225,34 +240,41 @@ struct AccountView: View {
                 .padding()
                 .padding(.top, 24)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink {
-                            IfLetStore(
-                                store.scope(
-                                    state: \.subscriptionRequestCoreState,
-                                    action: AccountCore.Action.subscriptionRequest
-                                ),
-                                then: { store in
-                                    SubscriptionRequestView(
-                                        store: store
-                                    )
-                                }
-                            )
-                        } label: {
-                            Image(systemSymbol: .personFillBadgePlus)
+                    if viewStore.isSubscribed {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Image(systemSymbol: .line3HorizontalCircleFill)
                                 .foregroundColor(AppColor.primary)
-                                .opacity(viewStore.isOtherAccount ? 0 : 1)
+                                .onTapGesture {
+                                    viewStore.send(.showMore(true))
+                                }
                         }
-                        .disabled(viewStore.isOtherAccount)
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Image(systemSymbol: .line3HorizontalCircleFill)
-                            .foregroundColor(AppColor.primary)
-                            .opacity(viewStore.isOtherAccount ? 0 : 1)
-                            .onTapGesture {
-                                viewStore.send(.showMore)
+                    } else if !viewStore.isOtherAccount {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink {
+                                IfLetStore(
+                                    store.scope(
+                                        state: \.subscriptionRequestCoreState,
+                                        action: AccountCore.Action.subscriptionRequest
+                                    ),
+                                    then: { store in
+                                        SubscriptionRequestView(
+                                            store: store
+                                        )
+                                    }
+                                )
+                            } label: {
+                                Image(systemSymbol: .personFillBadgePlus)
+                                    .foregroundColor(AppColor.primary)
                             }
+                        }
+
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Image(systemSymbol: .line3HorizontalCircleFill)
+                                .foregroundColor(AppColor.primary)
+                                .onTapGesture {
+                                    viewStore.send(.showMore(true))
+                                }
+                        }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)

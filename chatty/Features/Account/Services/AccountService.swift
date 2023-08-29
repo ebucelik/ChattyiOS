@@ -32,6 +32,12 @@ class AccountService: BackendClient, AccountServiceProtocol {
 
         return try await sendRequest(call: updateBiographyCall)
     }
+
+    func blockAccount(blockedAccount: BlockedAccount) async throws -> BlockedAccount {
+        let blockedAccountCall = BlockedAccountCall(blockedAccount: blockedAccount)
+
+        return try await sendRequest(call: blockedAccountCall)
+    }
 }
 
 extension AccountService: DependencyKey {

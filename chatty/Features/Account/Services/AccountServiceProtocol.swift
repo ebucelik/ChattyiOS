@@ -15,4 +15,6 @@ protocol AccountServiceProtocol {
     func updateProfilePicture(account: Account) async throws -> Account
 
     func updateBiography(account: Account) async throws -> Account
+
+    func blockAccount(blockedAccount: BlockedAccount) async throws -> BlockedAccount
 }
