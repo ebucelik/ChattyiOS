@@ -27,7 +27,8 @@ extension BindingViewStore<RegisterCore.State> {
             textMaxLength: self.textMaxLength,
             approachesMaxLength: self.approachesMaxLength,
             termsAndConditionsAccepted: self.termsAndConditionsAccepted,
-            showTermsAndConditionsWebView: self.showTermsAndConditionsWebView
+            showTermsAndConditionsWebView: self.showTermsAndConditionsWebView,
+            showEulaWebView: self.showEulaWebView
         )
     }
 }
@@ -50,6 +51,7 @@ struct RegisterView: View {
         var approachesMaxLength: Bool
         var termsAndConditionsAccepted: Bool
         var showTermsAndConditionsWebView: Bool
+        var showEulaWebView: Bool
     }
 
     typealias RegisterViewStore = ViewStore<RegisterView.ViewState, RegisterCore.Action.View>
@@ -86,6 +88,13 @@ struct RegisterView: View {
                     send: { .setShowTermsAndConditionsWebView($0) })
             ) {
                 WebView(url: URL(string: "https://main--helpful-naiad-524c37.netlify.app/terms.html")!)
+            }
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.showEulaWebView,
+                    send: { .setEulaWebView($0) })
+            ) {
+                WebView(url: URL(string: "https://main--helpful-naiad-524c37.netlify.app/eula.html")!)
             }
         }
     }
@@ -363,17 +372,30 @@ struct RegisterView: View {
                     send: { .setTermsAndConditions($0) }
                 )
             ) {
-                Group {
+                VStack(alignment: .leading, spacing: 0) {
                     Text("By checking this box, you are agreeing to our ")
-                        .font(AppFont.caption) +
-                    Text("terms of service.")
                         .font(AppFont.caption)
-                        .bold()
-                        .foregroundColor(AppColor.primary)
-                }
-                    .onTapGesture {
-                        viewStore.send(.setShowTermsAndConditionsWebView(true))
+                    HStack(spacing: 4) {
+                        Text("terms of service")
+                            .font(AppFont.caption)
+                            .bold()
+                            .foregroundColor(AppColor.primary)
+                            .onTapGesture {
+                                viewStore.send(.setShowTermsAndConditionsWebView(true))
+                            }
+
+                        Text("and")
+                            .font(AppFont.caption)
+
+                        Text("EULA.")
+                            .font(AppFont.caption)
+                            .bold()
+                            .foregroundColor(AppColor.primary)
+                            .onTapGesture {
+                                viewStore.send(.setEulaWebView(true))
+                            }
                     }
+                }
             }
 
             Spacer()

@@ -43,6 +43,7 @@ class RegisterCore: Reducer {
 
         var termsAndConditionsAccepted: Bool = false
         var showTermsAndConditionsWebView: Bool = false
+        var showEulaWebView: Bool = false
 
         var error: String {
             if case let .error(error) = registerState {
@@ -145,6 +146,7 @@ class RegisterCore: Reducer {
 
             case setTermsAndConditions(Bool)
             case setShowTermsAndConditionsWebView(Bool)
+            case setEulaWebView(Bool)
 
             case showLoginView
             case showFeed(Account)
@@ -352,6 +354,11 @@ class RegisterCore: Reducer {
 
                 return .none
 
+            case let .view(.setEulaWebView(value)):
+                state.showEulaWebView = value
+
+                return .none
+
             case .view(.showFeed):
                 struct Debounce: Hashable { }
 
@@ -367,7 +374,7 @@ class RegisterCore: Reducer {
                 state.usernameAvailableState = .none
                 state.emailAvailableState = .none
                 state.passwordValidState = .none
-                state.viewState = .usernameView
+                state.viewState = .profilePictureView
                 state.picture = nil
 
                 return .none

@@ -51,7 +51,7 @@ class FeedCore: Reducer {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                guard let account = state.account else {
+                guard state.account != nil else {
                     return .send(.postsStateChanged(.error(.notFound)))
                 }
                 
