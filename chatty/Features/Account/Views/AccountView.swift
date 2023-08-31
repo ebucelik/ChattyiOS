@@ -27,7 +27,9 @@ extension BindingViewStore<AccountCore.State> {
             showMore: self.showMore,
             showDeleteAlert: self.$showDeleteAlert,
             showPrivacyPolicyWebView: self.showPrivacyPolicyWebView,
-            isSubscribed: self.isSubscribed
+            isSubscribed: self.isSubscribed,
+            isSubscriberView: self.isSubscriberView,
+            showBuyMeACoffeeWebView: self.showBuyMeACoffeeWebView
         )
     }
 }
@@ -50,6 +52,8 @@ struct AccountView: View {
         @BindingViewState var showDeleteAlert: Bool
         var showPrivacyPolicyWebView: Bool
         var isSubscribed: Bool
+        var isSubscriberView: Bool
+        var showBuyMeACoffeeWebView: Bool
     }
 
     typealias AccountViewStore = ViewStore<AccountView.ViewState, AccountCore.Action.View>
@@ -108,6 +112,7 @@ struct AccountView: View {
                     onDeleteAccountTap: { viewStore.send(.didDeleteAccountTapped) },
                     deleteAccount: { viewStore.send(.didDeleteAccount) },
                     showDeleteAlert: viewStore.$showDeleteAlert,
+                    onBuyMeACoffeTap: { viewStore.send(.setShowBuyMeACoffeeWebView(true)) },
                     onPrivacyPolicyTap: { viewStore.send(.setShowPrivacyPolicyWebView(true)) },
                     onBlockAccountTap: {
                         viewStore.send(.blockAccount)
@@ -125,6 +130,16 @@ struct AccountView: View {
                 WebView(url: URL(string: "https://main--helpful-naiad-524c37.netlify.app")!)
                     .onDisappear {
                         viewStore.send(.setShowPrivacyPolicyWebView(false))
+                    }
+            }
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.showBuyMeACoffeeWebView,
+                    send: { .setShowBuyMeACoffeeWebView($0) })
+            ) {
+                WebView(url: URL(string: "https://www.buymeacoffee.com/celikebu")!)
+                    .onDisappear {
+                        viewStore.send(.setShowBuyMeACoffeeWebView(false))
                     }
             }
         }
@@ -240,7 +255,7 @@ struct AccountView: View {
                 .padding()
                 .padding(.top, 24)
                 .toolbar {
-                    if viewStore.isSubscribed {
+                    if viewStore.isSubscribed && !viewStore.isSubscriberView {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Image(systemSymbol: .line3HorizontalCircleFill)
                                 .foregroundColor(AppColor.primary)

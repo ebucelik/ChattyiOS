@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct Account: Equatable, Codable, Hashable {
-    let id: Int
+public struct Account: Equatable, Codable, Hashable, Identifiable {
+    public let id: Int
     let username: String
     let email: String
     var picture: String

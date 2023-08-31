@@ -21,44 +21,40 @@ struct SubscriptionView: View {
             if viewStore.accounts.isEmpty {
                 InfoView(text: viewStore.info)
             } else {
-                ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach(Array(viewStore.accounts.enumerated()), id: \.offset) { index, account in
-                            NavigationLink {
-                                AccountView(
-                                    store: Store(
-                                        initialState: AccountCore.State(
-                                            ownAccountId: viewStore.ownAccountId,
-                                            ownAccount: viewStore.ownAccount,
-                                            accountState: .loaded(account)
-                                        ),
-                                        reducer: {
-                                            AccountCore()
-                                        }
-                                    )
+                List(
+                    viewStore.accounts,
+                    rowContent: { account in
+                        NavigationLink {
+                            AccountView(
+                                store: Store(
+                                    initialState: AccountCore.State(
+                                        ownAccountId: viewStore.ownAccountId,
+                                        ownAccount: viewStore.ownAccount,
+                                        accountState: .loaded(account),
+                                        isSubscriberView: true
+                                    ),
+                                    reducer: {
+                                        AccountCore()
+                                    }
                                 )
-                            } label: {
-                                HStack {
-                                    ChattyImage(
-                                        picture: account.picture,
-                                        frame: CGSize(width: 30, height: 30)
-                                    )
+                            )
+                        } label: {
+                            HStack {
+                                ChattyImage(
+                                    picture: account.picture,
+                                    frame: CGSize(width: 30, height: 30)
+                                )
 
-                                    Text(account.username)
-                                        .font(AppFont.body)
-                                        .foregroundColor(AppColor.black)
+                                Text(account.username)
+                                    .font(AppFont.body)
+                                    .foregroundColor(AppColor.black)
 
-                                    Spacer()
-                                }
+                                Spacer()
                             }
-
-                            if viewStore.accounts.count - 1 != index {
-                                ChattyDivider()
-                            }
+                            .padding(.vertical, 4)
                         }
                     }
-                    .padding(24)
-                }
+                )
                 .navigationTitle(Text(viewStore.title))
                 .navigationBarTitleDisplayMode(.inline)
             }

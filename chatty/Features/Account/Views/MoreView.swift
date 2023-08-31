@@ -17,6 +17,7 @@ struct MoreView: View {
     let onDeleteAccountTap: () -> Void
     let deleteAccount: () -> Void
     let showDeleteAlert: Binding<Bool>
+    let onBuyMeACoffeTap: () -> Void
     let onPrivacyPolicyTap: () -> Void
     let onBlockAccountTap: () -> Void
 
@@ -25,6 +26,7 @@ struct MoreView: View {
          onDeleteAccountTap: @escaping () -> Void,
          deleteAccount: @escaping () -> Void,
          showDeleteAlert: Binding<Bool>,
+         onBuyMeACoffeTap: @escaping () -> Void,
          onPrivacyPolicyTap: @escaping () -> Void,
          onBlockAccountTap: @escaping () -> Void) {
         self.isOtherAccount = isOtherAccount
@@ -32,6 +34,7 @@ struct MoreView: View {
         self.onDeleteAccountTap = onDeleteAccountTap
         self.deleteAccount = deleteAccount
         self.showDeleteAlert = showDeleteAlert
+        self.onBuyMeACoffeTap = onBuyMeACoffeTap
         self.onPrivacyPolicyTap = onPrivacyPolicyTap
         self.onBlockAccountTap = onBlockAccountTap
     }
@@ -61,34 +64,24 @@ struct MoreView: View {
 
                     Spacer()
                 } else {
-//                    ForEach(inAppStore.products, id: \.id) { product in
-//                        HStack {
-//                            Image(systemSymbol: .eurosignCircle)
-//                                .resizable()
-//                                .frame(width: 20, height: 20)
-//
-//                            VStack {
-//                                Group {
-//                                    Text(product.displayName.localize())
-//                                    Text(product.description.localize())
-//                                        .font(AppFont.caption)
-//                                }
-//                                .frame(maxWidth: .infinity, alignment: .leading)
-//                            }
-//
-//                            Spacer()
-//
-//                            Text("\(product.displayPrice)")
-//                        }
-//                        .padding()
-//                        .background(AppColor.lightgray)
-//                        .cornerRadius(6)
-//                        .onTapGesture {
-//                            Task {
-//                                try await inAppStore.purchase(product)
-//                            }
-//                        }
-//                    }
+                    HStack {
+                        Image("bmc-logo-no-background")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20)
+
+                        Text("Buy me a coffee")
+
+                        Spacer()
+                    }
+                    .padding()
+                    .background(AppColor.lightgray)
+                    .cornerRadius(6)
+                    .onTapGesture {
+                        dismiss()
+
+                        onBuyMeACoffeTap()
+                    }
 
                     HStack {
                         Image(systemSymbol: .infoCircle)

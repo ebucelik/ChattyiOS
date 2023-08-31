@@ -112,6 +112,9 @@ class FeedCore: Reducer {
             case .post(id: _, action: .view(.delegate(.loadPosts))):
                 return .send(.loadPosts)
 
+            case .post(id: _, action: .account(.accountStateChanged(.loaded))):
+                return .send(.loadPosts)
+
             case .post:
                 return .none
             }

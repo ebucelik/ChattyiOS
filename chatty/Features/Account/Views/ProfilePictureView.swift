@@ -78,7 +78,7 @@ struct ProfilePictureView: View {
 
                     HStack {
                         ChattyButton(
-                            text: "Delete picture",
+                            text: "deletepicture",
                             backgroundColor: AppColor.error
                         ) {
                             viewStore.send(.deleteImage)
@@ -87,7 +87,7 @@ struct ProfilePictureView: View {
                         .opacity(viewStore.account.picture.isEmpty ? 0.8 : 1)
 
                         ChattyButton(
-                            text: "Update profile",
+                            text: "updateprofile",
                             isLoading: viewStore.accountState == .loading
                         ) {
                             viewStore.send(.updateImage)

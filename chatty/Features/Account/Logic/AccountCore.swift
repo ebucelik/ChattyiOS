@@ -44,6 +44,9 @@ class AccountCore: Reducer {
             return false
         }
 
+        /// Account View was pushed from subscriber/subscribed list.
+        let isSubscriberView: Bool
+
         var accountId: Int? {
             if case let .loaded(account) = accountState {
                 return account.id
@@ -60,6 +63,7 @@ class AccountCore: Reducer {
         @BindingState
         var showDeleteAlert: Bool = false
 
+        var showBuyMeACoffeeWebView: Bool = false
         var showPrivacyPolicyWebView: Bool = false
 
         init(ownAccountId: Int? = nil,
@@ -69,7 +73,8 @@ class AccountCore: Reducer {
              subscribedState: Loadable<[Account]> = .none,
              subscribeState: Loadable<Subscriber> = .none,
              subscriptionInfoState: Loadable<SubscriptionInfo> = .none,
-             postsState: Loadable<[Post]> = .none) {
+             postsState: Loadable<[Post]> = .none,
+             isSubscriberView: Bool = false) {
             self.accountState = accountState
             self.ownAccount = ownAccount
             self.subscriberState = subscriberState
@@ -77,6 +82,7 @@ class AccountCore: Reducer {
             self.subscribeState = subscribeState
             self.subscriptionInfoState = subscriptionInfoState
             self.postsState = postsState
+            self.isSubscriberView = isSubscriberView
 
             guard case let .loaded(account) = accountState else {
                 self.id = ownAccountId ?? 0
@@ -175,6 +181,7 @@ class AccountCore: Reducer {
             case blockAccount
             case blockAccountStateChanged(Loadable<BlockedAccount>)
 
+            case setShowBuyMeACoffeeWebView(Bool)
             case setShowPrivacyPolicyWebView(Bool)
 
             case binding(BindingAction<State>)
@@ -242,6 +249,9 @@ class AccountCore: Reducer {
 
                 if case let .loaded(account) = accountState {
                     state.profilePictureCoreState = ProfilePictureCore.State(account: account)
+                    state.subscriptionRequestCoreState = SubscriptionRequestCore.State(
+                        ownAccount: account
+                    )
 
                     return .merge(
                         [
@@ -489,6 +499,11 @@ class AccountCore: Reducer {
 
             case .view(.didDeleteAccountTapped):
                 state.showDeleteAlert = true
+
+                return .none
+
+            case let .view(.setShowBuyMeACoffeeWebView(value)):
+                state.showBuyMeACoffeeWebView = value
 
                 return .none
 
