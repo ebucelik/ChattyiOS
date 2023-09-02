@@ -384,6 +384,9 @@ class RegisterCore: Reducer {
                     state.register.biography = String(state.register.biography.prefix(state.textMaxLength))
                 }
 
+                state.register.username = state.register.username.lowercased()
+                state.register.email = state.register.email.lowercased()
+
                 return .none
 
             case .view:
