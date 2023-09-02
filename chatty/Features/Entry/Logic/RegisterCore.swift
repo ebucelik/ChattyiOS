@@ -385,7 +385,6 @@ class RegisterCore: Reducer {
                 }
 
                 state.register.username = state.register.username.lowercased()
-                state.register.email = state.register.email.lowercased()
 
                 return .none
 
