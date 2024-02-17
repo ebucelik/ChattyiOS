@@ -1617,6 +1617,7 @@
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We would like to use your location for this app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1654,6 +1655,7 @@
 				INFOPLIST_FILE = chatty/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We would like to use your location for this app.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to access the Image Gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

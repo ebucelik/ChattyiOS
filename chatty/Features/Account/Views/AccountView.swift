@@ -175,10 +175,26 @@ struct AccountView: View {
                             )
                         } label: {
                             VStack(spacing: 24) {
-                                ChattyImage(
-                                    picture: account.picture,
-                                    frame: CGSize(width: 125, height: 125)
-                                )
+                                ZStack {
+                                    ChattyImage(
+                                        picture: account.picture,
+                                        frame: CGSize(width: 125, height: 125)
+                                    )
+
+                                    VStack {
+                                        HStack {
+                                            Spacer()
+
+                                            Image(systemSymbol: .squareAndPencilCircleFill)
+                                                .resizable()
+                                                .frame(width: 25, height: 25)
+                                                .tint(AppColor.primary)
+                                        }
+
+                                        Spacer()
+                                    }
+                                    .frame(width: 115, height: 115)
+                                }
 
                                 VStack(spacing: 10) {
                                     Text(account.biography)

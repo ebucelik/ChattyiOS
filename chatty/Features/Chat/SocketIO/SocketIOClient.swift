@@ -14,7 +14,7 @@ class SocketIOClient: NSObject {
     static let shared = SocketIOClient()
 
     private let dev = "localhost"
-    private let prod = "194.37.80.229"
+    private let prod = "85.215.128.216"
     private let manager: SocketManager
     private let socket: SocketIO.SocketIOClient
     private let event = "chat"

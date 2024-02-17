@@ -33,8 +33,8 @@ struct ProfilePictureView: View {
                         .frame(width: 125, height: 125, alignment: .center)
                         .cornerRadius(62.5)
                         .onAppear {
-                            imagePickerController.onImagePicked = { pickedImage in
-                                viewStore.send(.didImagePicked(pickedImage))
+                            imagePickerController.onImagePicked = {
+                                viewStore.send(.didImagePicked($0))
                             }
                         }
                         .disabled(.loading == viewStore.accountState)
